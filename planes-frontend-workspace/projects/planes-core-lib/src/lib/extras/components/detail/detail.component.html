@@ -1,0 +1,5 @@
+<table *ngIf="params">
+  <tr *ngFor="let row of params.rows">
+    <th>{{row.label}}</th><td>{{row.value || 'n/a'}}</td>
+  </tr>
+</table>

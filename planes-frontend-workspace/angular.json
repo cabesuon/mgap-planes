@@ -1,0 +1,379 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "planes-core-lib": {
+      "projectType": "library",
+      "root": "projects/planes-core-lib",
+      "sourceRoot": "projects/planes-core-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/planes-core-lib/tsconfig.lib.json",
+            "project": "projects/planes-core-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/planes-core-lib/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/planes-core-lib/src/test.ts",
+            "tsConfig": "projects/planes-core-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/planes-core-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/planes-core-lib/tsconfig.lib.json",
+              "projects/planes-core-lib/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
+    "planes-core-visor": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/planes-core-visor",
+      "sourceRoot": "projects/planes-core-visor/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/planes-core-visor",
+            "index": "projects/planes-core-visor/src/index.html",
+            "main": "projects/planes-core-visor/src/main.ts",
+            "polyfills": "projects/planes-core-visor/src/polyfills.ts",
+            "tsConfig": "projects/planes-core-visor/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/planes-core-visor/src/favicon.ico",
+              "projects/planes-core-visor/src/assets"
+            ],
+            "styles": ["projects/planes-core-visor/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/planes-core-visor/src/environments/environment.ts",
+                  "with": "projects/planes-core-visor/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/planes-core-visor/src/environments/environment.ts",
+                  "with": "projects/planes-core-visor/src/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "local-development": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/planes-core-visor/src/environments/environment.ts",
+                  "with": "projects/planes-core-visor/src/environments/environment.local.dev.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "planes-core-visor:build"
+          },
+          "configurations": {
+            "local-development": {
+              "browserTarget": "planes-core-visor:build:local-development"
+            },
+            "development": {
+              "browserTarget": "planes-core-visor:build:development"
+            },
+            "production": {
+              "browserTarget": "planes-core-visor:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "planes-core-visor:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/planes-core-visor/src/test.ts",
+            "polyfills": "projects/planes-core-visor/src/polyfills.ts",
+            "tsConfig": "projects/planes-core-visor/tsconfig.spec.json",
+            "karmaConfig": "projects/planes-core-visor/karma.conf.js",
+            "assets": [
+              "projects/planes-core-visor/src/favicon.ico",
+              "projects/planes-core-visor/src/assets"
+            ],
+            "styles": ["projects/planes-core-visor/src/styles.scss"],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/planes-core-visor/tsconfig.app.json",
+              "projects/planes-core-visor/tsconfig.spec.json",
+              "projects/planes-core-visor/e2e/tsconfig.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/planes-core-visor/e2e/protractor.conf.js",
+            "devServerTarget": "planes-core-visor:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "planes-core-visor:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "planes-secano-lib": {
+      "projectType": "library",
+      "root": "projects/planes-secano-lib",
+      "sourceRoot": "projects/planes-secano-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/planes-secano-lib/tsconfig.lib.json",
+            "project": "projects/planes-secano-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/planes-secano-lib/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/planes-secano-lib/src/test.ts",
+            "tsConfig": "projects/planes-secano-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/planes-secano-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/planes-secano-lib/tsconfig.lib.json",
+              "projects/planes-secano-lib/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
+    "planes-secano-visor": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/planes-secano-visor",
+      "sourceRoot": "projects/planes-secano-visor/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/planes-secano-visor",
+            "index": "projects/planes-secano-visor/src/index.html",
+            "main": "projects/planes-secano-visor/src/main.ts",
+            "polyfills": "projects/planes-secano-visor/src/polyfills.ts",
+            "tsConfig": "projects/planes-secano-visor/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/planes-secano-visor/src/favicon.ico",
+              "projects/planes-secano-visor/src/assets"
+            ],
+            "styles": ["projects/planes-secano-visor/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/planes-secano-visor/src/environments/environment.ts",
+                  "with": "projects/planes-secano-visor/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "planes-secano-visor:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "planes-secano-visor:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "planes-secano-visor:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/planes-secano-visor/src/test.ts",
+            "polyfills": "projects/planes-secano-visor/src/polyfills.ts",
+            "tsConfig": "projects/planes-secano-visor/tsconfig.spec.json",
+            "karmaConfig": "projects/planes-secano-visor/karma.conf.js",
+            "assets": [
+              "projects/planes-secano-visor/src/favicon.ico",
+              "projects/planes-secano-visor/src/assets"
+            ],
+            "styles": ["projects/planes-secano-visor/src/styles.scss"],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/planes-secano-visor/tsconfig.app.json",
+              "projects/planes-secano-visor/tsconfig.spec.json",
+              "projects/planes-secano-visor/e2e/tsconfig.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/planes-secano-visor/e2e/protractor.conf.js",
+            "devServerTarget": "planes-secano-visor:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "planes-secano-visor:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  },
+  "defaultProject": "planes-core-lib"
+}

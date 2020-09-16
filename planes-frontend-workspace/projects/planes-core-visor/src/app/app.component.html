@@ -1,0 +1,84 @@
+<mat-sidenav-container>
+
+  <mat-sidenav #sidenav mode="push">
+    <div class="branding"><img [src]="logo" alt="logo"/>
+      <span>PC V</span>
+    </div>
+    <mat-nav-list *ngIf="persona">
+      <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()" [routerLink]="[item.link]"
+        routerLinkActive="active">
+        {{item.label}}
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <div class="wrapper">
+
+    <div class="toolbar" [style.position]="'fixed'" [class.mat-elevation-z4]="true">
+      <mat-toolbar color="primary">
+        <button mat-icon-button class="d-md-none" (click)="sidenav.open()">
+          <fa-icon icon="bars"></fa-icon>
+        </button>
+
+        <span routerLink="" class="branding center d-inline d-sm-none">
+          <img [src]="logo"/>
+        </span>
+        <span routerLink="" class="branding center d-none d-sm-inline d-md-none">
+          <img [src]="logo"/> PC Visor
+        </span>
+        <span routerLink="" class="branding d-none d-md-inline">
+          <img [src]="logo"/> Planes Core Visor
+        </span>
+
+        <span class="spacer"></span>
+
+        <span class="d-none d-md-inline" *ngIf="persona">
+          <button mat-button class="nav-button" *ngFor="let item of navigation"
+            [routerLink]="[item.link]"
+            routerLinkActive="active">
+            {{item.label}}
+          </button>
+        </span>
+
+        <button *ngIf="persona"
+          mat-button
+          [matMenuTriggerFor]="toolbarUserMenu"
+          class="btn-user" color="accent">
+          <span class="btn-user-text">{{persona.personaNombre}}</span>
+          <fa-icon icon="user-circle"></fa-icon>
+        </button>
+        <mat-menu #toolbarUserMenu="matMenu">
+          <button mat-menu-item (click)="onProfileClick()">
+            <mat-icon><fa-icon icon="user-circle"></fa-icon></mat-icon>
+            <span>Perfil</span>
+          </button>
+          <button mat-menu-item (click)="onLogoutClick()">
+            <mat-icon><fa-icon icon="power-off"></fa-icon></mat-icon>
+            <span>Salir</span>
+          </button>
+        </mat-menu>
+
+      </mat-toolbar>
+    </div>
+
+    <div class="content"
+    [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig.data && o.activatedRoute.routeConfig.data.title">
+      <router-outlet #o="outlet"></router-outlet>
+    </div>
+
+    <div class="footer">
+      <div class="row">
+        <div class="col-12 signature">
+          &#169; <span class="year">{{year}}</span> - DSense |
+          <br class="d-block d-sm-none">
+          <!-- <fa-icon icon="rocket"></fa-icon> -->
+          Versión: {{version}}
+          <span *ngIf="!isProd"> [Env:{{envName}}]</span>
+          <span *ngIf="!isProd"> [Mock:{{useMockServer}}]</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</mat-sidenav-container>

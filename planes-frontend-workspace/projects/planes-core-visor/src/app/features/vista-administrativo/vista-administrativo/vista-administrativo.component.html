@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="row pr-3 pl-3 mt-2">
+    <div class="col">
+      <div class="row mapa-toolbar-tool-row">
+
+        <ng-container *ngIf="!!planId; else noPlanId">
+          <p class="title">{{plan ? plan.planNombre : ''}}</p>
+        </ng-container>
+        <ng-template #noPlanId>
+          <mat-form-field appearance="fill" color="primary"
+            *ngIf="!!planes">
+            <mat-label>Plan</mat-label>
+            <mat-select (selectionChange)="planesChange($event.value)">
+              <mat-option *ngFor="let p of planes" [value]="p" [selected]="p===plan">
+                {{p ? p.planNombre : ''}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ng-template>
+
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="row mapa-toolbar-tool-row">
+
+        <button mat-stroked-button (click)="togglePropietario()"
+        color="basic" class="mr-2" [disabled]="!propietarioDetailParams">
+          <fa-icon icon="{{propietarioDetailVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
+          <span class="ml-2">Responsable Propietario</span>
+        </button>
+
+        <button mat-stroked-button (click)="toggleArrendatario()"
+        color="basic" class="mr-2" [disabled]="!propietarioDetailParams">
+          <fa-icon icon="{{arrendatarioDetailVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
+          <span class="ml-2">Responsable Arrendatario</span>
+        </button>
+
+        <button mat-stroked-button (click)="toggleChacras()"
+        color="accent" [disabled]="!propietarioDetailParams">
+          <fa-icon icon="{{chacrasTableVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
+          <span class="ml-2">Lista Chacras</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="plan">
+    <div class="row mb-2">
+      <div class="col">
+        <mat-card>
+          <mat-card-title>Detalles Plan</mat-card-title>
+          <lib-planes-core-detail [params]="planDetailParams"></lib-planes-core-detail>
+        </mat-card>
+      </div>
+      <div *ngIf="propietarioDetailParams && propietarioDetailVisible" class="col">
+        <mat-card>
+          <mat-card-title>Responsable Propietario</mat-card-title>
+          <lib-responsables-core-detail [params]="propietarioDetailParams">
+          </lib-responsables-core-detail>
+        </mat-card>
+      </div>
+      <div *ngIf="arrendatarioDetailParams && arrendatarioDetailVisible" class="col">
+        <mat-card>
+          <mat-card-title>Responsable Arrendatario</mat-card-title>
+          <lib-responsables-core-detail [params]="arrendatarioDetailParams">
+          </lib-responsables-core-detail>
+        </mat-card>
+      </div>
+    </div>
+    <ng-container *ngIf="chacrasTableVisible">
+      <mat-card class="mb-1 col">
+        <mat-card-title>Lista Chacras</mat-card-title>
+        <lib-chacras-core-table
+            [params]="chacrasTableParams"
+            (actioned)="chacrasTableAction($event)"
+          ></lib-chacras-core-table>
+      </mat-card>
+    </ng-container>
+
+  </ng-container>
+
+</div>

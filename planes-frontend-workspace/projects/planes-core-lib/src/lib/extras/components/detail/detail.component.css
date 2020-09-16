@@ -1,0 +1,25 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: auto;
+  font-size: 12px;
+}
+
+table th {
+  font-weight: normal !important;
+  color: gray;
+}
+
+table,
+th,
+td {
+  border-bottom: 0.5px solid lightgray;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  width: 150px;
+  white-space: pre-wrap;
+}

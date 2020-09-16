@@ -1,0 +1,65 @@
+<div class="container">
+  <!-- planes list -->
+  <div class="row">
+    <div class="col-md-12">
+      <h1 rtl class="main-heading">Planes</h1>
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="col-md-12 float-right">
+      <button mat-stroked-button (click)="newPlan()" color="primary">
+        <fa-icon icon="plus-circle"></fa-icon>
+        <span class="ml-2">Nuevo Plan</span>
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <lib-planes-core-table
+        [params]="planesTableParams"
+        (actioned)="planesTableActioned($event)">
+      </lib-planes-core-table>
+    </div>
+  </div>
+  <!-- version info -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h1 rtl class="main-heading">Versiones</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>0.0.1</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <mat-list role="list" dense>
+        <mat-list-item role="listitem">1) estructura base del frontend,</mat-list-item>
+        <mat-list-item role="listitem">2) lista de planes,</mat-list-item>
+        <mat-list-item role="listitem">3) lista de chacras,</mat-list-item>
+        <mat-list-item role="listitem">4) y lista de zonas de exclusión.</mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+  <!-- note -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h1 rtl class="main-heading">Nota</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <small>La reingeniería del sistema PUMRS se encuentra en constante desarrollo por lo tanto:
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <mat-list role="list" dense>
+        <mat-list-item role="listitem">1) faltan funcionalidades,</mat-list-item>
+        <mat-list-item role="listitem">2) y las funcionalidades habilitadas pueden tener problemas o lucir mal.</mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</div>

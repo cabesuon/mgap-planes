@@ -1,0 +1,54 @@
+<form [formGroup]="form">
+  <!-- ChacraNombre -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Nombre"
+      formControlName="chacraNombre">
+    </mat-form-field>
+  </div>
+
+  <!-- ChacraGeometria -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Geometria Chacra</mat-label>
+      <mat-select formControlName="chacraGeometria">
+        <mat-option *ngFor="let d of _polygons" [value]="d.dibujoGeometria">
+          {{d.dibujoId}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- ChacraFactorLSGeometriaAsignado -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Geometria Pendiente Manual</mat-label>
+      <mat-select formControlName="chacraFactorLSGeometriaAsignado">
+        <mat-option *ngFor="let d of _polylines" [value]="d.dibujoGeometria">
+          {{d.dibujoId}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- ChacraSueloLimitanteId -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Suelo"
+      formControlName="chacraSueloLimitanteId">
+    </mat-form-field>
+  </div>
+
+  <!-- ChacraDicose -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="DICOSE"
+      formControlName="chacraDicose">
+    </mat-form-field>
+  </div>
+
+</form>
+
