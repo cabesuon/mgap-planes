@@ -1,10 +1,15 @@
+export enum PlanCoreEstado {
+  EDICION = 1,
+  PRESENTADO = 2
+}
+
 export interface PlanCore {
   departamentoId: string;
   ingenieroAgronomoId: string;
   mensajeIdUlt: string;
   observacionIdUlt: string;
   planEsMigrado: boolean;
-  planEstado: number;
+  planEstado: PlanCoreEstado;
   planEsVersionActual: boolean;
   planFechaCreacion: string;
   planFechaModificacion: string;
@@ -18,20 +23,19 @@ export interface PlanCore {
   planTipoTenencia: string;
   planTieneTenedor: boolean;
   planVencimientoContractual: string;
-  propietarioId: string;
-  propietarioResponsableId: string;
   regionalId: string;
-  tctResponsableId: string;
-  tenedorCualquierTituloId: string;
   ultimoIdObservacion: string;
-}
 
-// services
+  // FINAL UPDATE to v.0.0.2
+  // - added fields:
+  propietarios: string[];
+  arrendatarios: string[];
 
-export interface PlanesCoreQueryResults {
-  success: boolean;
-  error: { code: number; description: string };
-  planes: PlanCore[];
+  // - removed fields:
+  // propietarioId: string;
+  // propietarioResponsableId: string;
+  // tctResponsableId: string;
+  // tenedorCualquierTituloId: string;
 }
 
 // utils
@@ -53,10 +57,7 @@ export function createEmptyPlanCore(): PlanCore {
     planFechaModificacion: null,
     ingenieroAgronomoId: null,
     departamentoId: null,
-    propietarioId: null,
-    propietarioResponsableId: null,
-    tenedorCualquierTituloId: null,
-    tctResponsableId: null,
+
     planVencimientoContractual: null,
     mensajeIdUlt: null,
     observacionIdUlt: null,
@@ -66,7 +67,10 @@ export function createEmptyPlanCore(): PlanCore {
     planFechaVigenciaDesde: null,
     planFechaVigenciaHasta: null,
     planEsVersionActual: null,
-    planRubro: null
+    planRubro: null,
+
+    propietarios: [],
+    arrendatarios: []
   };
 }
 
@@ -74,10 +78,8 @@ export function createBasePlanCore(
   id: string,
   estado: number,
   ingenieroAgronomo: string,
-  propietario: string,
-  propietarioResponsable: string,
-  tenedor: string,
-  tenedorResponsable: string,
+  propietarios: string[],
+  arrendatarios: string[],
   fechaCreacion: string,
   fechaPresentacion: string,
   fechaModificacion: string
@@ -89,33 +91,58 @@ export function createBasePlanCore(
     planNombre: `Plan ${id}`,
     planEstado: estado,
     planTipoTenencia: `Tipo Tenencia ${id}`,
-    planTieneTenedor: !!tenedor,
+    planTieneTenedor: arrendatarios && arrendatarios.length > 0,
     planFechaCreacion: fechaCreacion,
     planFechaPresentacion: fechaPresentacion,
     planFechaModificacion: fechaModificacion,
     ingenieroAgronomoId: ingenieroAgronomo,
     departamentoId: id,
-    propietarioId: propietario,
-    propietarioResponsableId: propietarioResponsable,
-    tenedorCualquierTituloId: tenedor,
-    tctResponsableId: tenedorResponsable,
+
     planVencimientoContractual: null,
     planEsMigrado: false,
     regionalId: id,
     planFechaVigenciaDesde: null,
     planFechaVigenciaHasta: null,
-    planRubro: `Rubro ${id}`
+    planRubro: `Rubro ${id}`,
+
+    propietarios,
+    arrendatarios
   };
 }
 
-export function personaRelPlanCore(
-  planCore: PlanCore,
-  personaId: string,
-  ingenieroAgronomoId: string
-): boolean {
-  return (
-    planCore.propietarioResponsableId === personaId ||
-    planCore.tctResponsableId === personaId ||
-    planCore.ingenieroAgronomoId === ingenieroAgronomoId
-  );
+export function formatPlanEstado(estado: PlanCoreEstado): string {
+  switch (estado) {
+    case 1:
+      return 'Edición';
+    case 2:
+      return 'Presentado';
+    default:
+      return 'n/a';
+  }
+}
+
+// services
+
+export interface PlanesCoreQueryResults {
+  success: boolean;
+  error: { code: number; description: string };
+  planes: PlanCore[];
+}
+
+export interface PlanCoreAddResult {
+  success: boolean;
+  error: { code: number; description: string };
+  plan: PlanCore;
+}
+
+export interface PlanCoreUpdateResult {
+  success: boolean;
+  error: { code: number; description: string };
+  plan: PlanCore;
+}
+
+export interface PlanCoreDeleteResult {
+  success: boolean;
+  error: { code: number; description: string };
+  planId: string;
 }

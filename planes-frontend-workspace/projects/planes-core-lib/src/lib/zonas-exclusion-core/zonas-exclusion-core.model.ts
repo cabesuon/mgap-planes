@@ -18,12 +18,6 @@ export function createZonaExclusionCore(): ZonaExclusionCore {
   };
 }
 
-export interface ZonaExclusionCoreQueryResults {
-  success: boolean;
-  error: { code: number; description: string };
-  zonasExclusion: ZonaExclusionCore[];
-}
-
 export function createBaseZonaExclusionCore(): ZonaExclusionCore {
   return {
     zonaExclusionId: null,
@@ -45,4 +39,30 @@ export function createBaseGeomZonaExclusionCore() {
     ],
     spatialReference: { wkid: 4326 }
   };
+}
+
+// services
+
+export interface ZonasExclusionCoreQueryResults {
+  success: boolean;
+  error: { code: number; description: string };
+  zonasExclusion: ZonaExclusionCore[];
+}
+
+export interface ZonaExclusionCoreAddResult {
+  success: boolean;
+  error: { code: number; description: string };
+  zonasExclusion: ZonaExclusionCore;
+}
+
+export interface ZonaExclusionCoreUpdateResult {
+  success: boolean;
+  error: { code: number; description: string };
+  zonasExclusion: ZonaExclusionCore;
+}
+
+export interface ZonaExclusionCoreDeleteResult {
+  success: boolean;
+  error: { code: number; description: string };
+  zonasExclusionId: string;
 }

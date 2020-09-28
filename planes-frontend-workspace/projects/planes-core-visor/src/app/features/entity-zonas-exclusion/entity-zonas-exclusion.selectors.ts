@@ -39,14 +39,12 @@ export const selectZonasExclusionByChacrasId = (ids: string[]) =>
     }
   );
 
-export const selectZonaExclusionById = (id: number) =>
+export const selectZonaExclusionById = (id: string) =>
   createSelector(
     selectAllEntityZonasExclusion,
     (allZonasExclusion: ZonaExclusionCore[]) => {
       if (allZonasExclusion) {
-        return allZonasExclusion.find(
-          z => z.zonaExclusionId.toString() === `${id}`
-        );
+        return allZonasExclusion.find(z => z.zonaExclusionId === id);
       } else {
         return null;
       }

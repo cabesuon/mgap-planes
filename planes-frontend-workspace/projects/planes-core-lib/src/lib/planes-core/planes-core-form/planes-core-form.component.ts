@@ -3,10 +3,12 @@ import { Validators, FormBuilder } from '@angular/forms';
 
 import { FormActionType } from '../../extras/extras-form';
 import { PlanCore } from '../planes-core.model';
+import { EmpresaCore } from '../../empresas-core/empresas-core.model';
 
 export interface PlanesCoreFormInput {
   action: FormActionType;
   plan: PlanCore;
+  empresas: EmpresaCore[];
 }
 
 @Component({
@@ -22,14 +24,8 @@ export class PlanesCoreFormComponent implements OnInit {
   form = this.fb.group({
     planNombre: [null, [Validators.required]],
 
-    propietarioId: [null, [Validators.required]],
-    propietarioResponsableId: [null, [Validators.required]],
-    tenedorCualquierTituloId: [null],
-    tctResponsableId: [null],
-
-    departamentoId: [null],
-    regionalId: [null],
-    planRubro: [null]
+    propietarios: [null, [Validators.required]],
+    arrendatarios: [null]
   });
 
   constructor(private fb: FormBuilder) {}
@@ -38,12 +34,8 @@ export class PlanesCoreFormComponent implements OnInit {
     if (this.formInput.action === FormActionType.Update) {
       this.form.patchValue({
         planNombre: this.formInput.plan.planNombre,
-        propietarioId: this.formInput.plan.propietarioId,
-        propietarioResponsableId: this.formInput.plan.propietarioResponsableId,
-        tenedorCualquierTituloId: this.formInput.plan.tenedorCualquierTituloId,
-        tctResponsableId: this.formInput.plan.tctResponsableId,
-        departamentoId: this.formInput.plan.departamentoId,
-        regionalId: this.formInput.plan.regionalId,
+        propietarios: this.formInput.plan.propietarios,
+        arrendatarios: this.formInput.plan.arrendatarios,
         planRubro: this.formInput.plan.planRubro
       });
     }

@@ -7,11 +7,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 
-import {
-  PlanCore,
-  PlanesCoreService,
-  PlanesCoreQueryResults
-} from 'planes-core-lib';
+import { PlanCore, PlanesCoreService } from 'planes-core-lib';
 import * as entityPlanesActions from './entity-planes.actions';
 
 @Injectable()
@@ -65,10 +61,11 @@ export class EntityPlanesEffects {
     ),
     switchMap(item => {
       return this.planesCoreService.addPlanesCore(item).pipe(
-        map(queryResults =>
-          queryResults.length === 1 && queryResults[0].success
+        map(results => results.addResults),
+        map(addResults =>
+          addResults.length === 1 && addResults[0].success
             ? new entityPlanesActions.EntityPlanesAddSuccessAction({
-                item: { ...item, planId: queryResults[0].id }
+                item: addResults[0].plan
               })
             : new entityPlanesActions.EntityPlanesAddFailureAction({
                 error: 'Error al crear el plan.'
@@ -97,21 +94,28 @@ export class EntityPlanesEffects {
     ),
     switchMap(item =>
       this.planesCoreService.changePlanesCore(item).pipe(
-        map(planesCore => {
-          const uc: Update<PlanCore> = {
-            id: item.planId,
-            changes: {
-              ...planesCore
-            }
-          };
-          return new entityPlanesActions.EntityPlanesChangeSuccessAction({
-            item: uc
+        map(results => results.updateResults),
+        map(updateResults => {
+          if (updateResults.length === 1 && updateResults[0].success) {
+            const uc: Update<PlanCore> = {
+              id: updateResults[0].plan.planId,
+              changes: {
+                ...updateResults[0].plan
+              }
+            };
+            return new entityPlanesActions.EntityPlanesChangeSuccessAction({
+              item: uc
+            });
+          }
+          return new entityPlanesActions.EntityPlanesChangeFailureAction({
+            error: 'Error al actualizar el plan.'
           });
         }),
         catchError(error =>
           observableOf(
             new entityPlanesActions.EntityPlanesChangeFailureAction({
-              error: 'planes-core-visor-planes-change-error'
+              error:
+                'Error al actualizar el plan (fallo en conexion a servidor).'
             })
           )
         )
@@ -131,16 +135,20 @@ export class EntityPlanesEffects {
     ),
     switchMap(item =>
       this.planesCoreService.deletePlanesCore(item).pipe(
-        map(
-          () =>
-            new entityPlanesActions.EntityPlanesDeleteSuccessAction({
-              item
-            })
+        map(results => results.deleteResults),
+        map(deleteResults =>
+          deleteResults.length === 1 && deleteResults[0].success
+            ? new entityPlanesActions.EntityPlanesDeleteSuccessAction({
+                item
+              })
+            : new entityPlanesActions.EntityPlanesDeleteFailureAction({
+                error: 'Error al eliminar el plan.'
+              })
         ),
         catchError(error =>
           observableOf(
             new entityPlanesActions.EntityPlanesDeleteFailureAction({
-              error: 'planes-core-visor-planes-delete-error'
+              error: 'Error al eliminar el plan (fallo en conexion a servidor).'
             })
           )
         )

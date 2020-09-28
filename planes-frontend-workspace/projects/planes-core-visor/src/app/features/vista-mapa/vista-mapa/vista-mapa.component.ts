@@ -46,7 +46,6 @@ import {
   selectAllEntityDibujos
 } from '../../entity-dibujos/entity-dibujos.selectors';
 import {
-  loadDibujos,
   addDibujo,
   addDibujos,
   deleteDibujos,
@@ -121,12 +120,12 @@ export class VistaMapaComponent implements OnInit {
         break;
       case 'UpdateChacra':
         this.notificationService.default(
-          `[En Desarrollo] Update Chacra ${chacraId}`
+          `[No implementado] Update Chacra ${chacraId}`
         );
         break;
       case 'DeleteChacra':
         this.notificationService.default(
-          `[En Desarrollo] Delete Chacra ${chacraId}`
+          `[No implementado] Delete Chacra ${chacraId}`
         );
         break;
     }
@@ -142,14 +141,11 @@ export class VistaMapaComponent implements OnInit {
       action: action,
       dibujos: this.dibujos
     };
-    const dialogRef = this.dialog.open(EntityChacrasFormDialogComponent, {
+    this.dialog.open(EntityChacrasFormDialogComponent, {
       width: DIALOG_WIDTH,
       maxHeight: DIALOG_MAX_HEIGHT,
       data: inData
     });
-    // dialogRef.afterClosed().subscribe(outData => {
-    //   this.loggingService.info(outData, this);
-    // });
   }
 
   // dibujos
@@ -188,7 +184,7 @@ export class VistaMapaComponent implements OnInit {
         dibujos.length > 0
           ? this.store.dispatch(addDibujos({ dibujos }))
           : this.notificationService.warn(
-              'No se pudieron cargar las geometrias del archivo seleccionado.'
+              'No se pudieron cargar las geometrías del archivo seleccionado.'
             )
       );
   }

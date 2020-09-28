@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 
@@ -42,7 +42,8 @@ export class EntityChacrasEffects {
         catchError(error =>
           observableOf(
             new entityChacrasActions.EntityChacrasLoadFailureAction({
-              error: 'Error al obtener las chacras.'
+              error:
+                'Error al obtener las chacras (fallo en conexion a servidor).'
             })
           )
         )
@@ -62,10 +63,11 @@ export class EntityChacrasEffects {
     ),
     switchMap(payload => {
       return this.chacrasCoreService.addChacrasCore(payload.item).pipe(
-        map(queryResults => {
-          return queryResults.length === 1 && queryResults[0].success
+        map(results => results.addResults),
+        map(addResults => {
+          return addResults.length === 1 && addResults[0].success
             ? new entityChacrasActions.EntityChacrasAddSuccessAction({
-                item: { ...payload.item, chacraId: queryResults[0].id },
+                item: addResults[0].chacra,
                 dibujosId: payload.dibujosId
               })
             : new entityChacrasActions.EntityChacrasAddFailureAction({
@@ -105,16 +107,22 @@ export class EntityChacrasEffects {
     ),
     switchMap(payload =>
       this.chacrasCoreService.changeChacrasCore(payload.item).pipe(
-        map(planesCore => {
-          const uc: Update<ChacraCore> = {
-            id: payload.item.planId,
-            changes: {
-              ...planesCore
-            }
-          };
-          return new entityChacrasActions.EntityChacrasChangeSuccessAction({
-            item: uc,
-            dibujosId: payload.dibujosId
+        map(results => results.updateResults),
+        map(updateResults => {
+          if (updateResults.length === 1 && updateResults[0].success) {
+            const uc: Update<ChacraCore> = {
+              id: updateResults[0].chacra.chacraId,
+              changes: {
+                ...updateResults[0].chacra
+              }
+            };
+            return new entityChacrasActions.EntityChacrasChangeSuccessAction({
+              item: uc,
+              dibujosId: payload.dibujosId
+            });
+          }
+          return new entityChacrasActions.EntityChacrasChangeFailureAction({
+            error: 'Error al actualizar la chacra.'
           });
         }),
         catchError(error =>
@@ -151,16 +159,21 @@ export class EntityChacrasEffects {
     ),
     switchMap(item =>
       this.chacrasCoreService.deleteChacrasCore(item).pipe(
-        map(
-          () =>
-            new entityChacrasActions.EntityChacrasDeleteSuccessAction({
-              item
-            })
+        map(results => results.deleteResults),
+        map(deleteResults =>
+          deleteResults.length === 1 && deleteResults[0].success
+            ? new entityChacrasActions.EntityChacrasDeleteSuccessAction({
+                item
+              })
+            : new entityChacrasActions.EntityChacrasDeleteFailureAction({
+                error: 'Error al eliminar la chacra.'
+              })
         ),
         catchError(error =>
           observableOf(
             new entityChacrasActions.EntityChacrasDeleteFailureAction({
-              error: 'planes-core-visor-chacras-delete-error'
+              error:
+                'Error al eliminar la chacra (fallo en conexion a servidor).'
             })
           )
         )

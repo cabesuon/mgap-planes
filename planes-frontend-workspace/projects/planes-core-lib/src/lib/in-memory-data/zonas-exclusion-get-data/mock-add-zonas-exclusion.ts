@@ -1,27 +1,24 @@
+import { ZonaExclusionCore } from '../../zonas-exclusion-core/zonas-exclusion-core.model';
 import { GetData } from '../get-data';
 import { InMemoryDb } from '../in-memory-db';
 
 export class MockAddZonasExclusion implements GetData {
   getData(payload: any, db?: InMemoryDb): any {
-    const token = payload.req.body.token;
-    const zonas = payload.req.body.zonasDeExclusion;
-    const personaId = db.getPersonaCoreByToken(token).personaId;
-    const planesId = db.getPlanesCoreByPersonaId(personaId).map(p => p.planId);
-    const chacrasId = db.chacras
-      .filter(c => planesId.indexOf(c.planId))
-      .map(c => c.chacraId);
+    const zonas: ZonaExclusionCore[] = payload.req.body.zonasExclusion;
 
-    let nextId = db.zonasExclusion.length;
+    const response = [];
+
     for (const z of zonas) {
-      z.ZonaId = nextId;
-      nextId++;
+      z.zonaExclusionId = db.nextId();
+      db.d.zonasExclusion.push(z);
+
+      response.push({
+        success: true,
+        error: null,
+        zonaExclusion: z
+      });
     }
 
-    const response = {
-      success: true,
-      error: null,
-      zonasDeExclusion: db.zonasExclusion.concat(zonas)
-    };
-    return response;
+    return { addResults: response };
   }
 }

@@ -55,7 +55,8 @@ import {
   faFileImport,
   faFileExport,
   faEye,
-  faEyeSlash
+  faEyeSlash,
+  faBan
 } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
@@ -142,7 +143,8 @@ export class SharedModule {
       faFileImport,
       faFileExport,
       faEye,
-      faEyeSlash
+      faEyeSlash,
+      faBan
     );
   }
 }

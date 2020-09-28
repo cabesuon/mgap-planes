@@ -4,36 +4,31 @@ import {
   TableRow,
   TableValueAction
 } from '../extras/components/table.model';
-import { PlanCore } from './planes-core.model';
+import { formatDate, formatValue } from '../extras/extras-format';
+import { EmpresaCore } from '../empresas-core/empresas-core.model';
+import { PlanCore, formatPlanEstado } from './planes-core.model';
 import { IngenieroAgronomoCore } from '../ingenieros-agronomos-core/ingenieros-agronomos-core.model';
-import { ResponsableCore } from '../responsables-core/responsables-core.model';
 import { PersonaCore } from '../personas-core/personas-core.model';
-import { formatValue, formatDate } from '../extras/extras-format';
+import { ContactoCore } from '../contacto-core/contacto-core.model';
 
 export interface PlanesCoreTableColumn extends TableColumn {
   literalFormat?: (v: any) => string;
   actionFormat?: (plan: PlanCore) => TableValueAction;
 }
 
-export interface PlanesCoreTableSources {
-  personas: PersonaCore[];
-  ingenierosAgronomos: IngenieroAgronomoCore[];
-  responsables: ResponsableCore[];
-}
-
 export interface PlanesCoreTableParams {
   columns?: PlanesCoreTableColumn[];
-  sources: PlanesCoreTableSources;
   planes: PlanCore[];
-  actions: boolean;
+  sources: PlanesCoreTableSources;
 }
 
 export enum PlanesCoreTableAction {
   GOTOVISTAMAPA = 'GotoVistaMapa',
-  GOTOVISTAADMINISTRATIVO = 'GotoVistaAdministrativo',
+  GOTOVISTADMINISTRATIVA = 'GotoVistaAdministrativa',
   PRESENTAR = 'Presentar',
-  REVISARPAGO = 'RevisarPago',
-  DESCARTAR = 'Descartar'
+  DESCARTAR = 'Descartar',
+  CANCELAR = 'Cancelar',
+  Copiar = 'Copiar'
 }
 
 export interface PlanesCoreTableActionValue {
@@ -41,58 +36,107 @@ export interface PlanesCoreTableActionValue {
   plan: PlanCore;
 }
 
-export function resolvePlanesCoreTableCellValue(
-  p: PlanCore,
-  c: PlanesCoreTableColumn,
-  s: PlanesCoreTableSources
-) {
-  let o1: any;
-  const v = [];
-  let a2: string[];
-  for (const a1 of c.name.split('+')) {
-    o1 = p;
-    a2 = a1.split('.');
-    if (a2.length === 0) {
-      break;
-    }
-    if (a2.length > 1) {
-      for (let i = 0; i < a2.length - 1; i++) {
-        if (!o1 || !o1.hasOwnProperty(a2[i])) {
-          break;
-        }
-        switch (a2[i]) {
-          case 'personaId':
-            o1 = s.personas.find(b => b.personaId === o1[a2[i]]);
-            break;
-          case 'ingenieroAgronomoId':
-            o1 = s.ingenierosAgronomos.find(
-              b => b.ingenieroAgronomoId === o1[a2[i]]
-            );
-            break;
-          case 'propietarioResponsableId':
-          case 'tctResponsableId':
-            o1 = s.responsables.find(b => b.contacto.personaId === o1[a2[i]]);
-            break;
-          case 'contacto':
-            o1 = o1[a2[i]];
-        }
-      }
-    }
-    o1 && v.push(formatValue(o1[a2[a2.length - 1]], c.literalFormat));
-  }
-  return v.join(' ');
+export interface PlanesCoreTableSources {
+  empresas: EmpresaCore[];
+  ingenierosAgronomos: IngenieroAgronomoCore[];
+  personas: PersonaCore[];
 }
 
-export function createDataSourceDataRow(
-  p: PlanCore,
+export function resolvePlanesCoreTableCellValue(
+  plan: PlanCore,
+  column: PlanesCoreTableColumn,
+  sources: PlanesCoreTableSources
+): string | string[] {
+  const names = column.name.split('.');
+  if (names.length > 1) {
+    let os: any[] = [];
+
+    switch (names[0]) {
+      case 'propietarios':
+      case 'arrendatarios':
+        if (plan[names[0]] && plan[names[0]].length > 0) {
+          // empresasId: string[] -> empresas: EmpresaCore[]
+          os = sources.empresas.filter(e =>
+            plan[names[0]].some((o: string) => o === e.empresaId)
+          );
+          if (names.length > 2 && names[1] === 'contactos') {
+            // empresas: EmpresaCore[] -> contactos: ContactoCore[]
+            os = os
+              .map((o: EmpresaCore) => o.contactos)
+              .reduce((acc, val) => acc.concat(val), []);
+          }
+          if (names.length > 3 && names[2] === 'personaId') {
+            // contactos: ContactoCore[] -> personas: PersonaCore[]
+            os = sources.personas.filter(e =>
+              os.some((o: ContactoCore) => o.personaId === e.personaId)
+            );
+          }
+        }
+        break;
+      case 'ingenieroAgronomoId':
+        // ingenieroAgronomoId: string -> ingenieroAgronomo: IngenieroAgronomoCore
+        const o = sources.ingenierosAgronomos.find(
+          a => plan[names[0]] === a.ingenieroAgronomoId
+        );
+        if (o) {
+          os = [o];
+          if (names.length > 2 && names[1] === 'contacto') {
+            // ingenieroAgronomo: IngenieroAgronomoCore -> contacto: ContactoCore
+            os = os.map((o: IngenieroAgronomoCore) => o.contacto);
+          }
+          if (names.length > 3 && names[2] === 'personaId') {
+            // contactos: ContactoCore[] -> personas: PersonaCore[]
+            os = sources.personas.filter(e =>
+              os.some((o: ContactoCore) => o.personaId === e.personaId)
+            );
+          }
+          break;
+        }
+    }
+
+    const vs: string[] = [];
+    let v: string[];
+    const attrs = names[names.length - 1].split('+');
+    for (const o of os) {
+      v = [];
+      for (const attr of attrs) {
+        if (!o || !o.hasOwnProperty(attr)) {
+          continue;
+        }
+        v.push(formatValue(o[attr], column.literalFormat));
+      }
+      vs.push(v.join(' '));
+    }
+    return column.type === TableValueType.LIST ? vs : vs.join(' ');
+  }
+  return formatValue(plan[column.name], column.literalFormat);
+}
+
+export function createPlanesCoreTableRow(
+  plan: PlanCore,
   columns: PlanesCoreTableColumn[],
-  s: PlanesCoreTableSources
-): any {
-  const row = {
-    __plan__: p
+  sources: PlanesCoreTableSources
+): TableRow {
+  const row: TableRow = {
+    __source__: plan
   };
-  for (const c of columns) {
-    row[c.name] = resolvePlanesCoreTableCellValue(p, c, s);
+  let v: any;
+  for (const column of columns) {
+    switch (column.type) {
+      case TableValueType.ACTION:
+        row[column.name] = column.actionFormat
+          ? column.actionFormat(plan)
+          : { value: column.name, text: column.name, icon: 'bomb' };
+        break;
+      case TableValueType.LIST:
+      case TableValueType.LITERAL:
+        row[column.name] = resolvePlanesCoreTableCellValue(
+          plan,
+          column,
+          sources
+        );
+        break;
+    }
   }
   return row;
 }
@@ -100,24 +144,24 @@ export function createDataSourceDataRow(
 export const PLANESCORETABLE_COLUMNS_DEFAULT: PlanesCoreTableColumn[] = [
   {
     type: TableValueType.ACTION,
-    name: 'GotoVistaMapa',
+    name: PlanesCoreTableAction.GOTOVISTAMAPA,
     label: '',
     sort: false,
     filter: false,
     actionFormat: _ => ({
-      value: 'GotoVistaMapa',
+      value: PlanesCoreTableAction.GOTOVISTAMAPA,
       text: 'Ver en Mapa',
       icon: 'map'
     })
   },
   {
     type: TableValueType.ACTION,
-    name: 'GotoVistaAdministrativo',
+    name: PlanesCoreTableAction.GOTOVISTADMINISTRATIVA,
     label: '',
     sort: false,
     filter: false,
     actionFormat: _ => ({
-      value: 'GotoVistaAdministrativo',
+      value: PlanesCoreTableAction.GOTOVISTADMINISTRATIVA,
       text: 'Ver en Administrativo',
       icon: 'search'
     })
@@ -138,6 +182,14 @@ export const PLANESCORETABLE_COLUMNS_DEFAULT: PlanesCoreTableColumn[] = [
   },
   {
     type: TableValueType.LITERAL,
+    name: 'planEstado',
+    label: 'Estado',
+    sort: true,
+    filter: true,
+    literalFormat: formatPlanEstado
+  },
+  {
+    type: TableValueType.LITERAL,
     name: 'planFechaCreacion',
     label: 'Creado',
     sort: true,
@@ -153,27 +205,25 @@ export const PLANESCORETABLE_COLUMNS_DEFAULT: PlanesCoreTableColumn[] = [
     literalFormat: formatDate
   },
   {
-    type: TableValueType.LITERAL,
-    name:
-      'propietarioResponsableId.contacto.personaId.personaNombre+propietarioResponsableId.contacto.personaId.personaPrimerApellido',
-    label: 'Propietario',
+    type: TableValueType.LIST,
+    name: 'propietarios.empresaRazonSocial',
+    label: 'Propietarios',
+    sort: true,
+    filter: true
+  },
+  {
+    type: TableValueType.LIST,
+    name: 'arrendatarios.empresaRazonSocial',
+    label: 'Arrendatarios',
     sort: true,
     filter: true
   },
   {
     type: TableValueType.LITERAL,
     name:
-      'tctResponsableId.contacto.personaId.personaNombre+tctResponsableId.contacto.personaId.personaPrimerApellido',
-    label: 'Arrendatario',
+      'ingenieroAgronomoId.contacto.personaId.personaNombre+personaPrimerApellido',
+    label: 'Técnico',
     sort: true,
     filter: true
-  },
-  {
-    type: TableValueType.LITERAL,
-    name: 'planEstado',
-    label: 'Estado',
-    sort: true,
-    filter: true,
-    literalFormat: e => e === 1 ? 'Edicion' : 'Presentado'
   }
 ];

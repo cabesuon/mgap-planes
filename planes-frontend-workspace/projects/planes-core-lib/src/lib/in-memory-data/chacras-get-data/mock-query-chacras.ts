@@ -10,7 +10,7 @@ export class MockQueryChacras implements GetData {
       queryResults: {
         success: true,
         error: null,
-        chacras: db.chacras.filter(c => planesId.indexOf(c.planId) > -1)
+        chacras: db.d.chacras.filter(c => planesId.indexOf(c.planId) > -1)
       }
     };
     return response;

@@ -1,9 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { PersonaCore } from '../../personas-core/personas-core.model';
-import { ResponsableCore } from '../responsables-core.model';
-import { DetailParams } from '../../extras/components/detail.model';
-import { ContactoCore } from '../../contacto-core/contacto-core.model';
+import {
+  DetailParams,
+  DetailField
+} from '../../extras/components/detail.model';
+import { PersonasCoreDetailParams } from '../../personas-core/personas-core-detail.model';
+import { ContactoCoreDetailParams } from '../../contacto-core/contacto-core-detail.model';
+import {
+  ResponsablesCoreDetailParams,
+  RESPONSABLESCOREDETAIL_DEFAULT_FIELDS
+} from '../responsables-core-detail.model';
 
 @Component({
   selector: 'lib-responsables-core-detail',
@@ -11,16 +17,16 @@ import { ContactoCore } from '../../contacto-core/contacto-core.model';
   styleUrls: ['./responsables-core-detail.component.css']
 })
 export class ResponsablesCoreDetailComponent implements OnInit {
-  _params: { responsable: ResponsableCore; persona: PersonaCore } = null;
+  _params: ResponsablesCoreDetailParams = null;
   @Input()
-  set params(value: { responsable: ResponsableCore; persona: PersonaCore }) {
+  set params(value: ResponsablesCoreDetailParams) {
     this._params = value;
     if (!value || !value.responsable) {
       return;
     }
     const rows = this.fields.map(f => ({
       label: f.label,
-      value: value.responsable[f.field]
+      value: value.responsable[f.name]
     }));
     this.detailParams = {
       rows
@@ -29,15 +35,17 @@ export class ResponsablesCoreDetailComponent implements OnInit {
     this.contactoDetailParams = { contacto: value.responsable.contacto };
   }
 
-  fields: any[] = [{ field: 'empresaId', label: 'Empresa' }];
+  fields: DetailField[] = [];
 
   detailParams: DetailParams = null;
 
-  personaDetailParams: { persona: PersonaCore } = null;
+  personaDetailParams: PersonasCoreDetailParams = null;
 
-  contactoDetailParams: { contacto: ContactoCore } = null;
+  contactoDetailParams: ContactoCoreDetailParams = null;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fields = this.params.fields || RESPONSABLESCOREDETAIL_DEFAULT_FIELDS;
+  }
 }

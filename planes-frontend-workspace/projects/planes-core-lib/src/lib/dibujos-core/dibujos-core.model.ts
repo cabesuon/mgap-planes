@@ -1,6 +1,7 @@
 export enum DibujoCoreType {
   POLYGON = 'polygon',
-  POLYLINE = 'polyline'
+  POLYLINE = 'polyline',
+  POINT = 'point'
 }
 
 export interface DibujoCore {

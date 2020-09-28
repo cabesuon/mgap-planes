@@ -1,7 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { ContactoCore } from '../contacto-core.model';
-import { DetailParams } from '../../extras/components/detail.model';
+import {
+  DetailParams,
+  DetailField
+} from '../../extras/components/detail.model';
+import {
+  ContactoCoreDetailParams,
+  CONTACTOCOREDETAIL_DEFAULT_FIELDS
+} from '../contacto-core-detail.model';
 
 @Component({
   selector: 'lib-contacto-core-detail',
@@ -9,29 +15,24 @@ import { DetailParams } from '../../extras/components/detail.model';
   styleUrls: ['./contacto-core-detail.component.css']
 })
 export class ContactoCoreDetailComponent implements OnInit {
-  _params: { contacto: ContactoCore } = null;
+  _params: ContactoCoreDetailParams = null;
   @Input()
-  set params(value: { contacto: ContactoCore }) {
+  set params(value: ContactoCoreDetailParams) {
     this._params = value;
     if (!value) {
       return;
     }
+    this.fields = value.fields || CONTACTOCOREDETAIL_DEFAULT_FIELDS;
     const rows = this.fields.map(f => ({
       label: f.label,
-      value: value.contacto[f.field]
+      value: value.contacto[f.name]
     }));
     this.detailParams = {
       rows
     };
   }
 
-  fields: any[] = [
-    { field: 'email', label: 'Email' },
-    { field: 'telefono', label: 'Telefono' },
-    { field: 'celular', label: 'Celular' },
-    { field: 'domicilio', label: 'Domicilio' },
-    { field: 'ciudad', label: 'Ciudad' }
-  ];
+  fields: DetailField[] = [];
 
   detailParams: DetailParams = null;
 

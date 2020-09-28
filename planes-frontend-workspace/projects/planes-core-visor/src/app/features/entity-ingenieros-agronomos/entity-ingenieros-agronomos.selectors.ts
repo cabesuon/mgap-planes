@@ -28,14 +28,12 @@ export const selectAllEntityIngenierosAgronomos: (
   selectEntityIngenierosAgronomosState
 ).selectAll;
 
-export const selectIngenieroAgronomoById = (id: number) =>
+export const selectIngenieroAgronomoById = (id: string) =>
   createSelector(
     selectAllEntityIngenierosAgronomos,
     (allIngenierosAgronomos: IngenieroAgronomoCore[]) => {
       if (allIngenierosAgronomos) {
-        return allIngenierosAgronomos.find(
-          p => p.ingenieroAgronomoId.toString() === `${id}`
-        );
+        return allIngenierosAgronomos.find(p => p.ingenieroAgronomoId === id);
       } else {
         return null;
       }

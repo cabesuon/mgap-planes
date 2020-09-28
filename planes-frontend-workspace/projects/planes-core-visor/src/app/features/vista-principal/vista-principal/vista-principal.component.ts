@@ -6,10 +6,15 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 
 import {
+  PlanCore,
+  createEmptyPlanCore,
+  PLANESCORETABLE_COLUMNS_DEFAULT,
   PlanesCoreTableParams,
-  PlanesCoreTableActionValue,
   PlanesCoreTableAction,
-  FormActionType
+  TableValueType,
+  TableActionEvent,
+  FormActionType,
+  PlanCoreEstado
 } from 'planes-core-lib';
 
 import { NotificationService } from '../../../core/notifications/notification.service';
@@ -21,13 +26,12 @@ import { AppState } from '../../../core/core.state';
 import { selectAllEntityPlanes } from '../../entity-planes/entity-planes.selectors';
 import { selectAllEntityPersonas } from '../../entity-personas/entity-personas.selectors';
 import { selectAllEntityIngenierosAgronomos } from '../../entity-ingenieros-agronomos/entity-ingenieros-agronomos.selectors';
-import { selectAllEntityResponsables } from '../../entity-responsables/entity-responsables.selectors';
+import { selectAllEntityEmpresas } from '../../entity-empresas/entity-empresas.selectors';
 
 import {
   EntityPlanesFormDialogData,
   EntityPlanesFormDialogComponent
 } from '../../entity-planes/entity-planes-form-dialog/entity-planes-form-dialog.component';
-import { createEmptyPlanCore } from 'projects/planes-core-lib/src/public-api';
 
 const DIALOG_WIDTH = '300px';
 const DIALOG_MAX_HEIGHT = '500px';
@@ -38,14 +42,60 @@ const DIALOG_MAX_HEIGHT = '500px';
   styleUrls: ['./vista-principal.component.scss']
 })
 export class VistaPrincipalComponent implements OnInit {
+  planesTableColumns = [
+    ...PLANESCORETABLE_COLUMNS_DEFAULT,
+    {
+      type: TableValueType.ACTION,
+      name: 'EstadoAction',
+      label: '',
+      sort: false,
+      filter: false,
+      actionFormat: (p: PlanCore) => {
+        switch (p.planEstado) {
+          case PlanCoreEstado.EDICION:
+            return {
+              value: PlanesCoreTableAction.PRESENTAR,
+              text: 'Presentar Plan',
+              icon: 'file-signature'
+            };
+          case PlanCoreEstado.PRESENTADO:
+            return null;
+        }
+      }
+    },
+    {
+      type: TableValueType.ACTION,
+      name: 'RemoveAction',
+      label: '',
+      sort: false,
+      filter: false,
+      actionFormat: (p: PlanCore) => {
+        switch (p.planEstado) {
+          case PlanCoreEstado.EDICION:
+            return {
+              value: PlanesCoreTableAction.DESCARTAR,
+              text: 'Descartar Plan',
+              icon: 'trash'
+            };
+          case PlanCoreEstado.PRESENTADO:
+            return {
+              value: PlanesCoreTableAction.CANCELAR,
+              text: 'Cancelar Plan',
+              icon: 'ban'
+            };
+        }
+      }
+    }
+  ];
+
   planesTableParams: PlanesCoreTableParams = {
+    columns: this.planesTableColumns,
     sources: {
-      planes: [],
       ingenierosAgronomos: [],
       personas: [],
-      responsables: []
+      empresas: []
     },
-    actions: true
+    planes: []
   };
 
   constructor(
@@ -62,50 +112,59 @@ export class VistaPrincipalComponent implements OnInit {
       this.store.pipe(select(selectAllEntityPlanes)),
       this.store.pipe(select(selectAllEntityPersonas)),
       this.store.pipe(select(selectAllEntityIngenierosAgronomos)),
-      this.store.pipe(select(selectAllEntityResponsables)),
-      (planes, personas, ingenierosAgronomos, responsables) => ({
+      this.store.pipe(select(selectAllEntityEmpresas)),
+      (planes, personas, ingenierosAgronomos, empresas) => ({
         planes,
         personas,
         ingenierosAgronomos,
-        responsables
+        empresas
       })
     ).subscribe(
-      sources => (this.planesTableParams = { sources, actions: true })
+      sources =>
+        (this.planesTableParams = {
+          columns: this.planesTableColumns,
+          sources: {
+            personas: sources.personas,
+            ingenierosAgronomos: sources.ingenierosAgronomos,
+            empresas: sources.empresas
+          },
+          planes: sources.planes
+        })
     );
   }
 
-  planesTableActioned(actionValue: PlanesCoreTableActionValue) {
-    switch (actionValue.action) {
+  planesTableActioned(actionValue: TableActionEvent) {
+    switch (actionValue.value) {
       case PlanesCoreTableAction.GOTOVISTAMAPA:
         this.router.navigate([
           '/features/mapa',
-          { PlanId: actionValue.plan.planId }
+          { PlanId: actionValue.obj.planId }
         ]);
         break;
-      case PlanesCoreTableAction.GOTOVISTAADMINISTRATIVO:
+      case PlanesCoreTableAction.GOTOVISTADMINISTRATIVA:
         this.router.navigate([
           '/features/administrativo',
-          { PlanId: actionValue.plan.planId }
+          { PlanId: actionValue.obj.planId }
         ]);
         break;
       case PlanesCoreTableAction.PRESENTAR:
         this.notificationService.info(
-          `[En Desarrollo] Presentar ${actionValue.plan.planId}`
+          `[No Implementado] Presentar ${actionValue.obj.planId}`
         );
         break;
-      case PlanesCoreTableAction.REVISARPAGO:
+      case PlanesCoreTableAction.CANCELAR:
         this.notificationService.info(
-          `[En Desarrollo] Revisar Pago ${actionValue.plan.planId}`
+          `[No Implementado] Cancelar ${actionValue.obj.planId}`
         );
         break;
       case PlanesCoreTableAction.DESCARTAR:
         this.notificationService.info(
-          `[En Desarrollo] Descartar ${actionValue.plan.planId}`
+          `[No Implementado] Descartar ${actionValue.obj.planId}`
         );
         break;
       default:
         this.notificationService.info(
-          `[En Desarrollo] ? ${actionValue.plan.planId}`
+          `[No Implementado] ? ${actionValue.obj.planId}`
         );
         break;
     }
@@ -120,15 +179,14 @@ export class VistaPrincipalComponent implements OnInit {
   openDialogPlan(action: FormActionType) {
     const inData: EntityPlanesFormDialogData = {
       plan: createEmptyPlanCore(),
-      action: action
+      action: action,
+      empresas: this.planesTableParams.sources.empresas,
+      ingenieroAgronomoId: '1'
     };
-    const dialogRef = this.dialog.open(EntityPlanesFormDialogComponent, {
+    this.dialog.open(EntityPlanesFormDialogComponent, {
       width: DIALOG_WIDTH,
       maxHeight: DIALOG_MAX_HEIGHT,
       data: inData
     });
-    // dialogRef.afterClosed().subscribe(outData => {
-    //   this.loggingService.info(outData, this);
-    // });
   }
 }

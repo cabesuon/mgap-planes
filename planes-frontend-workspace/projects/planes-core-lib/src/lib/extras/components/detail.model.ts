@@ -10,4 +10,5 @@ export interface DetailParams {
 export interface DetailField {
   name: string;
   label: string;
+  format?: (v: any) => string;
 }

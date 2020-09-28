@@ -12,6 +12,7 @@ export interface MapViewProperties {
 }
 
 export interface FeatureLayerProperties {
+  title: string;
   fields: { name: string; alias: string; type: string }[];
   objectIdField: string;
   geometryType: string;
@@ -24,9 +25,17 @@ export interface FeatureLayerProperties {
   popupTemplate: { title: string; outFields?: string[]; content?: Object[] };
 }
 
+// this is only a minimal subset
+export interface MapImageLayerProperties {
+  title: string;
+  opacity: number;
+  url: string;
+  visible: boolean;
+}
+
 // chacras
 
-export const chacrasSymbols = {
+export const CHACRAS_SYMBOLS = {
   fill: {
     type: 'simple-fill',
     color: [0, 0, 0, 0.1],
@@ -52,246 +61,86 @@ export const chacrasSymbols = {
   }
 };
 
-export const chacrasFeatureLayerProperties: FeatureLayerProperties = {
+export const CHACRAS_FEATURELAYERPROPERTIES: FeatureLayerProperties = {
+  title: 'Chacras',
   objectIdField: OBJECTID,
   geometryType: 'polygon',
   spatialReference: { wkid: 4326 },
   fields: [
     {
-      name: 'ChacraDesvioFactorK',
-      alias: 'ChacraDesvioFactorK',
-      type: 'double'
-    },
-    {
-      name: 'ChacraDesvioFactorLS',
-      alias: 'ChacraDesvioFactorLS',
-      type: 'double'
-    },
-    {
-      name: 'ChacraDesvioFactorR',
-      alias: 'ChacraDesvioFactorR',
-      type: 'double'
-    },
-    {
-      name: 'ChacraDesvioFactorA',
-      alias: 'ChacraDesvioFactorA',
-      type: 'double'
-    },
-    { name: 'ChacraDicose', alias: 'ChacraDicose', type: 'integer' },
-    {
-      name: 'ChacraFactorLAsignado',
-      alias: 'ChacraFactorLAsignado',
-      type: 'double'
-    },
-    {
-      name: 'ChacraFactorSAsignado',
-      alias: 'ChacraFactorSAsignado',
-      type: 'double'
-    },
-    {
-      name: 'ChacraFactorLLimitante',
-      alias: 'ChacraFactorLLimitante',
-      type: 'double'
-    },
-    {
-      name: 'ChacraFactorSLimitante',
-      alias: 'ChacraFactorSLimitante',
-      type: 'double'
-    },
-    {
-      name: 'ChacraFactorRAsignado',
-      alias: 'ChacraFactorRAsignado',
-      type: 'double'
-    },
-    { name: 'ChacraFactorC', alias: 'ChacraFactorC', type: 'double' },
-    {
-      name: 'ChacraFactorRAutomatico',
-      alias: 'ChacraFactorRAutomatico',
-      type: 'double'
-    },
-    {
-      name: 'ChacraFactorLSEsManual',
-      alias: 'ChacraFactorLSEsManual',
+      name: 'planId',
+      alias: 'Plan Id',
       type: 'string'
     },
     {
-      name: 'ChacraFactorLSAsignado',
-      alias: 'ChacraFactorLSAsignado',
-      type: 'double'
-    },
-    {
-      name: 'ChacraFactorLSLimitante',
-      alias: 'ChacraFactorLSLimitante',
-      type: 'double'
-    },
-    {
-      name: 'ChacraFactorAAsignado',
-      alias: 'ChacraFactorAAsignado',
-      type: 'double'
-    },
-    {
-      name: 'ChacraFactorALimitante',
-      alias: 'ChacraFactorALimitante',
-      type: 'double'
-    },
-    { name: 'ChacraFactorP', alias: 'ChacraFactorP', type: 'double' },
-    {
-      name: 'ChacraFactorPEsManual',
-      alias: 'ChacraFactorPEsManual',
-      type: 'string'
-    },
-    { name: 'ChacraGDBId', alias: 'ChacraGDBId', type: 'integer' },
-    { name: 'ChacraId', alias: 'ChacraId', type: 'integer' },
-    {
-      name: 'ChacraLargoAsignado',
-      alias: 'ChacraLargoAsignado',
-      type: 'double'
-    },
-    {
-      name: 'ChacraLargoLimitante',
-      alias: 'ChacraLargoLimitante',
-      type: 'double'
-    },
-    { name: 'ChacraNro', alias: 'ChacraNro', type: 'integer' },
-    { name: 'ChacraNombre', alias: 'ChacraNombre', type: 'string' },
-    { name: 'ChacraLocalidad', alias: 'ChacraLocalidad', type: 'string' },
-    { name: 'ChacraPadreNro', alias: 'ChacraPadreNro', type: 'integer' },
-    {
-      name: 'ChacraPendienteAsignado',
-      alias: 'ChacraPendienteAsignado',
-      type: 'double'
-    },
-    {
-      name: 'ChacraPendienteLimitante',
-      alias: 'ChacraPendienteLimitante',
-      type: 'double'
-    },
-    {
-      name: 'ChacraSueloLimitanteFactorK',
-      alias: 'ChacraSueloLimitanteFactorK',
-      type: 'double'
-    },
-    {
-      name: 'ChacraSueloAsignadoId',
-      alias: 'ChacraSueloAsignadoId',
-      type: 'integer'
-    },
-    {
-      name: 'ChacraSueloLimitanteId',
-      alias: 'ChacraSueloLimitanteId',
-      type: 'integer'
-    },
-    {
-      name: 'ChacraSueloAsignadoDsc',
-      alias: 'ChacraSueloAsignadoDsc',
+      name: 'chacraId',
+      alias: 'Chacra Id',
       type: 'string'
     },
     {
-      name: 'ChacraSueloAsignadoFactorK',
-      alias: 'ChacraSueloAsignadoFactorK',
-      type: 'double'
-    },
-    {
-      name: 'ChacraSueloAsignadoTolerancia',
-      alias: 'ChacraSueloAsignadoTolerancia',
-      type: 'double'
-    },
-    {
-      name: 'ChacraSueloLimitanteDsc',
-      alias: 'ChacraSueloLimitanteDsc',
+      name: 'chacraNro',
+      alias: 'Chacra Nro',
       type: 'string'
     },
     {
-      name: 'ChacraSueloLimitanteTolerancia',
-      alias: 'ChacraSueloLimitanteTolerancia',
-      type: 'double'
-    },
-    {
-      name: 'ChacraSueloAsignadoSlopeMax',
-      alias: 'ChacraSueloAsignadoSlopeMax',
-      type: 'double'
-    },
-    {
-      name: 'ChacraSueloAsignadoSlopeMin',
-      alias: 'ChacraSueloAsignadoSlopeMin',
-      type: 'double'
-    },
-    {
-      name: 'ChacraSueloLimitanteSlopeMax',
-      alias: 'ChacraSueloLimitanteSlopeMax',
-      type: 'double'
-    },
-    {
-      name: 'ChacraSueloLimitanteSlopeMin',
-      alias: 'ChacraSueloLimitanteSlopeMin',
-      type: 'double'
-    },
-    {
-      name: 'ChacraTerrazasLargo',
-      alias: 'ChacraTerrazasLargo',
-      type: 'double'
-    },
-    {
-      name: 'ChacraTerrazasConstruidas',
-      alias: 'ChacraTerrazasConstruidas',
+      name: 'chacraNombre',
+      alias: 'Chacra Nombre',
       type: 'string'
     },
     {
-      name: 'ChacraVigenciaDesde',
-      alias: 'ChacraVigenciaDesde',
-      type: 'date'
+      name: 'chacraSueloLimitanteId',
+      alias: 'Suelo Id',
+      type: 'string'
     },
     {
-      name: 'ChacraVigenciaHasta',
-      alias: 'ChacraVigenciaHasta',
-      type: 'date'
+      name: 'chacraDicose',
+      alias: 'DICOSE',
+      type: 'string'
     },
     {
-      name: 'MecanicaDeApoyoId',
-      alias: 'MecanicaDeApoyoId',
-      type: 'integer'
-    },
-    { name: 'PlanId', alias: 'PlanId', type: 'integer' },
-    { name: 'RotacionId', alias: 'RotacionId', type: 'integer' }
+      name: 'chacraFactorLSEsManual',
+      alias: 'Pendiente Manual',
+      type: 'string'
+    }
   ],
   renderer: {
     type: 'simple',
-    symbol: chacrasSymbols.fill
+    symbol: CHACRAS_SYMBOLS.fill
   },
   labelingInfo: {
-    symbol: chacrasSymbols.text,
+    symbol: CHACRAS_SYMBOLS.text,
     labelExpressionInfo: {
-      expression: '$feature.ChacraNombre'
+      expression: '$feature.chacraNombre'
     }
   },
   popupTemplate: {
-    title: '{ChacraNombre}',
+    title: '{chacraNombre}',
     content: [
       {
         type: 'fields',
         fieldInfos: [
           {
-            fieldName: 'PlanId',
+            fieldName: 'planId',
             label: 'Plan Id'
           },
           {
-            fieldName: 'ChacraId',
+            fieldName: 'chacraId',
             label: 'Chacra Id'
           },
           {
-            fieldName: 'ChacraNro',
+            fieldName: 'chacraNro',
             label: 'Chacra Nro'
           },
           {
-            fieldName: 'ChacraSueloLimitanteId',
+            fieldName: 'chacraSueloLimitanteId',
             label: 'Suelo Id'
           },
           {
-            fieldName: 'ChacraDicose',
+            fieldName: 'chacraDicose',
             label: 'DICOSE'
           },
           {
-            fieldName: 'ChacraFactorLSEsManual',
+            fieldName: 'chacraFactorLSEsManual',
             label: 'Pendiente Manual'
           }
         ]
@@ -302,7 +151,7 @@ export const chacrasFeatureLayerProperties: FeatureLayerProperties = {
 
 // pendientes
 
-export const pendientesSymbols = {
+export const PENDIENTES_SYMBOLS = {
   line: {
     type: 'simple-line',
     color: 'red',
@@ -311,31 +160,32 @@ export const pendientesSymbols = {
   }
 };
 
-export const pendientesFeatureLayerProperties: FeatureLayerProperties = {
+export const PENDIENTES_FEATURELAYERPROPERTIES: FeatureLayerProperties = {
+  title: 'Pendientes',
   objectIdField: OBJECTID,
   geometryType: 'polyline',
   spatialReference: { wkid: 4326 },
   fields: [
-    { name: 'ChacraId', alias: 'ChacraId', type: 'integer' },
+    { name: 'chacraId', alias: 'Chacra Id', type: 'string' },
     {
-      name: 'ChacraFactorLSEsManual',
-      alias: 'ChacraFactorLSEsManual',
+      name: 'chacraFactorLSEsManual',
+      alias: 'Manual',
       type: 'string'
     }
   ],
   renderer: {
     type: 'simple',
-    symbol: pendientesSymbols.line
+    symbol: PENDIENTES_SYMBOLS.line
   },
   popupTemplate: {
-    title: 'Pendiente:{ChacraFactorLSEsManual} Chacra:{ChacraId}',
+    title: 'Manual:{chacraFactorLSEsManual} Chacra:{chacraId}',
     outFields: ['*']
   }
 };
 
 // zonas
 
-export const zonasSymbols = {
+export const ZONAS_SYMBOLS = {
   fill: {
     type: 'simple-fill',
     color: [255, 100, 0, 0.1],
@@ -348,31 +198,32 @@ export const zonasSymbols = {
   }
 };
 
-export const zonasFeatureLayerProperties: FeatureLayerProperties = {
+export const ZONAS_FEATURELAYERPROPERTIES: FeatureLayerProperties = {
+  title: 'Zonas de Exclusión',
   objectIdField: OBJECTID,
   geometryType: 'polygon',
   spatialReference: { wkid: 4326 },
   fields: [
     {
-      name: 'ZonaExclusionId',
-      alias: 'ZonaExclusionId',
-      type: 'integer'
+      name: 'zonaExclusionId',
+      alias: 'Zona Exclusión Id',
+      type: 'string'
     },
-    { name: 'ChacraId', alias: 'ChacraId', type: 'integer' }
+    { name: 'chacraId', alias: 'Chacra Id', type: 'string' }
   ],
   renderer: {
     type: 'simple',
-    symbol: zonasSymbols.fill
+    symbol: ZONAS_SYMBOLS.fill
   },
   popupTemplate: {
-    title: 'Zona Exclusion:{ZonaExclusionId} Chacra:{ChacraId}',
+    title: 'Zona Exclusion:{zonaExclusionId} Chacra:{chacraId}',
     outFields: ['*']
   }
 };
 
 // dibujos
 
-export const dibujosSymbols = {
+export const DIBUJOS_SYMBOLS = {
   fill: {
     type: 'simple-fill',
     color: [0, 0, 255, 0.1],
@@ -409,7 +260,7 @@ export const dibujosSymbols = {
   }
 };
 
-export const circleSymbols = {
+export const CIRCLE_SYMBOLS = {
   line: {
     type: 'simple-line',
     style: 'dash',
@@ -435,3 +286,7 @@ export const circleSymbols = {
     }
   }
 };
+
+// widgets
+
+export const SKETCH_AVAILABLE_CREATE_TOOLS = ['polyline', 'polygon', 'circle'];

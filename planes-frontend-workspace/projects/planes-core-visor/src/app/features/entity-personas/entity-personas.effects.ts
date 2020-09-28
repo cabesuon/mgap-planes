@@ -30,9 +30,8 @@ export class EntityPersonasEffects {
       entityPersonasActions.EntityPersonasActionTypes
         .ENTITYPERSONAS_LOAD_REQUEST
     ),
-    map(action => action.payload.personasId),
-    switchMap(personasId => {
-      return this.personasCoreService.getPersonasCore(personasId).pipe(
+    switchMap(() => {
+      return this.personasCoreService.getPersonasCore().pipe(
         map(results => results.queryResults),
         map(queryResults => {
           return queryResults.success

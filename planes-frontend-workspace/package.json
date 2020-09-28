@@ -1,6 +1,6 @@
 {
   "name": "planes-frontend-workspace",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "scripts": {
     "ng": "ng",
     "start:planes-core-visor": "ng serve planes-core-visor",

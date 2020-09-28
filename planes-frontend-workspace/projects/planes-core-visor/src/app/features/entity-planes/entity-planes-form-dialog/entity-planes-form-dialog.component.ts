@@ -13,9 +13,8 @@ import {
 } from '../entity-planes.actions';
 import { PlanesCoreFormInput } from 'planes-core-lib';
 
-export interface EntityPlanesFormDialogData {
-  plan: PlanCore;
-  action: FormActionType;
+export interface EntityPlanesFormDialogData extends PlanesCoreFormInput {
+  ingenieroAgronomoId: string;
 }
 
 @Component({
@@ -59,6 +58,7 @@ export class EntityPlanesFormDialogComponent implements OnInit {
   onSubmit() {
     if (this.formValid) {
       const item = { ...this.formValue };
+      item.ingenieroAgronomoId = this.data.ingenieroAgronomoId;
       if (this.data.action === FormActionType.Add) {
         this.store.dispatch(new EntityPlanesAddRequestAction({ item }));
       } else {

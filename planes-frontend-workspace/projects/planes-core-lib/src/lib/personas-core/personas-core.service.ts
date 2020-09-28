@@ -12,12 +12,10 @@ export class PersonasCoreService {
 
   constructor(private http: HttpClient) {}
 
-  getPersonasCore(
-    personasId: number[]
-  ): Observable<{ queryResults: PersonasCoreQueryResults }> {
+  getPersonasCore(): Observable<{ queryResults: PersonasCoreQueryResults }> {
     return this.http.post<{ queryResults: PersonasCoreQueryResults }>(
       `${this.url}/queryPersonas`,
-      { personasId }
+      {}
     );
   }
 }

@@ -13,8 +13,8 @@ import { entityPersonasReducer } from './entity-personas/entity-personas.reducer
 import { EntityPersonasState } from './entity-personas/entity-personas.state';
 import { entityIngenierosAgronomosReducer } from './entity-ingenieros-agronomos/entity-ingenieros-agronomos.reducer';
 import { EntityIngenierosAgronomosState } from './entity-ingenieros-agronomos/entity-ingenieros-agronomos.state';
-import { entityResponsablesReducer } from './entity-responsables/entity-responsables.reducer';
-import { EntityResponsablesState } from './entity-responsables/entity-responsables.state';
+import { entityEmpresasReducer } from './entity-empresas/entity-empresas.reducer';
+import { EntityEmpresasState } from './entity-empresas/entity-empresas.state';
 
 export const FEATURE_NAME = 'features';
 export const selectFeatures = createFeatureSelector<State, FeaturesState>(
@@ -27,7 +27,7 @@ export const reducers: ActionReducerMap<FeaturesState> = {
   entityDibujos: entityDibujosReducer,
   entityPersonas: entityPersonasReducer,
   entityIngenierosAgronomos: entityIngenierosAgronomosReducer,
-  entityResponsables: entityResponsablesReducer
+  entityEmpresas: entityEmpresasReducer
 };
 
 export interface FeaturesState {
@@ -37,7 +37,7 @@ export interface FeaturesState {
   entityDibujos: EntityDibujosState;
   entityPersonas: EntityPersonasState;
   entityIngenierosAgronomos: EntityIngenierosAgronomosState;
-  entityResponsables: EntityResponsablesState;
+  entityEmpresas: EntityEmpresasState;
 }
 
 export interface State extends AppState {

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row pr-3 pl-3 mt-2">
     <div class="col">
       <div class="row mapa-toolbar-tool-row">
@@ -24,20 +24,20 @@
     <div class="col">
       <div class="row mapa-toolbar-tool-row">
 
-        <button mat-stroked-button (click)="togglePropietario()"
-        color="basic" class="mr-2" [disabled]="!propietarioDetailParams">
-          <fa-icon icon="{{propietarioDetailVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
-          <span class="ml-2">Responsable Propietario</span>
+        <button mat-stroked-button (click)="togglePropietarios()"
+        color="basic" class="mr-2" [disabled]="!propietariosDetailParams">
+          <fa-icon icon="{{propietariosDetailVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
+          <span class="ml-2">Propietarios</span>
         </button>
 
-        <button mat-stroked-button (click)="toggleArrendatario()"
-        color="basic" class="mr-2" [disabled]="!propietarioDetailParams">
-          <fa-icon icon="{{arrendatarioDetailVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
-          <span class="ml-2">Responsable Arrendatario</span>
+        <button mat-stroked-button (click)="toggleArrendatarios()"
+        color="basic" class="mr-2" [disabled]="!arrendatariosDetailParams">
+          <fa-icon icon="{{arrendatariosDetailVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
+          <span class="ml-2">Arrendatarios</span>
         </button>
 
         <button mat-stroked-button (click)="toggleChacras()"
-        color="accent" [disabled]="!propietarioDetailParams">
+        color="accent" [disabled]="!chacrasTableParams.chacras">
           <fa-icon icon="{{chacrasTableVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
           <span class="ml-2">Lista Chacras</span>
         </button>
@@ -54,18 +54,28 @@
           <lib-planes-core-detail [params]="planDetailParams"></lib-planes-core-detail>
         </mat-card>
       </div>
-      <div *ngIf="propietarioDetailParams && propietarioDetailVisible" class="col">
+      <div *ngIf="propietariosDetailParams && propietariosDetailVisible" class="col">
         <mat-card>
-          <mat-card-title>Responsable Propietario</mat-card-title>
-          <lib-responsables-core-detail [params]="propietarioDetailParams">
-          </lib-responsables-core-detail>
+          <mat-card-title>Propietarios</mat-card-title>
+          <mat-card-content>
+            <mat-card *ngFor="let item of propietariosDetailParams" class="mb-1">
+              <lib-empresas-core-detail
+              [params]="item">
+              </lib-empresas-core-detail>
+            </mat-card>
+          </mat-card-content>
         </mat-card>
       </div>
-      <div *ngIf="arrendatarioDetailParams && arrendatarioDetailVisible" class="col">
+      <div *ngIf="arrendatariosDetailParams && arrendatariosDetailVisible" class="col">
         <mat-card>
-          <mat-card-title>Responsable Arrendatario</mat-card-title>
-          <lib-responsables-core-detail [params]="arrendatarioDetailParams">
-          </lib-responsables-core-detail>
+          <mat-card-title>Arrendatarios</mat-card-title>
+          <mat-card-content>
+            <mat-card *ngFor="let item of arrendatariosDetailParams" class="mb-1">
+              <lib-empresas-core-detail
+              [params]="item">
+              </lib-empresas-core-detail>
+            </mat-card>
+          </mat-card-content>
         </mat-card>
       </div>
     </div>

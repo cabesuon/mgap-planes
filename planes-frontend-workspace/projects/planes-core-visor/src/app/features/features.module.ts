@@ -8,8 +8,6 @@ import { PlanesCoreLibModule } from 'planes-core-lib';
 
 import { SharedModule } from '../shared/shared.module';
 
-import { FileService } from '../core/core.module';
-
 import { FEATURE_NAME, reducers } from './features.state';
 
 import { FeaturesRoutingModule } from './features.routing.module';
@@ -19,7 +17,7 @@ import { EntityChacrasEffects } from './entity-chacras/entity-chacras.effects';
 import { EntityZonasExclusionEffects } from './entity-zonas-exclusion/entity-zonas-exclusion.effects';
 import { EntityPersonasEffects } from './entity-personas/entity-personas.effects';
 import { EntityIngenierosAgronomosEffects } from './entity-ingenieros-agronomos/entity-ingenieros-agronomos.effects';
-import { EntityResponsablesEffects } from './entity-responsables/entity-responsables.effects';
+import { EntityEmpresasEffects } from './entity-empresas/entity-empresas.effects';
 // dialogs
 import { EntityPlanesFormDialogComponent } from './entity-planes/entity-planes-form-dialog/entity-planes-form-dialog.component';
 import { EntityChacrasFormDialogComponent } from './entity-chacras/entity-chacras-form-dialog/entity-chacras-form-dialog.component';
@@ -48,7 +46,7 @@ import { VistaAdministrativoComponent } from './vista-administrativo/vista-admin
       EntityZonasExclusionEffects,
       EntityPersonasEffects,
       EntityIngenierosAgronomosEffects,
-      EntityResponsablesEffects
+      EntityEmpresasEffects
     ])
   ],
   declarations: [
@@ -61,6 +59,9 @@ import { VistaAdministrativoComponent } from './vista-administrativo/vista-admin
     EntityPlanesFormDialogComponent,
     EntityChacrasFormDialogComponent
   ],
-  entryComponents: [EntityPlanesFormDialogComponent]
+  entryComponents: [
+    EntityPlanesFormDialogComponent,
+    EntityChacrasFormDialogComponent
+  ]
 })
 export class FeaturesModule {}

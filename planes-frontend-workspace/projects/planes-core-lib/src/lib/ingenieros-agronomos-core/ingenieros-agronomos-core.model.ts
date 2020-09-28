@@ -20,12 +20,13 @@ export interface IngenierosAgronomosCoreQueryResults {
 
 export function createBaseIngenieroAgronomoCore(
   id: string,
-  personaId: string
+  contacto: ContactoCore,
+  personaId?: string
 ): IngenieroAgronomoCore {
   return {
     ingenieroAgronomoId: id,
-    contacto: createBaseContactoCore(personaId, ingenieroAgronomolabel, id),
-    cjppu: `CJPUU ${ingenieroAgronomolabel} ${id}`,
-    regionalId: id
+    contacto: contacto || createBaseContactoCore(personaId),
+    cjppu: `CJPUU ${personaId}`,
+    regionalId: '1'
   };
 }

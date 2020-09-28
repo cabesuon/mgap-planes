@@ -15,11 +15,13 @@ import { PlanCore } from '../../entity-planes/entity-planes.state';
 import { selectAllEntityChacras } from '../../entity-chacras/entity-chacras.selectors';
 import { ChacraCore } from '../../entity-chacras/entity-chacras.state';
 import {
+  PlanesCoreDetailParams,
   ChacrasCoreTableParams,
-  ResponsableCore,
-  PersonaCore
+  PersonaCore,
+  EmpresaCore,
+  EmpresasCoreDetailParams
 } from 'projects/planes-core-lib/src/public-api';
-import { selectAllEntityResponsables } from '../../entity-responsables/entity-responsables.selectors';
+import { selectAllEntityEmpresas } from '../../entity-empresas/entity-empresas.selectors';
 import { selectAllEntityPersonas } from '../../entity-personas/entity-personas.selectors';
 
 @Component({
@@ -33,22 +35,16 @@ export class VistaAdministrativoComponent implements OnInit {
 
   planes: PlanCore[];
   chacras: ChacraCore[];
-  responsables: ResponsableCore[] = [];
+  empresas: EmpresaCore[] = [];
   personas: PersonaCore[] = [];
 
-  planDetailParams: { plan: PlanCore } = null;
+  planDetailParams: PlanesCoreDetailParams = null;
   chacrasTableParams: ChacrasCoreTableParams = { chacras: [] };
-  propietarioDetailParams: {
-    responsable: ResponsableCore;
-    persona: PersonaCore;
-  } = null;
-  arrendatarioDetailParams: {
-    responsable: ResponsableCore;
-    persona: PersonaCore;
-  } = null;
+  propietariosDetailParams: EmpresasCoreDetailParams[] = [];
+  arrendatariosDetailParams: EmpresasCoreDetailParams[] = [];
 
-  arrendatarioDetailVisible = true;
-  propietarioDetailVisible = true;
+  arrendatariosDetailVisible = true;
+  propietariosDetailVisible = true;
   chacrasTableVisible = true;
 
   constructor(
@@ -67,29 +63,29 @@ export class VistaAdministrativoComponent implements OnInit {
       ),
       this.store.pipe(select(selectAllEntityChacras)),
       this.store.pipe(select(selectAllEntityPersonas)),
-      this.store.pipe(select(selectAllEntityResponsables)),
+      this.store.pipe(select(selectAllEntityEmpresas)),
       (
         planes: PlanCore[],
         chacras: ChacraCore[],
         personas: PersonaCore[],
-        responsables: ResponsableCore[]
+        empresas: EmpresaCore[]
       ) => ({
         planes,
         chacras,
         personas,
-        responsables
+        empresas
       })
     ).subscribe(
       (sources: {
         planes: PlanCore[];
         chacras: ChacraCore[];
         personas: PersonaCore[];
-        responsables: ResponsableCore[];
+        empresas: EmpresaCore[];
       }) => {
         this.planes = sources.planes;
         this.chacras = sources.chacras;
         this.personas = sources.personas;
-        this.responsables = sources.responsables;
+        this.empresas = sources.empresas;
         if (this.planId) {
           this.planesChange(this.planes.find(p => p.planId === this.planId));
         }
@@ -105,22 +101,15 @@ export class VistaAdministrativoComponent implements OnInit {
 
     this.planDetailParams = { plan };
 
-    this.propietarioDetailParams = {
-      responsable: this.responsables.find(
-        r => r.contacto.personaId === plan.propietarioResponsableId
-      ),
-      persona: this.personas.find(
-        p => p.personaId === plan.propietarioResponsableId
-      )
-    };
+    this.propietariosDetailParams = this.empresas
+      .filter(e => this.plan.propietarios.indexOf(e.empresaId) > -1)
+      .map(e => ({ empresa: e }));
 
-    if (plan.tctResponsableId) {
-      this.arrendatarioDetailParams = {
-        responsable: this.responsables.find(
-          r => r.contacto.personaId === plan.tctResponsableId
-        ),
-        persona: this.personas.find(p => p.personaId === plan.tctResponsableId)
-      };
+    this.arrendatariosDetailParams = null;
+    if (this.plan.arrendatarios) {
+      this.arrendatariosDetailParams = this.empresas
+        .filter(e => this.plan.arrendatarios.indexOf(e.empresaId) > -1)
+        .map(e => ({ empresa: e }));
     }
 
     this.chacrasTableParams = {
@@ -136,12 +125,12 @@ export class VistaAdministrativoComponent implements OnInit {
     }
   }
 
-  togglePropietario() {
-    this.propietarioDetailVisible = !this.propietarioDetailVisible;
+  togglePropietarios() {
+    this.propietariosDetailVisible = !this.propietariosDetailVisible;
   }
 
-  toggleArrendatario() {
-    this.arrendatarioDetailVisible = !this.arrendatarioDetailVisible;
+  toggleArrendatarios() {
+    this.arrendatariosDetailVisible = !this.arrendatariosDetailVisible;
   }
 
   toggleChacras() {

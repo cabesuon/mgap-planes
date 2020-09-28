@@ -31,7 +31,7 @@ export const selectPlanById = (id: string) =>
     selectAllEntityPlanes,
     (allPlanes: PlanCore[]) => {
       if (allPlanes) {
-        return allPlanes.find(p => p.planId.toString() === `${id}`);
+        return allPlanes.find(p => p.planId === id);
       } else {
         return null;
       }

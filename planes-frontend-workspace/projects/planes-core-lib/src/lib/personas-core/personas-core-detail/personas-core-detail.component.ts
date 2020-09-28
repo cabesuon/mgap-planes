@@ -1,8 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { PersonaCore } from '../personas-core.model';
-import { DetailParams } from '../../extras/components/detail.model';
-import { formatValue, FormatsType } from '../../extras/extras-format';
+import {
+  DetailParams,
+  DetailField
+} from '../../extras/components/detail.model';
+import { formatValue } from '../../extras/extras-format';
+import {
+  PersonasCoreDetailParams,
+  PERSONASCOREDETAIL_DEFAULT_FIELDS
+} from '../personas-core-detail.model';
 
 @Component({
   selector: 'lib-personas-core-detail',
@@ -10,33 +16,24 @@ import { formatValue, FormatsType } from '../../extras/extras-format';
   styleUrls: ['./personas-core-detail.component.css']
 })
 export class PersonasCoreDetailComponent implements OnInit {
-  _params: { persona: PersonaCore } = null;
+  _params: PersonasCoreDetailParams = null;
   @Input()
-  set params(value: { persona: PersonaCore }) {
+  set params(value: PersonasCoreDetailParams) {
     this._params = value;
     if (!value) {
       return;
     }
+    this.fields = value.fields || PERSONASCOREDETAIL_DEFAULT_FIELDS;
     const rows = this.fields.map(f => ({
       label: f.label,
-      value: formatValue(value.persona[f.field], f.format || FormatsType.None)
+      value: formatValue(value.persona[f.name], f.format)
     }));
     this.detailParams = {
       rows
     };
   }
 
-  fields: any[] = [
-    { field: 'personaCedula', label: 'Cedula' },
-    { field: 'personaNombre', label: 'Nombre' },
-    { field: 'personaPrimerApellido', label: 'Primer Apellido' },
-    { field: 'personaSegundoApellido', label: 'Segundo Apellido' },
-    {
-      field: 'personaFechaDeNacimiento',
-      label: 'Fecha de Nacimiento',
-      format: FormatsType.Date
-    }
-  ];
+  fields: DetailField[] = [];
 
   detailParams: DetailParams = null;
 

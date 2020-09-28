@@ -1,5 +1,6 @@
 <form [formGroup]="form">
-  <!-- PlanNombre -->
+
+  <!-- planNombre -->
   <div class="row">
     <mat-form-field class="col" appearance="fill">
       <input matInput
@@ -8,66 +9,25 @@
     </mat-form-field>
   </div>
 
-  <!-- PropietarioId -->
+  <!-- propietarios -->
   <div class="row">
     <mat-form-field class="col" appearance="fill">
-      <input matInput
-      placeholder="Propietario Id"
-      formControlName="propietarioId">
+      <mat-label>Propietarios</mat-label>
+      <mat-select formControlName="propietarios" multiple>
+        <mat-option *ngFor="let e of formInput.empresas"
+        [value]="e.empresaId">{{e.empresaRazonSocial}}</mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
 
-  <!-- PropietarioResponsableId -->
+  <!-- arrendatarios -->
   <div class="row">
     <mat-form-field class="col" appearance="fill">
-      <input matInput
-      placeholder="Propietario Responsable Id"
-      formControlName="propietarioResponsableId">
-    </mat-form-field>
-  </div>
-
-  <!-- TenedorCualquierTituloId -->
-  <div class="row">
-    <mat-form-field class="col" appearance="fill">
-      <input matInput
-      placeholder="Tenedor Cualquier Titulo Id"
-      formControlName="tenedorCualquierTituloId">
-    </mat-form-field>
-  </div>
-
-  <!-- TCTResponsableId -->
-  <div class="row">
-    <mat-form-field class="col" appearance="fill">
-      <input matInput
-      placeholder="TCT Responsable Id"
-      formControlName="tctResponsableId">
-    </mat-form-field>
-  </div>
-
-  <!-- DepartamentoId -->
-  <div class="row">
-    <mat-form-field class="col" appearance="fill">
-      <input matInput
-      placeholder="Departamento Id"
-      formControlName="departamentoId">
-    </mat-form-field>
-  </div>
-
-  <!-- RegionalId -->
-  <div class="row">
-    <mat-form-field class="col" appearance="fill">
-      <input matInput
-      placeholder="Regional Id"
-      formControlName="regionalId">
-    </mat-form-field>
-  </div>
-
-  <!-- PlanRubro -->
-  <div class="row">
-    <mat-form-field class="col" appearance="fill">
-      <input matInput
-      placeholder="Plan Rubro"
-      formControlName="planRubro">
+      <mat-label>Arrendatarios</mat-label>
+      <mat-select formControlName="arrendatarios" multiple>
+        <mat-option *ngFor="let e of formInput.empresas"
+        [value]="e.empresaId">{{e.empresaRazonSocial}}</mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
 

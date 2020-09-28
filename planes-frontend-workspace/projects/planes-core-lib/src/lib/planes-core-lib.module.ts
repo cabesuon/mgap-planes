@@ -39,9 +39,12 @@ import { ChacrasCoreFormComponent } from './chacras-core/chacras-core-form/chacr
 import { ChacrasCoreDetailComponent } from './chacras-core/chacras-core-detail/chacras-core-detail.component';
 
 import { PersonasCoreDetailComponent } from './personas-core/personas-core-detail/personas-core-detail.component';
-import { ResponsablesCoreDetailComponent } from './responsables-core/responsables-core-detail/responsables-core-detail.component';
 import { IngenierosAgronomosCoreDetailComponent } from './ingenieros-agronomos-core/ingenieros-agronomos-core-detail/ingenieros-agronomos-core-detail.component';
 import { ContactoCoreDetailComponent } from './contacto-core/contacto-core-detail/contacto-core-detail.component';
+
+import { PadronesCoreDetailComponent } from './padrones-core/padrones-core-detail/padrones-core-detail.component';
+import { SuelosCoreDetailComponent } from './suelos-core/suelos-core-detail/suelos-core-detail.component';
+import { EmpresasCoreDetailComponent } from './empresas-core/empresas-core-detail/empresas-core-detail.component';
 
 import { DetailComponent } from './extras/components/detail/detail.component';
 import { TableComponent } from './extras/components/table/table.component';
@@ -61,10 +64,13 @@ import { MatPaginatorIntlCoreService } from './extras/components/mat-paginator-i
     ChacrasCoreFormComponent,
     ChacrasCoreDetailComponent,
 
+    PadronesCoreDetailComponent,
+    SuelosCoreDetailComponent,
+
     PersonasCoreDetailComponent,
-    ResponsablesCoreDetailComponent,
     IngenierosAgronomosCoreDetailComponent,
     ContactoCoreDetailComponent,
+    EmpresasCoreDetailComponent,
 
     DetailComponent,
     TableComponent
@@ -98,10 +104,13 @@ import { MatPaginatorIntlCoreService } from './extras/components/mat-paginator-i
     ChacrasCoreFormComponent,
     ChacrasCoreDetailComponent,
 
+    PadronesCoreDetailComponent,
+    SuelosCoreDetailComponent,
+
     PersonasCoreDetailComponent,
-    ResponsablesCoreDetailComponent,
     IngenierosAgronomosCoreDetailComponent,
     ContactoCoreDetailComponent,
+    EmpresasCoreDetailComponent,
 
     DetailComponent,
     TableComponent

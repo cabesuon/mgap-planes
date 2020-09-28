@@ -27,12 +27,12 @@ export const selectAllEntityPersonas: (
   selectEntityPersonasState
 ).selectAll;
 
-export const selectPersonaById = (id: number) =>
+export const selectPersonaById = (id: string) =>
   createSelector(
     selectAllEntityPersonas,
     (allPersonas: PersonaCore[]) => {
       if (allPersonas) {
-        return allPersonas.find(p => p.personaId.toString() === `${id}`);
+        return allPersonas.find(p => p.personaId === id);
       } else {
         return null;
       }

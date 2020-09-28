@@ -2,8 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { PlanCore, PlanesCoreQueryResults } from './planes-core.model';
-import { ItemAddResult } from '../extras/extras-request';
+import {
+  PlanCore,
+  PlanesCoreQueryResults,
+  PlanCoreAddResult,
+  PlanCoreUpdateResult,
+  PlanCoreDeleteResult
+} from './planes-core.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,21 +28,34 @@ export class PlanesCoreService {
     );
   }
 
-  addPlanesCore(p: PlanCore): Observable<ItemAddResult[]> {
-    return this.http.post<ItemAddResult[]>(`${this.url}/addPlanes`, {
-      planes: [{ ...p }]
-    });
+  addPlanesCore(p: PlanCore): Observable<{ addResults: PlanCoreAddResult[] }> {
+    return this.http.post<{ addResults: PlanCoreAddResult[] }>(
+      `${this.url}/addPlanes`,
+      {
+        planes: [{ ...p }]
+      }
+    );
   }
 
-  changePlanesCore(p: PlanCore): Observable<PlanCore> {
-    return this.http.post<PlanCore>(`${this.url}/updatePlanes`, {
-      planes: [{ ...p }]
-    });
+  changePlanesCore(
+    p: PlanCore
+  ): Observable<{ updateResults: PlanCoreUpdateResult[] }> {
+    return this.http.post<{ updateResults: PlanCoreUpdateResult[] }>(
+      `${this.url}/updatePlanes`,
+      {
+        planes: [{ ...p }]
+      }
+    );
   }
 
-  deletePlanesCore(p: PlanCore): Observable<PlanCore> {
-    return this.http.post<PlanCore>(`${this.url}/deletePlanes`, {
-      planesIds: [p.planId]
-    });
+  deletePlanesCore(
+    p: PlanCore
+  ): Observable<{ deleteResults: PlanCoreDeleteResult[] }> {
+    return this.http.post<{ deleteResults: PlanCoreDeleteResult[] }>(
+      `${this.url}/deletePlanes`,
+      {
+        planesIds: [p.planId]
+      }
+    );
   }
 }

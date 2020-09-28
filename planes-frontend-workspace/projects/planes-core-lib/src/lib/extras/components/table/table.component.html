@@ -24,11 +24,13 @@
               <li *ngFor="let item of element[c.name]">{{item}}</li>
             </ul>
             <span *ngSwitchCase="'Literal'">{{element[c.name]}}</span>
-            <button *ngSwitchCase="'Action'" mat-icon-button
-            (click)="actionClick(element.__source__, element[c.name].value)"
-            matTooltip="{{element[c.name].text}}">
-              <mat-icon><fa-icon icon="{{element[c.name].icon}}"></fa-icon></mat-icon>
-            </button>
+            <ng-container *ngSwitchCase="'Action'">
+              <button *ngIf="!!element[c.name]" mat-icon-button
+              (click)="actionClick(element.__source__, element[c.name].value)"
+              matTooltip="{{element[c.name].text}}">
+                <mat-icon><fa-icon icon="{{element[c.name].icon}}"></fa-icon></mat-icon>
+              </button>
+            </ng-container>
             <span *ngSwitchDefault> :( </span>
           </ng-container>
         </mat-cell>

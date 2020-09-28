@@ -8,7 +8,7 @@ export class MockQueryTokens implements GetData {
       queryResults: {
         success: true,
         error: { code: 0, description: null },
-        personasId: db.tokens
+        personasId: db.d.tokens
           .filter(token => {
             return tokens.indexOf(token.token) > -1;
           })

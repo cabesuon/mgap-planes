@@ -12,7 +12,6 @@ export enum EntityPersonasActionTypes {
 
 export class EntityPersonasLoadRequestAction implements Action {
   readonly type = EntityPersonasActionTypes.ENTITYPERSONAS_LOAD_REQUEST;
-  constructor(public payload: { personasId: number[] }) {}
 }
 
 export class EntityPersonasLoadFailureAction implements Action {

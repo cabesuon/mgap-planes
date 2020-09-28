@@ -22,16 +22,35 @@ import {
 } from '../../dibujos-core/dibujos-core.model';
 
 import { EsriModulesService } from '../esri-modules.service';
-import { MapProperties, MapViewProperties } from '../map-core.model';
+import {
+  FeatureLayerProperties,
+  MapImageLayerProperties,
+  MapProperties,
+  MapViewProperties,
+  CHACRAS_FEATURELAYERPROPERTIES,
+  CHACRAS_SYMBOLS,
+  PENDIENTES_FEATURELAYERPROPERTIES,
+  PENDIENTES_SYMBOLS,
+  ZONAS_FEATURELAYERPROPERTIES,
+  ZONAS_SYMBOLS,
+  DIBUJOS_SYMBOLS,
+  CIRCLE_SYMBOLS,
+  OBJECTID,
+  SKETCH_AVAILABLE_CREATE_TOOLS
+} from '../map-core.model';
 import { MapCoreService } from '../map-core.service';
-import * as mapCoreModel from '../map-core.model';
+// import * as mapCoreModel from '../map-core.model';
 
 const METER = 9001;
 const KILOMETER = 9036;
 
 export interface InputFeatureLayer {
   source: Observable<any[]>;
-  featureLayerProperties: mapCoreModel.FeatureLayerProperties;
+  featureLayerProperties: FeatureLayerProperties;
+}
+
+export interface InputMapImageLayer {
+  mapImageLayerProperties: MapImageLayerProperties;
 }
 
 @Component({
@@ -90,9 +109,11 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     },
     views: { MapView: null },
     widgets: {
+      Expand: null,
+      Legend: null,
+      ScaleBar: null,
       Sketch: null,
-      SketchViewModel: null,
-      ScaleBar: null
+      SketchViewModel: null
     }
   };
 
@@ -110,12 +131,23 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   private _mapProperties: MapProperties = {
     basemap: 'hybrid'
   };
-  private _chacras: ChacraCore[] = [];
-  private _zonas: ZonaExclusionCore[] = [];
+
+  private _mapImageLayers: InputMapImageLayer[] = [];
+
   private _featureLayers: InputFeatureLayer[] = [];
+
+  private _chacras: ChacraCore[] = [];
+
+  private _zonas: ZonaExclusionCore[] = [];
+
   private _dibujos: DibujoCore[] = [];
 
-  // inputs get/set
+  private _sketchAvailableCreateTools: string[] = SKETCH_AVAILABLE_CREATE_TOOLS;
+
+  /*
+   * INPUTS
+   */
+  // map and view
   @Input()
   set mapViewProperties(props: MapViewProperties) {
     this._mapViewProperties = props;
@@ -130,6 +162,23 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   get mapProperties(): MapProperties {
     return this._mapProperties;
   }
+  // map image layers
+  @Input()
+  set mapImageLayers(layers: InputMapImageLayer[]) {
+    this._mapImageLayers = layers;
+  }
+  get mapImageLayers(): InputMapImageLayer[] {
+    return this._mapImageLayers;
+  }
+  // feature layers
+  @Input()
+  set featureLayers(layers: InputFeatureLayer[]) {
+    this._featureLayers = layers;
+  }
+  get featureLayers(): InputFeatureLayer[] {
+    return this._featureLayers;
+  }
+  // chacras
   @Input()
   set chacrasCore(chacrasCore: ChacraCore[]) {
     this._chacras = chacrasCore || [];
@@ -140,6 +189,7 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   get chacrasCore() {
     return this._chacras;
   }
+  // zonas exclusion
   @Input()
   set zonasExclusionCore(zonasExclusionCore: ZonaExclusionCore[]) {
     this._zonas = zonasExclusionCore || [];
@@ -150,6 +200,7 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   get zonasExclusionCore() {
     return this._zonas;
   }
+  // dibujos
   @Input()
   set dibujosCore(dibujosCore: DibujoCore[]) {
     this._dibujos = dibujosCore || [];
@@ -159,6 +210,14 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   }
   get dibujosCore(): DibujoCore[] {
     return this._dibujos;
+  }
+  // widgets
+  @Input()
+  set sketchAvailableCreateTools(tools: string[]) {
+    this._sketchAvailableCreateTools = tools || SKETCH_AVAILABLE_CREATE_TOOLS;
+  }
+  get sketchAvailableCreateTools(): string[] {
+    return this._sketchAvailableCreateTools;
   }
 
   constructor(
@@ -182,12 +241,12 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   initFeatureLayers() {
     // init Chacras
     this.chacrasFeatureLayer = new this.esri.layers.FeatureLayer({
-      ...mapCoreModel.chacrasFeatureLayerProperties,
+      ...CHACRAS_FEATURELAYERPROPERTIES,
       source: []
     });
     // init Pendientes
     this.pendientesFeatureLayer = new this.esri.layers.FeatureLayer({
-      ...mapCoreModel.pendientesFeatureLayerProperties,
+      ...PENDIENTES_FEATURELAYERPROPERTIES,
       source: []
     });
     this.updateChacras();
@@ -197,7 +256,7 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
 
     // init Zonas
     this.zonasFeatureLayer = new this.esri.layers.FeatureLayer({
-      ...mapCoreModel.zonasFeatureLayerProperties,
+      ...ZONAS_FEATURELAYERPROPERTIES,
       source: []
     });
     this.updateZonas();
@@ -207,10 +266,10 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
 
   initGraphicsLayer() {
     this.circleRadioLine = new this.esri.Graphic({
-      symbol: mapCoreModel.circleSymbols.line
+      symbol: CIRCLE_SYMBOLS.line
     });
     this.circleRadioText = new this.esri.Graphic({
-      symbol: mapCoreModel.circleSymbols.text
+      symbol: CIRCLE_SYMBOLS.text
     });
 
     this.circleGraphicsLayer = new this.esri.layers.GraphicsLayer();
@@ -228,13 +287,32 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
 
   initWidgets() {
     const self = this; // <- dumb
+    // legend
+    const legend = new this.esri.widgets.Legend({
+      view: this.view
+    });
+    const legendExpand = new this.esri.widgets.Expand({
+      expandIconClass: 'esri-icon-layer-list',
+      view: this.view,
+      expandTooltip: 'Ver Leyenda',
+      collapseTooltip: 'Ocultar Leyenda',
+      content: legend
+    });
+    this.view.ui.add(legendExpand, 'top-left');
     // sketch
     const sketch = new this.esri.widgets.Sketch({
       layer: this.dibujosGraphicsLayer,
       view: this.view,
-      availableCreateTools: ['polyline', 'polygon', 'circle']
+      availableCreateTools: this.sketchAvailableCreateTools
     });
-    this.view.ui.add(sketch, 'top-right');
+    const sketchExpand = new this.esri.widgets.Expand({
+      expandIconClass: 'esri-icon-edit',
+      view: this.view,
+      expandTooltip: 'Ver Edición',
+      collapseTooltip: 'Ocultar Edición',
+      content: sketch
+    });
+    this.view.ui.add(sketchExpand, 'top-left');
     sketch.on('create', function(event) {
       self.onDibujoCreate(event);
     });
@@ -250,7 +328,6 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
       unit: 'metric',
       ruler: 'ruler'
     });
-    // Add widget to the bottom left corner of the view
     this.view.ui.add(scaleBar, {
       position: 'bottom-left'
     });
@@ -278,6 +355,8 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
         'esri/symbols/SimpleFillSymbol',
         'esri/symbols/SimpleLineSymbol',
 
+        'esri/widgets/Expand',
+        'esri/widgets/Legend',
         'esri/widgets/Sketch',
         'esri/widgets/ScaleBar'
       ])
@@ -302,6 +381,8 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
           this.esri.symbols.SimpleFillSymbol,
           this.esri.symbols.SimpleLineSymbol,
 
+          this.esri.widgets.Expand,
+          this.esri.widgets.Legend,
           this.esri.widgets.Sketch,
           this.esri.widgets.ScaleBar
         ] = modules;
@@ -330,7 +411,6 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
       chacraNro: c.chacraNro,
       chacraNombre: c.chacraNombre,
       chacraLocalidad: c.chacraLocalidad,
-      chacraPadreNro: c.chacraPadreNro,
       chacraArea: c.chacraArea,
       chacraDicose: c.chacraDicose,
 
@@ -490,10 +570,10 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     for (const d of this.dibujosCore) {
       if (d.dibujoTipo === DibujoCoreType.POLYGON) {
         geometry = this.jsonToGeometry(d.dibujoGeometria, false);
-        symbol = mapCoreModel.dibujosSymbols.fill;
+        symbol = DIBUJOS_SYMBOLS.fill;
       } else {
         geometry = this.jsonToGeometry(d.dibujoGeometria, false);
-        symbol = mapCoreModel.dibujosSymbols.line;
+        symbol = DIBUJOS_SYMBOLS.line;
       }
       graphic = new this.esri.Graphic({
         geometry,
@@ -537,16 +617,14 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     let symbol;
     switch (g.geometry.type) {
       case 'polygon':
-        symbol = { ...mapCoreModel.dibujosSymbols.fill };
+        symbol = { ...DIBUJOS_SYMBOLS.fill };
         delete symbol['type'];
         g.symbol = this.esri.symbols.SimpleFillSymbol();
         break;
       case 'polyline':
-        symbol = { ...mapCoreModel.dibujosSymbols.line };
+        symbol = { ...DIBUJOS_SYMBOLS.line };
         delete symbol['type'];
-        g.symbol = this.esri.symbols.SimpleLineSymbol(
-          mapCoreModel.dibujosSymbols.line
-        );
+        g.symbol = this.esri.symbols.SimpleLineSymbol(DIBUJOS_SYMBOLS.line);
         break;
     }
   }
@@ -555,7 +633,7 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     return new this.esri.Graphic({
       geometry: this.geometryLabelPoint(geometry),
       symbol: {
-        ...mapCoreModel.dibujosSymbols.text,
+        ...DIBUJOS_SYMBOLS.text,
         text: id
       }
     });
@@ -613,26 +691,26 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   }
 
   onDibujoDelete(event) {
-    if (event.state === 'complete') {
-      const deleted = event.graphics.map(
-        (g: esri.Graphic) => g.attributes.DibujoId
-      );
-      this.dibujosGraphicsLayer.graphics.removeMany(
-        event.graphics.filter((g: esri.Graphic) =>
-          this.dicDibujosLabels.hasOwnProperty(g.attributes.DibujoId)
-        )
-      );
-      this.dibujosDeletedEvent.emit(deleted);
-    }
+    console.log('Delete > ', event);
+    const deleted = event.graphics.map(
+      (g: esri.Graphic) => g.attributes.DibujoId
+    );
+    this.dibujosGraphicsLayer.graphics.removeMany(
+      event.graphics.filter((g: esri.Graphic) =>
+        this.dicDibujosLabels.hasOwnProperty(g.attributes.DibujoId)
+      )
+    );
+    this.dibujosDeletedEvent.emit(deleted);
   }
 
   onDibujoUpdate(event) {
-    if (event.state === 'complete') {
+    if (event.state === 'complete' && !event.aborted) {
       if (
         event.tool === 'transform' ||
         event.tool === 'reshape' ||
         event.tool === 'move'
       ) {
+        console.log('Update > ', event);
         this.dibujosUpdatedEvent.emit(
           event.graphics.map((g: esri.Graphic) => ({
             DibujoId: g.attributes.DibujoId,
@@ -662,7 +740,7 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   private clearFeaturesFeatureLayer(layer: esri.FeatureLayer): Observable<any> {
     const deleteFeatures: any[] = layer.source
       .toArray()
-      .map(f => ({ objectId: f.attributes[mapCoreModel.OBJECTID] }));
+      .map(f => ({ objectId: f.attributes[OBJECTID] }));
     return from(
       layer.applyEdits({
         deleteFeatures

@@ -26,3 +26,9 @@ export interface PadronCore {
   padrondDepartamento: string;
   padronAreaHa: number;
 }
+
+export interface PadronesCoreQueryResults {
+  success: boolean;
+  error: { code: number; description: string };
+  padrones: PadronCore[];
+}

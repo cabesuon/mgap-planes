@@ -26,10 +26,7 @@ import { EntityPersonasLoadRequestAction } from './features/entity-personas/enti
 
 import { EntityIngenierosAgronomosLoadRequestAction } from './features/entity-ingenieros-agronomos/entity-ingenieros-agronomos.actions';
 
-import {
-  EntityResponsablesPropietarioLoadRequestAction,
-  EntityResponsablesArrendatarioLoadRequestAction
-} from './features/entity-responsables/entity-responsables.actions';
+import { EntityEmpresasLoadRequestAction } from './features/entity-empresas/entity-empresas.actions';
 import { PersonaCore } from 'projects/planes-core-lib/src/public-api';
 import { selectPersonaById } from './features/entity-personas/entity-personas.selectors';
 
@@ -55,7 +52,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ];
   navigationSideMenu = [...this.navigation];
 
-  personaId: number = null;
+  personaId: string = null;
   persona: PersonaCore = null;
 
   constructor(
@@ -92,19 +89,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new EntityPlanesLoadRequestAction());
     this.store.dispatch(new EntityChacrasLoadRequestAction());
     this.store.dispatch(new EntityZonasExclusionLoadRequestAction());
-    this.store.dispatch(
-      new EntityPersonasLoadRequestAction({ personasId: null })
-    );
+    this.store.dispatch(new EntityPersonasLoadRequestAction());
     this.store.dispatch(
       new EntityIngenierosAgronomosLoadRequestAction({
         ingenierosAgronomosId: null
       })
     );
-    this.store.dispatch(
-      new EntityResponsablesPropietarioLoadRequestAction({ personasId: null })
-    );
-    this.store.dispatch(
-      new EntityResponsablesArrendatarioLoadRequestAction({ personasId: null })
-    );
+    this.store.dispatch(new EntityEmpresasLoadRequestAction());
   }
 }

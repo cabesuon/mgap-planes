@@ -17,7 +17,7 @@ export class MockQueryIngenierosAgronomos implements GetData {
       queryResults: {
         success: true,
         error: null,
-        ingenierosAgronomos: db.ingenierosAgronomos.filter(agronomo =>
+        ingenierosAgronomos: db.d.ingenierosAgronomos.filter(agronomo =>
           agronomosId.has(agronomo.ingenieroAgronomoId)
         )
       }

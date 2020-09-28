@@ -10,36 +10,24 @@ import {
 } from 'angular-in-memory-web-api';
 
 import { InMemoryDb } from './in-memory-db';
+import { createInMemoryDataDefault } from './in-memory-db-data';
 
+import { MockQueryPlanes, MockAddPlanes } from './planes-get-data';
+import { MockQueryChacras, MockAddChacras } from './chacras-get-data';
 import {
-  InitDbPlanes,
-  MockQueryPlanes,
-  MockAddPlanes
-} from './planes-get-data';
-import {
-  InitDbChacras,
-  MockQueryChacras,
-  MockAddChacras
-} from './chacras-get-data';
-import {
-  InitDbZonasExclusion,
   MockQueryZonasExclusion,
   MockAddZonasExclusion
 } from './zonas-exclusion-get-data';
 
-import { InitDbPersonas, MockQueryPersonas } from './personas-get-data';
-import {
-  InitDbIngenierosAgronomos,
-  MockQueryIngenierosAgronomos
-} from './ingenieros-agronomos-get-data';
-import {
-  InitDbArrendatariosResponsables,
-  MockQueryArrendatariosResponsables,
-  InitDbPropietariosResponsables,
-  MockQueryPropietariosResponsables
-} from './responsables-get-data';
+import { MockQueryPadrones } from './padrones-get-data';
+import { MockQuerySuelos } from './suelos-get-data';
 
-import { InitDbTokens, MockQueryTokens } from './tokens-get-data';
+import { MockQueryPersonas } from './personas-get-data';
+import { MockQueryIngenierosAgronomos } from './ingenieros-agronomos-get-data';
+
+import { MockQueryTokens } from './tokens-get-data';
+
+import { MockQueryEmpresas } from './empresas-get-data';
 
 const getMethodGetDataRepo = {};
 
@@ -51,12 +39,19 @@ const postMethodGetDataRepo = {
   queryZonasExclusion: new MockQueryZonasExclusion(),
   addZonasExclusion: new MockAddZonasExclusion(),
 
+  queryPadrones: new MockQueryPadrones(),
+  querySuelos: new MockQuerySuelos(),
+
   queryPersonas: new MockQueryPersonas(),
   queryIngenierosAgronomos: new MockQueryIngenierosAgronomos(),
-  queryPropietariosResponsables: new MockQueryPropietariosResponsables(),
-  queryArrendatariosResponsables: new MockQueryArrendatariosResponsables(),
 
-  queryTokens: new MockQueryTokens()
+  // remove in version 0.0.2
+  // queryPropietariosResponsables: new MockQueryPropietariosResponsables(),
+  // queryArrendatariosResponsables: new MockQueryArrendatariosResponsables(),
+
+  queryTokens: new MockQueryTokens(),
+
+  queryEmpresas: new MockQueryEmpresas()
 };
 
 @Injectable({
@@ -66,19 +61,7 @@ export class InMemoryDataService implements InMemoryDbService {
   private db: InMemoryDb;
 
   createDb(reqInfo?: RequestInfo) {
-    this.db = new InMemoryDb(
-      new InitDbTokens().getData(reqInfo),
-
-      new InitDbPersonas().getData(reqInfo),
-
-      new InitDbIngenierosAgronomos().getData(reqInfo),
-      new InitDbPropietariosResponsables().getData(reqInfo),
-      new InitDbArrendatariosResponsables().getData(reqInfo),
-
-      new InitDbPlanes().getData(reqInfo),
-      new InitDbChacras().getData(reqInfo),
-      new InitDbZonasExclusion().getData(reqInfo)
-    );
+    this.db = new InMemoryDb(createInMemoryDataDefault());
     return this.db;
   }
 

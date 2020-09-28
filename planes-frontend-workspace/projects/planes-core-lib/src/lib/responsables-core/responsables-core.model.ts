@@ -22,7 +22,7 @@ export function createBaseResponsableCore(
   empresaId: string
 ): ResponsableCore {
   return {
-    contacto: createBaseContactoCore(personaId, label, empresaId),
+    contacto: createBaseContactoCore(personaId),
     empresaId: empresaId,
     emailValidado: true,
     celularValidado: true

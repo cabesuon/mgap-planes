@@ -90,12 +90,6 @@ export function createEmptyChacraCore(): ChacraCore {
   };
 }
 
-export interface ChacrasCoreQueryResults {
-  success: boolean;
-  error: { code: number; description: string };
-  chacras: ChacraCore[];
-}
-
 export function createBaseChacraCore(
   id: string,
   planId: string,
@@ -140,4 +134,28 @@ export function createBaseGeomPendienteChacraCore() {
     paths: [[[-58.39, -33.79], [-58.385, -33.785]]],
     spatialReference: { wkid: 4326 }
   };
+}
+
+export interface ChacrasCoreQueryResults {
+  success: boolean;
+  error: { code: number; description: string };
+  chacras: ChacraCore[];
+}
+
+export interface ChacraCoreAddResult {
+  success: boolean;
+  error: { code: number; description: string };
+  chacra: ChacraCore;
+}
+
+export interface ChacraCoreUpdateResult {
+  success: boolean;
+  error: { code: number; description: string };
+  chacra: ChacraCore;
+}
+
+export interface ChacraCoreDeleteResult {
+  success: boolean;
+  error: { code: number; description: string };
+  chacraId: string;
 }

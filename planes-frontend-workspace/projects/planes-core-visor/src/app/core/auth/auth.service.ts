@@ -13,7 +13,7 @@ import { GetTokensResult } from './auth.models';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(token: string): Observable<{ personaId: number }> {
+  login(token: string): Observable<{ personaId: string }> {
     return this.http
       .post<{ queryResults: GetTokensResult }>(
         `${environment.apiUrl}/queryTokens`,

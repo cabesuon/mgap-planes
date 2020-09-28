@@ -1,9 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { PlanCore } from '../planes-core.model';
+import {
+  DetailField,
+  DetailParams
+} from '../../extras/components/detail.model';
 
-import { formatValue, FormatsType } from '../../extras/extras-format';
-import { DetailParams } from '../../extras/components/detail.model';
+import { formatValue } from '../../extras/extras-format';
+import {
+  PlanesCoreDetailParams,
+  PLANESCOREDETAIL_DEFAULT_FIELDS
+} from '../planes-core-detail.model';
 
 @Component({
   selector: 'lib-planes-core-detail',
@@ -11,49 +17,26 @@ import { DetailParams } from '../../extras/components/detail.model';
   styleUrls: ['./planes-core-detail.component.css']
 })
 export class PlanesCoreDetailComponent implements OnInit {
-  _params: { plan: PlanCore } = null;
+  _params: PlanesCoreDetailParams = null;
   @Input()
-  set params(value: { plan: PlanCore }) {
+  set params(value: PlanesCoreDetailParams) {
     this._params = value;
     if (!value) {
       return;
     }
+
+    this.fields = value.fields || PLANESCOREDETAIL_DEFAULT_FIELDS;
+
     const rows = this.fields.map(f => ({
       label: f.label,
-      value: formatValue(value.plan[f.field], f.format || FormatsType.None)
+      value: formatValue(value.plan[f.name], f.format)
     }));
     this.planDetailParams = {
       rows
     };
   }
 
-  fields: any[] = [
-    {
-      field: 'planNro',
-      label: 'Nro. del Plan',
-      format: FormatsType.None
-    },
-    {
-      field: 'planNombre',
-      label: 'Nombre del Plan',
-      format: FormatsType.None
-    },
-    {
-      field: 'planFechaCreacion',
-      label: 'Fecha de Creacion',
-      format: FormatsType.Date
-    },
-    {
-      field: 'planFechaPresentacion',
-      label: 'Fecha de Presentacion',
-      format: FormatsType.Date
-    },
-    {
-      field: 'planEstado',
-      label: 'Estado',
-      format: FormatsType.PlanEstado
-    }
-  ];
+  fields: DetailField[] = [];
 
   planDetailParams: DetailParams = null;
 

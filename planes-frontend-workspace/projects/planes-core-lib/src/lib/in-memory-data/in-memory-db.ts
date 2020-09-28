@@ -1,24 +1,21 @@
-import { PlanCore, personaRelPlanCore } from '../planes-core/planes-core.model';
+import { PlanCore } from '../planes-core/planes-core.model';
 import { ChacraCore } from '../chacras-core/chacras-core.model';
 import { ZonaExclusionCore } from '../zonas-exclusion-core/zonas-exclusion-core.model';
 import { PersonaCore } from '../personas-core/personas-core.model';
 import { IngenieroAgronomoCore } from '../ingenieros-agronomos-core/ingenieros-agronomos-core.model';
 import { ResponsableCore } from '../responsables-core/responsables-core.model';
+import { PadronCore } from '../padrones-core/padrones-core.model';
+import { SueloCore } from '../suelos-core/suelos-core.model';
+import {
+  EmpresaCore,
+  personaRelEmpresaCore
+} from '../empresas-core/empresas-core.model';
+
+import { InMemoryDbData } from './in-memory-db-data';
 
 export class InMemoryDb {
   id: number;
-  constructor(
-    public tokens: Array<{ token: string; personaId: string }>,
-
-    public personas: PersonaCore[],
-    public ingenierosAgronomos: IngenieroAgronomoCore[],
-    public propietariosResponsables: ResponsableCore[],
-    public arrendatariosResponsables: ResponsableCore[],
-
-    public planes: PlanCore[],
-    public chacras: ChacraCore[],
-    public zonasExclusion: ZonaExclusionCore[]
-  ) {
+  constructor(public d: InMemoryDbData) {
     this.id = 1000;
   }
 
@@ -27,9 +24,9 @@ export class InMemoryDb {
   }
 
   getPersonaCoreByToken(token: string): PersonaCore {
-    const tokenPersona = this.tokens.find(t => t.token === token);
+    const tokenPersona = this.d.tokens.find(t => t.token === token);
     if (tokenPersona) {
-      return this.personas.find(p => p.personaId === tokenPersona.personaId);
+      return this.d.personas.find(p => p.personaId === tokenPersona.personaId);
     }
     return null;
   }
@@ -37,7 +34,7 @@ export class InMemoryDb {
   getIngenieroAgronomoCoreByPersonaId(
     personaId: string
   ): IngenieroAgronomoCore {
-    return this.ingenierosAgronomos.find(
+    return this.d.ingenierosAgronomos.find(
       a => a.contacto.personaId === personaId
     );
   }
@@ -45,28 +42,44 @@ export class InMemoryDb {
   getPersonaCoreByIngenieroAgronomoId(
     ingenieroAgronomoId: string
   ): PersonaCore {
-    const agronomo = this.ingenierosAgronomos.find(
+    const agronomo = this.d.ingenierosAgronomos.find(
       a => a.ingenieroAgronomoId === ingenieroAgronomoId
     );
     if (!agronomo) {
       return null;
     }
-    return this.personas.find(p => p.personaId === agronomo.contacto.personaId);
+    return this.d.personas.find(
+      p => p.personaId === agronomo.contacto.personaId
+    );
   }
 
   getPlanesCoreByPersonaId(personaId: string): PlanCore[] {
     const agronomo = this.getIngenieroAgronomoCoreByPersonaId(personaId);
-    return this.planes.filter(plan =>
-      personaRelPlanCore(
-        plan,
-        personaId,
-        agronomo ? agronomo.ingenieroAgronomoId : null
-      )
+    const empresas = this.getEmpresasCoreByPersonaId(personaId);
+    return this.d.planes.filter(
+      plan =>
+        (agronomo &&
+          plan.ingenieroAgronomoId === agronomo.ingenieroAgronomoId) ||
+        empresas.some(e => plan.propietarios.some(p => p === e.empresaId))
     );
   }
 
   getChacrasCoreByPersonaId(personaId: string): ChacraCore[] {
     const planIds = this.getPlanesCoreByPersonaId(personaId).map(p => p.planId);
-    return this.chacras.filter(c => planIds.indexOf(c.planId) > -1);
+    return this.d.chacras.filter(c => planIds.indexOf(c.planId) > -1);
+  }
+
+  getEmpresasCoreByPersonaId(personaId: string): EmpresaCore[] {
+    return this.d.empresas.filter(e => personaRelEmpresaCore(e, personaId));
+  }
+
+  getPersonasFromEmpresaId(empresaId: string): PersonaCore[] {
+    const empresa: EmpresaCore = this.d.empresas.find(
+      e => e.empresaId === empresaId
+    );
+    const personasId: string[] = empresa.contactos.map(c => c.personaId);
+    return this.d.personas.filter(p =>
+      personasId.some(id => id === p.personaId)
+    );
   }
 }

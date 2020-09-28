@@ -4,7 +4,10 @@ import { Observable } from 'rxjs';
 
 import {
   ZonaExclusionCore,
-  ZonaExclusionCoreQueryResults
+  ZonasExclusionCoreQueryResults,
+  ZonaExclusionCoreAddResult,
+  ZonaExclusionCoreUpdateResult,
+  ZonaExclusionCoreDeleteResult
 } from './zonas-exclusion-core.model';
 
 @Injectable({
@@ -16,24 +19,28 @@ export class ZonasExclusionCoreService {
   constructor(private http: HttpClient) {}
 
   getZonasExclusionCore(): Observable<{
-    queryResults: ZonaExclusionCoreQueryResults;
+    queryResults: ZonasExclusionCoreQueryResults;
   }> {
-    return this.http.post<{ queryResults: ZonaExclusionCoreQueryResults }>(
+    return this.http.post<{ queryResults: ZonasExclusionCoreQueryResults }>(
       `${this.url}/queryZonasExclusion`,
       {}
     );
   }
 
-  addZonasExclusionCore(z: ZonaExclusionCore): Observable<ZonaExclusionCore> {
-    return this.http.post<ZonaExclusionCore>(`${this.url}/addZonasExclusion`, {
+  addZonasExclusionCore(
+    z: ZonaExclusionCore
+  ): Observable<{ addResults: ZonaExclusionCoreAddResult[] }> {
+    return this.http.post<{
+      addResults: ZonaExclusionCoreAddResult[];
+    }>(`${this.url}/addZonasExclusion`, {
       ZonaExclusiones: [{ ...z }]
     });
   }
 
   changeZonasExclusionCore(
     z: ZonaExclusionCore
-  ): Observable<ZonaExclusionCore> {
-    return this.http.post<ZonaExclusionCore>(
+  ): Observable<{ updateResults: ZonaExclusionCoreUpdateResult[] }> {
+    return this.http.post<{ updateResults: ZonaExclusionCoreUpdateResult[] }>(
       `${this.url}/updateZonasExclusion`,
       {
         ZonaExclusiones: [{ ...z }]
@@ -43,8 +50,8 @@ export class ZonasExclusionCoreService {
 
   deleteZonasExclusionCore(
     z: ZonaExclusionCore
-  ): Observable<ZonaExclusionCore> {
-    return this.http.post<ZonaExclusionCore>(
+  ): Observable<{ deleteResults: ZonaExclusionCoreDeleteResult[] }> {
+    return this.http.post<{ deleteResults: ZonaExclusionCoreDeleteResult[] }>(
       `${this.url}/deleteZonasExclusion`,
       {
         ZonasExclusionIds: [z.zonaExclusionId]

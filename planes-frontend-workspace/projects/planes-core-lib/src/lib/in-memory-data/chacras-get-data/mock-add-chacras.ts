@@ -11,14 +11,16 @@ export class MockAddChacras implements GetData {
     for (const c of chacras) {
       c.chacraId = db.nextId();
       c.chacraNro = c.chacraId;
-      db.chacras.push(c);
+      db.d.chacras.push(c);
       response.push({
         success: true,
         error: null,
-        id: c.chacraId
+        chacra: c
       });
     }
 
-    return response;
+    return {
+      addResults: response
+    };
   }
 }

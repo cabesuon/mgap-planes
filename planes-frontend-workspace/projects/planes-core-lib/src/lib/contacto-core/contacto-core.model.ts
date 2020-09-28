@@ -8,18 +8,14 @@ export interface ContactoCore {
   departamentoId: string;
 }
 
-export function createBaseContactoCore(
-  personaId: string,
-  label: string,
-  id: string
-): ContactoCore {
+export function createBaseContactoCore(personaId: string): ContactoCore {
   return {
     personaId: personaId,
-    email: `Email ${label} ${id}`,
-    telefono: `Tel ${label} ${id}`,
-    celular: `Cel ${label} ${id}`,
-    domicilio: `Domicilio ${label} ${id}`,
-    ciudad: `Ciudad ${label} ${id}`,
-    departamentoId: id
+    email: `Email ${personaId}`,
+    telefono: `Tel ${personaId}`,
+    celular: `Cel ${personaId}`,
+    domicilio: `Domicilio ${personaId}`,
+    ciudad: `Ciudad ${personaId}`,
+    departamentoId: '1'
   };
 }

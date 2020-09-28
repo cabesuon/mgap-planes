@@ -51,10 +51,7 @@ export function resolveChacrasCoreTableCellValue(
     }
     return column.type === TableValueType.LIST ? v : v.join(' ');
   }
-  return formatValue(
-    chacra[column.name],
-    column.literalFormat
-  );
+  return formatValue(chacra[column.name], column.literalFormat);
 }
 
 export function createChacrasCoreTableRow(
@@ -97,7 +94,7 @@ export const CHACRASCORETABLE_COLUMNS_DEFAULT: ChacrasCoreTableColumn[] = [
     filter: true
   },
   // {
-  //   type: TableValueType.LITERAL,
+  //   type: TableValueType.LIST,
   //   name:
   //     'suelos.sueloNombre+sueloK+sueloT',
   //   label: 'Suelo',

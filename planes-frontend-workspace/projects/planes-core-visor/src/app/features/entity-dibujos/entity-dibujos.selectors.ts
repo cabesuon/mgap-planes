@@ -44,7 +44,7 @@ export const selectDibujoById = (id: number) =>
     selectAllEntityDibujos,
     (allDibujos: DibujoCore[]) => {
       if (allDibujos) {
-        return allDibujos.find(d => d.dibujoId.toString() === `${id}`);
+        return allDibujos.find(d => d.dibujoId === id);
       } else {
         return null;
       }

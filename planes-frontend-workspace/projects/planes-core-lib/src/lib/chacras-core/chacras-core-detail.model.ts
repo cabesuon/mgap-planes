@@ -1,5 +1,5 @@
-import { DetailField } from '../extras/components/detail.model';
 import { ChacraCore } from './chacras-core.model';
+import { DetailField } from '../extras/components/detail.model';
 
 export const CHACRASCOREDETAIL_DEFAULT_FIELDS: DetailField[] = [
   { name: 'chacraNro', label: 'Nro. de la Chacra' },
@@ -19,6 +19,6 @@ export const CHACRASCOREDETAIL_DEFAULT_FIELDS: DetailField[] = [
 ];
 
 export interface ChacrasCoreDetailParams {
-  fields?: DetailField[];
   chacra: ChacraCore;
+  fields?: DetailField[];
 }

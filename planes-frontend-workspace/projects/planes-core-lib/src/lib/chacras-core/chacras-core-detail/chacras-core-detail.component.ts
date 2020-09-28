@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { DetailField, DetailParams } from '../../extras/components/detail.model';
+import {
+  DetailField,
+  DetailParams
+} from '../../extras/components/detail.model';
 
 import {
   ChacrasCoreDetailParams,
@@ -20,6 +23,7 @@ export class ChacrasCoreDetailComponent implements OnInit {
     if (!value) {
       return;
     }
+    this.fields = value.fields || CHACRASCOREDETAIL_DEFAULT_FIELDS;
     const rows = this.fields.map(f => ({
       label: f.label,
       value: value.chacra[f.name]
@@ -35,7 +39,5 @@ export class ChacrasCoreDetailComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    this.fields = this.params.fields || CHACRASCOREDETAIL_DEFAULT_FIELDS;
-  }
+  ngOnInit() {}
 }
