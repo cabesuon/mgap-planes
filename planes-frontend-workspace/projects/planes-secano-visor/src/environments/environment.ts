@@ -2,8 +2,27 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { NgxLoggerLevel } from 'ngx-logger';
+
+const packageJson = require('../../../../package.json');
+
 export const environment = {
-  production: false
+  appName: 'PUMRS',
+  envName: 'DEV',
+  production: false,
+  test: false,
+  i18nPrefix: '',
+  versions: {
+    app: packageJson.version
+  },
+  apiUrl: 'http://localhost:8001/secano/rest',
+  useMockServer: true,
+  logging: {
+    serverLoggingUrl: null,
+    level: NgxLoggerLevel.DEBUG,
+    serverLogLevel: NgxLoggerLevel.OFF,
+    disableConsoleLogging: false
+  }
 };
 
 /*

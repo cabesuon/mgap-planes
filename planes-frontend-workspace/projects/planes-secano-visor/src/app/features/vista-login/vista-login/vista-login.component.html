@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1 class="main-heading">Ingresar</h1>
+    </div>
+  </div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <mat-card>
+          <div class="row">
+            <mat-form-field class="col">
+              <input formControlName="token" type="text" matInput
+                placeholder="Token" required>
+            </mat-form-field>
+          </div>
+        </mat-card>
+        <div class="row">
+          <div class="col justify-content-end">
+            <button mat-raised-button type="submit" [disabled]="!form.valid">
+              Ingresar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

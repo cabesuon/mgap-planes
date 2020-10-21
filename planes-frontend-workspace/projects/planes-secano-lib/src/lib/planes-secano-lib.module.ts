@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // material
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +28,10 @@ import {
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
 // planes-core-lib
-import { MatPaginatorIntlCoreService } from 'planes-core-lib';
+import {
+  PlanesCoreLibModule,
+  MatPaginatorIntlCoreService
+} from 'planes-core-lib';
 // planes-secano-lib
 import { ChacrasSecanoDetailComponent } from './chacras-secano/chacras-secano-detail/chacras-secano-detail.component';
 import { ChacrasSecanoFormComponent } from './chacras-secano/chacras-secano-form/chacras-secano-form.component';
@@ -35,14 +39,24 @@ import { ChacrasSecanoTableComponent } from './chacras-secano/chacras-secano-tab
 import { PlanesSecanoTableComponent } from './planes-secano/planes-secano-table/planes-secano-table.component';
 import { PlanesSecanoFormComponent } from './planes-secano/planes-secano-form/planes-secano-form.component';
 import { PlanesSecanoDetailComponent } from './planes-secano/planes-secano-detail/planes-secano-detail.component';
+
 import { ComponentesSecanoDetailComponent } from './componentes-secano/componentes-secano-detail/componentes-secano-detail.component';
 import { ComponentesSecanoFormComponent } from './componentes-secano/componentes-secano-form/componentes-secano-form.component';
 import { ComponentesSecanoTableComponent } from './componentes-secano/componentes-secano-table/componentes-secano-table.component';
-import { RotacionesSecanoTableComponent } from './rotaciones-secano/rotaciones-secano-table/rotaciones-secano-table.component';
+
 import { RotacionesSecanoFormComponent } from './rotaciones-secano/rotaciones-secano-form/rotaciones-secano-form.component';
 import { RotacionesSecanoDetailComponent } from './rotaciones-secano/rotaciones-secano-detail/rotaciones-secano-detail.component';
 
+import { RelacionesPerdidaSueloSecanoDetailComponent } from './relaciones-perdida-suelo-secano/relaciones-perdida-suelo-secano-detail/relaciones-perdida-suelo-secano-detail.component';
+import { PeriodosSecanoDetailComponent } from './periodos-secano/periodos-secano-detail/periodos-secano-detail.component';
+import { ManejosSecanoDetailComponent } from './manejos-secano/manejos-secano-detail/manejos-secano-detail.component';
+import { CultivosSecanoDetailComponent } from './cultivos-secano/cultivos-secano-detail/cultivos-secano-detail.component';
+import { RendimientosSecanoDetailComponent } from './rendimientos-secano/rendimientos-secano-detail/rendimientos-secano-detail.component';
+
+import { ResponsablesSecanoDetailComponent } from './responsables-secano/responsables-secano-detail/responsables-secano-detail.component';
+
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     ChacrasSecanoDetailComponent,
     ChacrasSecanoFormComponent,
@@ -56,11 +70,23 @@ import { RotacionesSecanoDetailComponent } from './rotaciones-secano/rotaciones-
     ComponentesSecanoFormComponent,
     ComponentesSecanoTableComponent,
 
-    RotacionesSecanoTableComponent,
     RotacionesSecanoFormComponent,
-    RotacionesSecanoDetailComponent
+    RotacionesSecanoDetailComponent,
+
+    RelacionesPerdidaSueloSecanoDetailComponent,
+
+    PeriodosSecanoDetailComponent,
+
+    ManejosSecanoDetailComponent,
+
+    CultivosSecanoDetailComponent,
+
+    RendimientosSecanoDetailComponent,
+
+    ResponsablesSecanoDetailComponent
   ],
   imports: [
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
 
@@ -75,7 +101,9 @@ import { RotacionesSecanoDetailComponent } from './rotaciones-secano/rotaciones-
     MatTableModule,
     MatTooltipModule,
 
-    FontAwesomeModule
+    FontAwesomeModule,
+
+    PlanesCoreLibModule
   ],
   exports: [
     ChacrasSecanoDetailComponent,
@@ -90,9 +118,20 @@ import { RotacionesSecanoDetailComponent } from './rotaciones-secano/rotaciones-
     ComponentesSecanoFormComponent,
     ComponentesSecanoTableComponent,
 
-    RotacionesSecanoTableComponent,
     RotacionesSecanoFormComponent,
-    RotacionesSecanoDetailComponent
+    RotacionesSecanoDetailComponent,
+
+    RelacionesPerdidaSueloSecanoDetailComponent,
+
+    PeriodosSecanoDetailComponent,
+
+    ManejosSecanoDetailComponent,
+
+    CultivosSecanoDetailComponent,
+
+    RendimientosSecanoDetailComponent,
+
+    ResponsablesSecanoDetailComponent
   ],
   providers: [
     {
@@ -101,4 +140,14 @@ import { RotacionesSecanoDetailComponent } from './rotaciones-secano/rotaciones-
     }
   ]
 })
-export class PlanesSecanoLibModule {}
+export class PlanesSecanoLibModule {
+  constructor(faIconLibrary: FaIconLibrary) {
+    faIconLibrary.addIcons(
+      faFileSignature,
+      faFileInvoiceDollar,
+      faMap,
+      faSearch,
+      faTrash
+    );
+  }
+}

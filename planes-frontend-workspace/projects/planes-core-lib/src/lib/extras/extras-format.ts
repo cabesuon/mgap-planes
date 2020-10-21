@@ -1,3 +1,5 @@
+import { dateFromString, dateToString } from './extras-date';
+
 export function formatValue(value: any, format: (v: any) => string): string {
   if (format) {
     return format(value);
@@ -5,10 +7,12 @@ export function formatValue(value: any, format: (v: any) => string): string {
   return `${value}`;
 }
 
-export function formatDate(d: Date): string {
+export function formatDate(d: Date | string): string {
   if (!d) {
     return '';
   }
-  const d2 = new Date(d);
-  return `${d2.getDate()}/${d2.getMonth() + 1}/${d2.getFullYear()}`;
+  if (d instanceof Date) {
+    return dateToString(d);
+  }
+  return d;
 }

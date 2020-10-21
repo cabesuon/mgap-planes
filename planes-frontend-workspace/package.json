@@ -1,12 +1,17 @@
 {
   "name": "planes-frontend-workspace",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "ng": "ng",
     "start:planes-core-visor": "ng serve planes-core-visor",
     "start:ldev:planes-core-visor": "ng serve planes-core-visor --configuration=local-development",
+    "start:planes-secano-visor": "ng serve planes-secano-visor",
     "build:planes-core-lib": "ng build planes-core-lib",
+    "build:planes-core-visor": "ng build planes-secano-visor",
+    "build:planes-secano-lib": "ng build planes-secano-lib",
+    "build:planes-secano-visor": "ng build planes-secano-visor",
     "build:watch:planes-core-lib": "ng build planes-core-lib --watch=true",
+    "build:watch:planes-secano-lib": "ng build planes-secano-lib --watch=true",
     "build:dev:planes-core-visor": "ng build planes-core-visor --baseHref=/planes-core-visor/ --configuration=development",
     "build:prod:planes-core-visor": "ng build planes-core-visor --prod --baseHref=/planes-core-visor/ --configuration=production",
     "test:planes-core-lib": "ng test planes-core-lib",

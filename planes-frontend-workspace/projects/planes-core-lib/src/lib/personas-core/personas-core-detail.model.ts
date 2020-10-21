@@ -6,7 +6,6 @@ export const PERSONASCOREDETAIL_DEFAULT_FIELDS: DetailField[] = [
   { name: 'personaCedula', label: 'Cedula' },
   { name: 'personaNombre', label: 'Nombre' },
   { name: 'personaPrimerApellido', label: 'Primer Apellido' },
-  { name: 'personaSegundoApellido', label: 'Segundo Apellido' },
   {
     name: 'personaFechaDeNacimiento',
     label: 'Fecha de Nacimiento',

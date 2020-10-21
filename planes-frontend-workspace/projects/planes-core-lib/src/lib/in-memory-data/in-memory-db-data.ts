@@ -92,6 +92,22 @@ export function createInMemoryDataDefault(): InMemoryDbData {
     createBasePlanCore('6', 2, '2', ['2'], [], '01/01/2018', '01/02/2018', null)
   ];
 
+  const padrones: PadronCore[] = [];
+  for (let i = 1; i <= 9; i++) {
+    padrones.push({
+      padronId: `${i}`,
+      padronCodigoDepartamento: '1',
+      padrondDepartamento: 'Artigas',
+      padronAreaHa: i * 100
+    });
+  }
+
+  const suelos: SueloCore[] = [
+    createBaseSueloCore(1),
+    createBaseSueloCore(2),
+    createBaseSueloCore(3)
+  ];
+
   // ----------------------------------------------------------------------
   // chacras
   const cgb = createBaseGeomChacraCore();
@@ -124,7 +140,9 @@ export function createInMemoryDataDefault(): InMemoryDbData {
               pgb.paths[0].map((v: number[]) => [v[0] + i * D, v[1] + i * D])
             ]
           })
-        )
+        ),
+        [padrones[i]],
+        [suelos[i % suelos.length]]
       )
     );
   }
@@ -149,38 +167,6 @@ export function createInMemoryDataDefault(): InMemoryDbData {
     );
   }
   // ----------------------------------------------------------------------
-
-  const padrones: PadronCore[] = [
-    {
-      padronId: '1',
-      padronCodigoDepartamento: '1',
-      padrondDepartamento: 'Artigas',
-      padronAreaHa: 1
-    },
-    {
-      padronId: '2',
-      padronCodigoDepartamento: '1',
-      padrondDepartamento: 'Artigas',
-      padronAreaHa: 2
-    },
-    {
-      padronId: '3',
-      padronCodigoDepartamento: '1',
-      padrondDepartamento: 'Artigas',
-      padronAreaHa: 3
-    },
-    {
-      padronId: '4',
-      padronCodigoDepartamento: '1',
-      padrondDepartamento: 'Artigas',
-      padronAreaHa: 4
-    }
-  ];
-  const suelos: SueloCore[] = [
-    createBaseSueloCore(1),
-    createBaseSueloCore(2),
-    createBaseSueloCore(3)
-  ];
 
   return {
     tokens,

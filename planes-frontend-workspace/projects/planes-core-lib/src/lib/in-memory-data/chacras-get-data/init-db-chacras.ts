@@ -32,7 +32,9 @@ export class InitDbChacras implements GetData {
             Object.assign({}, pgb, {
               paths: [pgb.paths[0].map(v => [v[0] + i * D, v[1] + i * D])]
             })
-          )
+          ),
+          [],
+          []
         )
       );
     }

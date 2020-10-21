@@ -12,11 +12,11 @@ export class IngenierosAgronomosCoreService {
 
   constructor(private http: HttpClient) {}
 
-  getIngenierosAgronomosCore(
-    ingenierosAgronomosId: number[]
-  ): Observable<{ queryResults: IngenierosAgronomosCoreQueryResults }> {
+  getIngenierosAgronomosCore(): Observable<{
+    queryResults: IngenierosAgronomosCoreQueryResults;
+  }> {
     return this.http.post<{
       queryResults: IngenierosAgronomosCoreQueryResults;
-    }>(`${this.url}/queryIngenierosAgronomos`, { ingenierosAgronomosId });
+    }>(`${this.url}/queryIngenierosAgronomos`, {});
   }
 }

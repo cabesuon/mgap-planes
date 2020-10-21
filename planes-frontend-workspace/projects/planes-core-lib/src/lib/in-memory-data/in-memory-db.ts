@@ -3,7 +3,6 @@ import { ChacraCore } from '../chacras-core/chacras-core.model';
 import { ZonaExclusionCore } from '../zonas-exclusion-core/zonas-exclusion-core.model';
 import { PersonaCore } from '../personas-core/personas-core.model';
 import { IngenieroAgronomoCore } from '../ingenieros-agronomos-core/ingenieros-agronomos-core.model';
-import { ResponsableCore } from '../responsables-core/responsables-core.model';
 import { PadronCore } from '../padrones-core/padrones-core.model';
 import { SueloCore } from '../suelos-core/suelos-core.model';
 import {

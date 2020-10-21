@@ -1,1 +1,25 @@
-<p>planes-secano-form works!</p>
+<form [formGroup]="form">
+
+  <!-- propietarioResponsable -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Propietario Responsable</mat-label>
+      <mat-select formControlName="propietarioResponsable">
+        <!-- <mat-option *ngFor="let r of formInput.propietariosResponsables"
+        [value]="r.contacto.personaId">{{r.contacto.personaId}}</mat-option> -->
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- arrendatarios -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Arrendatarios</mat-label>
+      <mat-select formControlName="arrendatarios" multiple>
+        <!-- <mat-option *ngFor="let r of formInput.tctResponsables"
+        [value]="r.contacto.personaId">{{r.contacto.personaId}}</mat-option> -->
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+</form>

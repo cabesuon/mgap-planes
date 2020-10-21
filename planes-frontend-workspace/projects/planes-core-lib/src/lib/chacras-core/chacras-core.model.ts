@@ -95,7 +95,9 @@ export function createBaseChacraCore(
   planId: string,
   chacraGeometria: string,
   chacraFactorLSGeometriaAsignado: string,
-  chacraFactorLSGeometriaLimitante: string
+  chacraFactorLSGeometriaLimitante: string,
+  padrones: PadronCore[],
+  suelos: SueloCore[]
 ): ChacraCore {
   return {
     ...createEmptyChacraCore(),
@@ -108,7 +110,9 @@ export function createBaseChacraCore(
     chacraFactorLSGeometriaAsignado,
     chacraFactorLSGeometriaLimitante,
     chacraFactorLSEsManual:
-      chacraFactorLSGeometriaLimitante === chacraFactorLSGeometriaAsignado
+      chacraFactorLSGeometriaLimitante === chacraFactorLSGeometriaAsignado,
+    padrones,
+    suelos
   };
 }
 

@@ -16,10 +16,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'planes-secano-visor'`, () => {
+  it(`should have as title 'planes-core-visor'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('planes-secano-visor');
+    expect(app.title).toEqual('planes-core-visor');
   });
 
   it('should render title', () => {
@@ -27,7 +27,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.content span').textContent).toContain(
-      'planes-secano-visor app is running!'
+      'planes-core-visor app is running!'
     );
   });
 });

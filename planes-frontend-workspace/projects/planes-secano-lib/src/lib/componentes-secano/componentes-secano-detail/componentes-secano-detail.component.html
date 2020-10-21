@@ -1,1 +1,12 @@
-<p>componentes-secano-detail works!</p>
+<lib-detail [params]="detailParams"></lib-detail>
+<lib-cultivos-secano-detail [params]="_params.cultivoDetailParams">
+</lib-cultivos-secano-detail>
+<lib-manejos-secano-detail [params]="_params.manejoDetailParams">
+</lib-manejos-secano-detail>
+<lib-rendimientos-secano-detail [params]="_params.rendimientoDetailParams">
+</lib-rendimientos-secano-detail>
+<!-- Periodos queda fuera -->
+<!-- <lib-periodos-secano-detail
+*ngFor="let periodoDetailParam of periodosDetailParams"
+[params]="periodoDetailParam">
+</lib-periodos-secano-detail> -->

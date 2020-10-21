@@ -36,20 +36,29 @@ export function resolveChacrasCoreTableCellValue(
 ): string | string[] {
   const names = column.name.split('.');
   if (names.length > 1) {
-    const v: string[] = [];
     let os: any[] = [];
     switch (names[0]) {
       case 'padrones':
         os = chacra.padrones;
         break;
-    }
-    for (const o of os) {
-      if (!o || !o.hasOwnProperty(names[1])) {
+      case 'suelos':
+        os = chacra.suelos;
         break;
-      }
-      v.push(formatValue(o[name[1]], column.literalFormat));
     }
-    return column.type === TableValueType.LIST ? v : v.join(' ');
+    const vs: string[] = [];
+    let v: string[];
+    const attrs = names[1].split('+');
+    for (const o of os) {
+      v = [];
+      for (const attr of attrs) {
+        if (!o || !o.hasOwnProperty(attr)) {
+          continue;
+        }
+        v.push(formatValue(o[attr], column.literalFormat));
+      }
+      vs.push(v.join(', '));
+    }
+    return column.type === TableValueType.LIST ? vs : vs.join(' ');
   }
   return formatValue(chacra[column.name], column.literalFormat);
 }
@@ -93,18 +102,17 @@ export const CHACRASCORETABLE_COLUMNS_DEFAULT: ChacrasCoreTableColumn[] = [
     sort: true,
     filter: true
   },
-  // {
-  //   type: TableValueType.LIST,
-  //   name:
-  //     'suelos.sueloNombre+sueloK+sueloT',
-  //   label: 'Suelo',
-  //   sort: true,
-  //   filter: true
-  // },
   {
     type: TableValueType.LIST,
-    name: 'padrones.departamento+padron+area',
-    label: 'Padrones',
+    name: 'suelos.sueloDesc+sueloFactorK+sueloTolerancia',
+    label: 'Suelos(Desc, K, T)',
+    sort: true,
+    filter: true
+  },
+  {
+    type: TableValueType.LIST,
+    name: 'padrones.padrondDepartamento+padronId+padronAreaHa',
+    label: 'Padrones(Depto, Nro, ha)',
     sort: false,
     filter: true
   },
