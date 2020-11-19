@@ -1,1 +1,29 @@
-<p>rotaciones-secano-form works!</p>
+<form [formGroup]="form">
+
+  <!-- rotacionNombre -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Nombre"
+      formControlName="rotacionNombre">
+    </mat-form-field>
+  </div>
+
+  <!-- rotacionAnio -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      type="number"
+      placeholder="Año"
+      formControlName="rotacionAnio">
+    </mat-form-field>
+  </div>
+
+  <!-- arrendatarios -->
+  <div class="row">
+    <mat-checkbox formControlName="rotacionEsSiembraDirecta">
+      Es Siembra Directa
+    </mat-checkbox>
+  </div>
+
+</form>

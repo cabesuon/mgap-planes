@@ -32,6 +32,7 @@ import { EntityCultivosLoadRequestAction } from './features/entity-cultivos/enti
 import { EntityManejosLoadRequestAction } from './features/entity-manejos/entity-manejos.actions';
 import { EntityRelacionesPerdidaSueloLoadRequestAction } from './features/entity-relaciones-perida-suelo/entity-relaciones-perida-suelo.actions';
 import { EntityRendimientosLoadRequestAction } from './features/entity-rendimientos/entity-rendimientos.actions';
+import { EntityChatLoadRequestAction } from './features/entity-chat/entity-chat.actions';
 
 import { PersonaCore } from 'planes-core-lib';
 import { selectPersonaById } from './features/entity-personas/entity-personas.selectors';
@@ -113,5 +114,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new EntityManejosLoadRequestAction());
     this.store.dispatch(new EntityRendimientosLoadRequestAction());
     this.store.dispatch(new EntityRelacionesPerdidaSueloLoadRequestAction());
+    this.store.dispatch(new EntityChatLoadRequestAction());
   }
 }

@@ -24,3 +24,5 @@ export * from './relaciones-perdida-suelo-secano/relaciones-perdida-suelo-secano
 export * from './rendimientos-secano/rendimientos-secano-detail/rendimientos-secano-detail.component';
 
 export * from './responsables-secano/responsables-secano-detail/responsables-secano-detail.component';
+
+export * from './chat-secano/chat-secano-detail/chat-secano.component';

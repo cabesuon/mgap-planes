@@ -54,6 +54,10 @@ import {
   RendimientoSecano,
   createBaseRendimientoSecano
 } from '../rendimientos-secano/rendimientos-secano.model';
+import {
+  ChatSecano,
+  createBaseChatSecano
+} from '../chat-secano/chat-secano.model';
 
 export interface InMemoryDbData {
   tokens: Array<{ token: string; personaId: string }>;
@@ -74,6 +78,8 @@ export interface InMemoryDbData {
   manejos: ManejoSecano[];
   relacionPerdidaSuelos: RelacionPerdidaSueloSecano[];
   rendimientos: RendimientoSecano[];
+
+  chats: ChatSecano[];
 }
 
 function createBasePeriodosSecano(
@@ -488,6 +494,44 @@ export function createInMemoryDataDefault(): InMemoryDbData {
     );
   }
   // ----------------------------------------------------------------------
+  const chats: ChatSecano[] = [
+    createBaseChatSecano(
+      '1',
+      '2017-06-28T15:50:57',
+      '3',
+      'Observaciones de verificación',
+      true,
+      '0',
+      '1'
+    ),
+    createBaseChatSecano(
+      '3',
+      '2018-04-16T15:09:24',
+      '1',
+      'Se ha vencido el plazo para la contrucción de terrazas para el plan número 9.\r\nEl problema se prensentó en: \r\n',
+      false,
+      '0',
+      '9'
+    ),
+    createBaseChatSecano(
+      '24',
+      '2018-04-16T15:09:27',
+      '1',
+      'Se ha vencido el plazo para la contrucción de terrazas para el plan número 9.\r\nEl problema se prensentó en: \r\n',
+      false,
+      '0',
+      '9'
+    ),
+    createBaseChatSecano(
+      '9',
+      '2017-11-13T15:20:01',
+      '3',
+      'Se ha deshabilitado la edición de la rotación del plan',
+      true,
+      '0',
+      '4088'
+    )
+  ];
 
   return {
     tokens,
@@ -505,6 +549,7 @@ export function createInMemoryDataDefault(): InMemoryDbData {
     cultivos,
     manejos,
     relacionPerdidaSuelos,
-    rendimientos
+    rendimientos,
+    chats
   };
 }

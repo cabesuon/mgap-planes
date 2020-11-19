@@ -11,6 +11,8 @@ import { VistaAdministrativoComponent } from './vista-administrativo/vista-admin
 
 import { VistaLoginComponent } from './vista-login/vista-login/vista-login.component';
 
+import { VistaChatComponent } from './vista-chat/vista-chat/vista-chat.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -30,6 +32,11 @@ const routes: Routes = [
   {
     path: 'administrativo',
     component: VistaAdministrativoComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'chat',
+    component: VistaChatComponent,
     canActivate: [AuthGuardService]
   },
   {

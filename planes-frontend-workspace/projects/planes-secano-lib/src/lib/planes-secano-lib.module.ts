@@ -54,6 +54,7 @@ import { CultivosSecanoDetailComponent } from './cultivos-secano/cultivos-secano
 import { RendimientosSecanoDetailComponent } from './rendimientos-secano/rendimientos-secano-detail/rendimientos-secano-detail.component';
 
 import { ResponsablesSecanoDetailComponent } from './responsables-secano/responsables-secano-detail/responsables-secano-detail.component';
+import { ChatSecanoComponent } from './chat-secano/chat-secano-detail/chat-secano.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -83,7 +84,9 @@ import { ResponsablesSecanoDetailComponent } from './responsables-secano/respons
 
     RendimientosSecanoDetailComponent,
 
-    ResponsablesSecanoDetailComponent
+    ResponsablesSecanoDetailComponent,
+
+    ChatSecanoComponent
   ],
   imports: [
     CommonModule,

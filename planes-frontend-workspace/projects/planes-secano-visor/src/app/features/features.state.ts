@@ -29,6 +29,8 @@ import { entityCultivosReducer } from './entity-cultivos/entity-cultivos.reducer
 import { EntityCultivosState } from './entity-cultivos/entity-cultivos.state';
 import { entityRendimientosReducer } from './entity-rendimientos/entity-rendimientos.reducer';
 import { EntityRendimientosState } from './entity-rendimientos/entity-rendimientos.state';
+import { entityChatReducer } from './entity-chat/entity-chat.reducer';
+import { EntityChatSecanoState } from './entity-chat/entity-chat.state';
 
 export const FEATURE_NAME = 'features';
 export const selectFeatures = createFeatureSelector<State, FeaturesState>(
@@ -51,7 +53,8 @@ export const reducers: ActionReducerMap<FeaturesState> = {
   entityCultivos: entityCultivosReducer,
   entityManejos: entityManejosReducer,
   entityRendimientos: entityRendimientosReducer,
-  entityRelacionesPerdidaSuelo: entityRelacionesPerdidaSueloReducer
+  entityRelacionesPerdidaSuelo: entityRelacionesPerdidaSueloReducer,
+  entityChat: entityChatReducer
 };
 
 export interface FeaturesState {
@@ -71,6 +74,7 @@ export interface FeaturesState {
   entityManejos: EntityManejosState;
   entityRendimientos: EntityRendimientosState;
   entityRelacionesPerdidaSuelo: EntityRelacionesPerdidaSueloSecanoState;
+  entityChat: EntityChatSecanoState;
 }
 
 export interface State extends AppState {

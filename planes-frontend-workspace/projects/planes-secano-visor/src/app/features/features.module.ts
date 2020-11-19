@@ -29,6 +29,9 @@ import { EntityCultivosEffects } from './entity-cultivos/entity-cultivos.effects
 import { EntityManejosEffects } from './entity-manejos/entity-manejos.effect';
 import { EntityRendimientosEffects } from './entity-rendimientos/entity-rendimientos.effect';
 import { EntityRelacionesPerdidaSueloSecanoEffects } from './entity-relaciones-perida-suelo/entity-relaciones-perdida-suelo.effects';
+
+import { EntityChatEffects } from './entity-chat/entity-chat.effects';
+
 // dialogs
 import { EntityPlanesFormDialogComponent } from './entity-planes/entity-planes-form-dialog/entity-planes-form-dialog.component';
 import { EntityChacrasFormDialogComponent } from './entity-chacras/entity-chacras-form-dialog/entity-chacras-form-dialog.component';
@@ -37,6 +40,7 @@ import { VistaPrincipalComponent } from './vista-principal/vista-principal/vista
 import { VistaLoginComponent } from './vista-login/vista-login/vista-login.component';
 import { VistaMapaComponent } from './vista-mapa/vista-mapa/vista-mapa.component';
 import { VistaAdministrativoComponent } from './vista-administrativo/vista-administrativo/vista-administrativo.component';
+import { VistaChatComponent } from './vista-chat/vista-chat/vista-chat.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -69,7 +73,9 @@ import { VistaAdministrativoComponent } from './vista-administrativo/vista-admin
       EntityManejosEffects,
       EntityRelacionesPerdidaSueloSecanoEffects,
       EntityCultivosEffects,
-      EntityRendimientosEffects
+      EntityRendimientosEffects,
+
+      EntityChatEffects
     ])
   ],
   declarations: [
@@ -78,6 +84,7 @@ import { VistaAdministrativoComponent } from './vista-administrativo/vista-admin
     VistaLoginComponent,
     VistaMapaComponent,
     VistaAdministrativoComponent,
+    VistaChatComponent,
     // dialogs
     EntityPlanesFormDialogComponent,
     EntityChacrasFormDialogComponent

@@ -31,9 +31,7 @@ export class EntityIngenierosAgronomosEffects {
     ),
     map(action => action.payload.ingenierosAgronomosId),
     switchMap(ingenierosAgronomosId => {
-      return this.IngenierosAgronomosCoreService.getIngenierosAgronomosCore(
-        ingenierosAgronomosId
-      ).pipe(
+      return this.IngenierosAgronomosCoreService.getIngenierosAgronomosCore().pipe(
         map(results => results.queryResults),
         map(queryResults => {
           return queryResults.success
