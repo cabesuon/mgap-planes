@@ -1,0 +1,25 @@
+<form [formGroup]="form">
+
+  <!-- cultivo -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Cultivo</mat-label>
+      <mat-select formControlName="cultivoId">
+        <mat-option *ngFor="let c of formInput.cultivos"
+        [value]="c.cultivoId">{{c.cultivoNombre}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- ciclo -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Ciclo</mat-label>
+      <mat-select formControlName="cicloId">
+        <mat-option *ngFor="let c of formInput.ciclos"
+        [value]="c.cicloId">{{c.cicloNombre}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+</form>

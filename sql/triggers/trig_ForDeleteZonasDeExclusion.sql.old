@@ -1,0 +1,52 @@
+USE PlanesCoreGDB;
+GO
+
+IF OBJECT_ID(N'[dbo].[ForDeleteZonasDeExclusion]', N'TR') IS NOT NULL  
+    DROP TRIGGER [dbo].[ForDeleteZonasDeExclusion]; 
+GO
+
+-- CREATE TRIGGER [dbo].[ForDeleteZonasDeExclusion]
+-- ON [dbo].[ZonasDeExclusion]
+-- FOR DELETE
+-- AS
+-- BEGIN
+
+-- 	DECLARE @nee varchar(MAX) = CONVERT(
+-- 		varchar(MAX),
+-- 		(
+-- 			SELECT Id, PlanId, Estado, FechaEliminado
+-- 			FROM [dbo].[Chacras]
+-- 			FOR XML AUTO
+-- 		)
+-- 	);
+
+-- 	PRINT @nee;
+
+-- 	/*
+
+-- 		No se pueden eliminar zonas de exclusion asociadas a planes con chacras en estado 'A' no eliminadas
+
+-- 	*/
+-- 	IF EXISTS (
+-- 		SELECT *
+-- 		FROM deleted d INNER JOIN [dbo].[Chacras] c ON d.PlanId = c.PlanId
+-- 		WHERE c.Estado = 'A' AND c.FechaEliminado <> NULL
+-- 	)
+-- 	BEGIN
+-- 		DECLARE @context varchar(MAX) = CONVERT(
+-- 			varchar(MAX),
+-- 			(
+-- 				SELECT d.OBJECTID, d.PlanId, c.Id, c.Estado
+-- 				FROM deleted d INNER JOIN [dbo].[Chacras] c ON d.PlanId = c.PlanId
+-- 				WHERE c.Estado = 'A' AND c.FechaEliminado <> NULL
+-- 				FOR XML AUTO
+-- 			)
+-- 		);	
+-- 		EXEC [dbo].[RaiseRollback]
+-- 			@Severity = 16,
+-- 			@State = 1,
+-- 			@Procedure = N'TRIGGER [dbo].[ForDeleteZonasDeExclusion]',
+-- 			@Context = @context,
+-- 			@Message = N'No se pueden eliminar zonas de exclusion asociadas a planes con chacras en estado "A" no eliminadas.';
+-- 	END
+-- END;

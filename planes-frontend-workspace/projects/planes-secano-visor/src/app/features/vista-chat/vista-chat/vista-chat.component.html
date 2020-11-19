@@ -1,0 +1,15 @@
+<mat-card class="container">
+  <div class="mat-typography conversation-header">
+      Chat
+  </div>
+  <mat-nav-list>
+   <a mat-list-item *ngFor="let mensaje of mensajes"> {{ mensaje.mensajeContenido }} </a>
+  </mat-nav-list>
+  <div class="conversation-input">
+    <mat-divider></mat-divider>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Escribe un mensaje..." name="text">
+      
+    </mat-form-field>
+  </div>
+</mat-card>

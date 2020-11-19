@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    volumes:
+      - mssql_data:/var/lib/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Planes12!@
+      - MSSQL_PID=Express
+    ports:
+      - 1433:1433
+
+volumes:
+  mssql_data:

@@ -1,0 +1,92 @@
+USE PlanesCoreGDB
+GO
+EXEC tSQLt.NewTestClass 'ForDeleteZonasDeExclusionTests';
+GO
+
+/*
+	1 - Existe el trigger ForDeleteZonasDeExclusion
+*/
+IF OBJECT_ID(N'[ForDeleteZonasDeExclusionTests].[test 1 ForDeleteZonasDeExclusion Existe el trigger]', 'P') > 0
+	DROP PROCEDURE [ForDeleteZonasDeExclusionTests].[test 1 ForDeleteZonasDeExclusion Existe el trigger];
+GO
+CREATE PROCEDURE [ForDeleteZonasDeExclusionTests].[test 1 ForDeleteZonasDeExclusion Existe el trigger]
+AS
+BEGIN
+	EXEC tSQLt.AssertObjectExists '[dbo].[ForDeleteZonasDeExclusion]';
+END
+GO
+
+/*
+	2 - Eliminar zona de exclusion asociada a chacra en estado E
+*/
+IF OBJECT_ID(N'[ForDeleteZonasDeExclusionTests].[test 2 ForDeleteZonasDeExclusion Eliminar  zona de exclusion asociada a chacra en estado E]', 'P') > 0
+	DROP PROCEDURE [ForDeleteZonasDeExclusionTests].[test 2 ForDeleteZonasDeExclusion Eliminar  zona de exclusion asociada a chacra en estado E];
+GO
+CREATE PROCEDURE [ForDeleteZonasDeExclusionTests].[test 2 ForDeleteZonasDeExclusion Eliminar  zona de exclusion asociada a chacra en estado E]
+AS
+BEGIN
+	DECLARE @idChacra int;
+  	DECLARE @idZona int;
+	EXEC [dbo].[AddChacraPendiente]
+    	@IdChacra = @idChacra OUT;
+	
+	DECLARE @geom geometry = [dbo].[GetPolygonInner](0);
+    EXEC [dbo].[ZonaDeExclusionBuilder]
+      @PlanId = @idChacra,
+      @Geom = @geom;
+	
+	DELETE FROM [dbo].[ZonasDeExclusion]
+	WHERE OBJECTID = @idZona;
+
+	IF EXISTS (SELECT OBJECTID FROM [dbo].[ZonasDeExclusion] WHERE OBJECTID = @idZona)
+    EXEC tSQLt.Fail 'La zona de exclusion asociada a la chacra no fue eliminada';
+END
+GO
+
+/*
+	3 - Eliminar zona de exclusion asociada a plan con chacras en estado A
+*/
+IF OBJECT_ID(N'[ForDeleteZonasDeExclusionTests].[test 3 ForDeleteZonasDeExclusion Eliminar zona de exclusion asociada a plan con chacras en estado A]', 'P') > 0
+	DROP PROCEDURE [ForDeleteZonasDeExclusionTests].[test 3 ForDeleteZonasDeExclusion Eliminar zona de exclusion asociada a plan con chacras en estado A];
+GO
+CREATE PROCEDURE [ForDeleteZonasDeExclusionTests].[test 3 ForDeleteZonasDeExclusion Eliminar zona de exclusion asociada a plan con chacras en estado A]
+AS
+BEGIN
+  	EXEC tSQLt.SpyProcedure '[dbo].[RaiseRollback]';
+	
+	DECLARE @idChacra int;
+	DECLARE @idZona int;
+	EXEC [dbo].[AddChacraPendiente]
+		@IdChacra = @idChacra OUT;
+
+	UPDATE [dbo].[Chacras]
+	SET Estado = 'A'
+	WHERE Id = @idChacra;
+	
+	DECLARE @geom geometry = [dbo].[GetPolygonInner](0);
+    EXEC [dbo].[ZonaDeExclusionBuilder]
+      @PlanId = @idChacra,
+      @Geom = @geom,
+	  @Id = @idZona OUT;
+	
+	PRINT '+++ TEST 3 ForDeleteZonasDeExclusion'
+
+	DELETE FROM [dbo].[ZonasDeExclusion]
+	WHERE OBJECTID = @idZona;
+	
+  	DECLARE @expectedMessage char(2000) =
+    N'No se pueden eliminar zonas de exclusion asociadas a planes con chacras en estado "A" no eliminadas.';
+	DECLARE @actualMessage char(2000) = (
+		SELECT TOP(1) Message
+		FROM [dbo].[RaiseRollback_SpyProcedureLog]
+	);
+
+  	EXEC tSQLt.assertEquals
+		@expectedMessage,
+		@actualMessage,
+		N'No se pueden eliminar zonas de exclusion asociadas a planes con chacras en estado "A" no eliminadas.';
+END
+GO
+
+EXEC tSQLt.RunTestClass '[ForDeleteZonasDeExclusionTests]';
+GO
