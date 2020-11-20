@@ -3,6 +3,7 @@ import { ChacraSecano, createBaseChacraSecano } from 'planes-secano-lib';
 
 export interface ChacraSegurosSecano extends ChacraSecano {
   unidadId: string;
+  empresaId: string;
 }
 
 export interface ChacrasSegurosSecanoQueryResults {
@@ -31,24 +32,21 @@ export interface ChacraSegurosSecanoDeleteResult {
 
 export function createBaseChacraSegurosSecano(
   id: string,
-  planId: string,
-  chacraGeometria: string,
-  chacraFactorLSGeometriaAsignado: string,
-  chacraFactorLSGeometriaLimitante: string,
-  padrones: PadronCore[],
-  suelos: SueloCore[],
-  unidadId: string
+  unidadId: string,
+  empresaId: string,
+  chacraGeometria: string
 ): ChacraSegurosSecano {
   return {
     ...createBaseChacraSecano(
       id,
-      planId,
+      null,
       chacraGeometria,
-      chacraFactorLSGeometriaAsignado,
-      chacraFactorLSGeometriaLimitante,
-      padrones,
-      suelos
+      null,
+      null,
+      null,
+      null
     ),
-    unidadId
+    unidadId,
+    empresaId
   };
 }

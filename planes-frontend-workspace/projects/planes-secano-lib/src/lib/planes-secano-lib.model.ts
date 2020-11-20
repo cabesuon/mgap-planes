@@ -30,5 +30,5 @@ export * from './chacras-secano/chacras-secano.model';
 export * from './chacras-secano/chacras-secano-detail.model';
 export * from './chacras-secano/chacras-secano-table.model';
 
-export * from './chat-secano/chat-secano.model';
-export * from './chat-secano/chat-secano-detail.model';
+// export * from './chat-secano/chat-secano.model';
+// export * from './chat-secano/chat-secano-detail.model';

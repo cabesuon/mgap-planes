@@ -25,4 +25,4 @@ export * from './rendimientos-secano/rendimientos-secano-detail/rendimientos-sec
 
 export * from './responsables-secano/responsables-secano-detail/responsables-secano-detail.component';
 
-export * from './chat-secano/chat-secano-detail/chat-secano.component';
+// export * from './chat-secano/chat-secano-detail/chat-secano.component';

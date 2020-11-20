@@ -1,19 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlanesSecanoTableComponent } from './planes-secano-table.component';
+import {
+  ComponentesProductivosSegurosSecanoTableComponent
+} from './componentes-productivos-seguros-secano-table.component';
 
-describe('PlanesSecanoTableComponent', () => {
-  let component: PlanesSecanoTableComponent;
-  let fixture: ComponentFixture<PlanesSecanoTableComponent>;
+describe('ComponentesProductivosSegurosSecanoTableComponent', () => {
+  let component: ComponentesProductivosSegurosSecanoTableComponent;
+  let fixture: ComponentFixture<ComponentesProductivosSegurosSecanoTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PlanesSecanoTableComponent]
+      declarations: [ComponentesProductivosSegurosSecanoTableComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlanesSecanoTableComponent);
+    fixture = TestBed.createComponent(ComponentesProductivosSegurosSecanoTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
