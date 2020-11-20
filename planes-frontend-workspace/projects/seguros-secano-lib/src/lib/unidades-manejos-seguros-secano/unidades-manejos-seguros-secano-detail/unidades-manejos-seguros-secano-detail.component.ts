@@ -10,8 +10,7 @@ import {
   templateUrl: './unidades-manejos-seguros-secano-detail.component.html',
   styleUrls: ['./unidades-manejos-seguros-secano-detail.component.css']
 })
-export class UnidadesManejosSegurosSecanoDetailComponent
-  implements OnInit {
+export class UnidadesManejosSegurosSecanoDetailComponent implements OnInit {
   _params: UnidadesManejosSegurosSecanoDetailParams = null;
   @Input()
   set params(value: UnidadesManejosSegurosSecanoDetailParams) {

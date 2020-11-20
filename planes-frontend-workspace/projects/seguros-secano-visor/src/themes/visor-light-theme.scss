@@ -1,0 +1,9 @@
+$visor-light-primary: mat-palette($mat-grey, 800, 50);
+$visor-light-accent: mat-palette($mat-green, 400);
+$visor-light-warn: mat-palette($mat-red, 500);
+
+$visor-light-theme: mat-light-theme(
+  $visor-light-primary,
+  $visor-light-accent,
+  $visor-light-warn
+);

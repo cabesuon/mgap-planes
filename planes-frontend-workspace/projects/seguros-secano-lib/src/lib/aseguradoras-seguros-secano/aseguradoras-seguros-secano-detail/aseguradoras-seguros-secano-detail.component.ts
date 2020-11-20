@@ -19,7 +19,8 @@ export class AseguradorasSegurosSecanoDetailComponent implements OnInit {
       return;
     }
 
-    this.fields = value.fields || ASEGURADORASSEGUROSSECANODETAIL_DEFAULT_FIELDS;
+    this.fields =
+      value.fields || ASEGURADORASSEGUROSSECANODETAIL_DEFAULT_FIELDS;
 
     const rows = this.fields.map(f => ({
       label: f.label,

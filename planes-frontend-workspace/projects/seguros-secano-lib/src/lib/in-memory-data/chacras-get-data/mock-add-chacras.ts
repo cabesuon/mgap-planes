@@ -1,8 +1,6 @@
 import { GetData } from '../get-data';
 import { InMemoryDb } from '../in-memory-db';
-import {
-  ChacraSegurosSecano
-} from '../../chacras-seguros-secano/chacras-seguros-secano.model';
+import { ChacraSegurosSecano } from '../../chacras-seguros-secano/chacras-seguros-secano.model';
 
 export class MockAddChacras implements GetData {
   getData(payload: any, db?: InMemoryDb): any {

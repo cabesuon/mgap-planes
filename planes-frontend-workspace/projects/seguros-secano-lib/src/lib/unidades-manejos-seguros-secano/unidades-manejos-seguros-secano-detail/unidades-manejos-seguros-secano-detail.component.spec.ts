@@ -1,14 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  UnidadesManejosSegurosSecanoDetailComponent
-} from './unidades-manejos-seguros-secano-detail.component';
+import { UnidadesManejosSegurosSecanoDetailComponent } from './unidades-manejos-seguros-secano-detail.component';
 
 describe('UnidadesManejosSegurosSecanoDetailComponent', () => {
   let component: UnidadesManejosSegurosSecanoDetailComponent;
-  let fixture: ComponentFixture<
-  UnidadesManejosSegurosSecanoDetailComponent
-  >;
+  let fixture: ComponentFixture<UnidadesManejosSegurosSecanoDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

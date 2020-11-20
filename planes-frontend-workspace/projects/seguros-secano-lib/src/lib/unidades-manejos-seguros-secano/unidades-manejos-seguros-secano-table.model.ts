@@ -13,12 +13,9 @@ import { CultivoSegurosSecano } from '../cultivos-seguros-secano/cultivos-seguro
 
 import { UnidadManejoSegurosSecano } from './unidades-manejos-seguros-secano.model';
 
-export interface UnidadesManejosSegurosSecanoTableColumn
-  extends TableColumn {
+export interface UnidadesManejosSegurosSecanoTableColumn extends TableColumn {
   literalFormat?: (v: any) => string;
-  actionFormat?: (
-    componente: UnidadManejoSegurosSecano
-  ) => TableValueAction;
+  actionFormat?: (unidad: UnidadManejoSegurosSecano) => TableValueAction;
 }
 
 export interface UnidadesManejosSegurosSecanoTableParams {
@@ -81,27 +78,25 @@ export function resolveUnidadesManejosSegurosSecanoTableCellValue(
 }
 
 export function createUnidadesManejosSegurosSecanoTableRow(
-  componente: UnidadManejoSegurosSecano,
+  unidad: UnidadManejoSegurosSecano,
   columns: UnidadesManejosSegurosSecanoTableColumn[],
   sources: UnidadesManejosSegurosSecanoTableSources
 ): TableRow {
   const row: TableRow = {
-    __source__: componente
+    __source__: unidad
   };
   let v: any;
   for (const column of columns) {
     switch (column.type) {
       case TableValueType.ACTION:
         row[column.name] = column.actionFormat
-          ? column.actionFormat(componente)
+          ? column.actionFormat(unidad)
           : { value: column.name, text: column.name, icon: 'bomb' };
         break;
       case TableValueType.LIST:
       case TableValueType.LITERAL:
-        row[
-          column.name
-        ] = resolveUnidadesManejosSegurosSecanoTableCellValue(
-          componente,
+        row[column.name] = resolveUnidadesManejosSegurosSecanoTableCellValue(
+          unidad,
           column,
           sources
         );
@@ -111,8 +106,7 @@ export function createUnidadesManejosSegurosSecanoTableRow(
   return row;
 }
 
-export const UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT:
-UnidadesManejosSegurosSecanoTableColumn[] = [
+export const UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT: UnidadesManejosSegurosSecanoTableColumn[] = [
   // acciones
   {
     type: TableValueType.ACTION,

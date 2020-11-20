@@ -2,7 +2,7 @@ export interface UnidadManejoSegurosSecano {
   unidadId: string;
   unidadNombre: string;
 
-  empresaId: string,
+  empresaId: string;
 
   cultivoId: string;
   cicloId: string;
@@ -35,25 +35,25 @@ export interface UnidadManejoSegurosSecano {
 export interface UnidadesManejosSegurosSecanoQueryResults {
   success: boolean;
   error: { code: number; description: string };
-  componentes: UnidadManejoSegurosSecano[];
+  unidades: UnidadManejoSegurosSecano[];
 }
 
 export interface UnidadesManejosSegurosSecanoAddResult {
   success: boolean;
   error: { code: number; description: string };
-  componentes: UnidadManejoSegurosSecano;
+  unidades: UnidadManejoSegurosSecano;
 }
 
 export interface UnidadesManejosSegurosSecanoUpdateResult {
   success: boolean;
   error: { code: number; description: string };
-  componentes: UnidadManejoSegurosSecano;
+  unidades: UnidadManejoSegurosSecano;
 }
 
 export interface UnidadesManejosSegurosSecanoDeleteResult {
   success: boolean;
   error: { code: number; description: string };
-  componenteId: string;
+  unidadId: string;
 }
 
 export function createEmptyUnidadManejoSegurosSecano(): UnidadManejoSegurosSecano {

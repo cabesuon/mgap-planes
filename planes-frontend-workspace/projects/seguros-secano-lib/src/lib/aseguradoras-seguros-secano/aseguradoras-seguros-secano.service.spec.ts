@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import {
-  AseguradorasSegurosSecanoService
-} from './aseguradoras-seguros-secano.service';
+import { AseguradorasSegurosSecanoService } from './aseguradoras-seguros-secano.service';
 
 describe('AseguradorasSegurosSecanoService', () => {
   let service: AseguradorasSegurosSecanoService;

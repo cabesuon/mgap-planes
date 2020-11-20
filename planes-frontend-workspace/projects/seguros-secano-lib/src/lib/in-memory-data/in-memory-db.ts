@@ -1,12 +1,6 @@
-import {
-  ChacraSegurosSecano
-} from '../chacras-seguros-secano/chacras-seguros-secano.model';
-import {
-  ComponenteProductivoSegurosSecano
-} from '../componentes-productivos-seguros-secano/componentes-productivos-seguros-secano.model';
-import {
-  UnidadManejoSegurosSecano
-} from '../unidades-manejos-seguros-secano/unidades-manejos-seguros-secano.model';
+import { ChacraSegurosSecano } from '../chacras-seguros-secano/chacras-seguros-secano.model';
+import { ComponenteProductivoSegurosSecano } from '../componentes-productivos-seguros-secano/componentes-productivos-seguros-secano.model';
+import { UnidadManejoSegurosSecano } from '../unidades-manejos-seguros-secano/unidades-manejos-seguros-secano.model';
 import { PersonaCore } from 'planes-core-lib';
 import { EmpresaCore, personaRelEmpresaCore } from 'planes-core-lib';
 
@@ -44,19 +38,19 @@ export class InMemoryDb {
     );
   }
 
-  getUnidadesManejosSegurosSecanoByPersonaId(personaId: string):
-  UnidadManejoSegurosSecano[] {
+  getUnidadesManejosSegurosSecanoByPersonaId(
+    personaId: string
+  ): UnidadManejoSegurosSecano[] {
     const empresas = this.getEmpresasCoreByPersonaId(personaId);
-    return this.d.unidades.filter(
-      u => empresas.some(e => e.empresaId === u.empresaId)
+    return this.d.unidades.filter(u =>
+      empresas.some(e => e.empresaId === u.empresaId)
     );
   }
 
   getChacrasSegurosSecanoByPersonaId(personaId: string): ChacraSegurosSecano[] {
     const empresas = this.getEmpresasCoreByPersonaId(personaId);
-    return this.d.chacras.filter(
-      e => empresas.some(e => e.empresaId === e.empresaId)
+    return this.d.chacras.filter(e =>
+      empresas.some(e => e.empresaId === e.empresaId)
     );
   }
-
 }

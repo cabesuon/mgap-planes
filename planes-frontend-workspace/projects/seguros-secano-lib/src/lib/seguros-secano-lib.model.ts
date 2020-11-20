@@ -10,3 +10,10 @@ export * from './componentes-productivos-seguros-secano/componentes-productivos-
 
 export * from './cultivos-seguros-secano/cultivos-seguros-secano.model';
 export * from './cultivos-seguros-secano/cultivos-seguros-secano-detail.model';
+
+export * from './aseguradoras-seguros-secano/aseguradoras-seguros-secano.model';
+export * from './aseguradoras-seguros-secano/aseguradoras-seguros-secano-detail.model';
+
+export * from './unidades-manejos-seguros-secano/unidades-manejos-seguros-secano.model';
+export * from './unidades-manejos-seguros-secano/unidades-manejos-seguros-secano-detail.model';
+export * from './unidades-manejos-seguros-secano/unidades-manejos-seguros-secano-table.model';

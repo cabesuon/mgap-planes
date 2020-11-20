@@ -5,13 +5,11 @@ import { FormActionType, PlanesCoreFormInput } from 'planes-core-lib';
 import { CultivoSegurosSecano } from '../../cultivos-seguros-secano/cultivos-seguros-secano.model';
 import { CicloSegurosSecano } from '../../ciclos-seguros-secano/ciclos-seguros-secano.model';
 
-import {
-  UnidadManejoSegurosSecano
-} from '../unidades-manejos-seguros-secano.model';
+import { UnidadManejoSegurosSecano } from '../unidades-manejos-seguros-secano.model';
 
 export interface UnidadesManejosSegurosSecanoFormInput {
   action: FormActionType;
-  componente: UnidadManejoSegurosSecano;
+  unidad: UnidadManejoSegurosSecano;
   cultivos: CultivoSegurosSecano;
   ciclos: CicloSegurosSecano;
 }
@@ -21,13 +19,10 @@ export interface UnidadesManejosSegurosSecanoFormInput {
   templateUrl: './unidades-manejos-seguros-secano-form.component.html',
   styleUrls: ['./unidades-manejos-seguros-secano-form.component.css']
 })
-export class UnidadesManejosSegurosSecanoFormComponent
-  implements OnInit {
+export class UnidadesManejosSegurosSecanoFormComponent implements OnInit {
   @Input() formInput: UnidadesManejosSegurosSecanoFormInput = null;
   @Output() formStatusChanges = new EventEmitter<string>();
-  @Output() formValueChanges = new EventEmitter<
-  UnidadManejoSegurosSecano
-  >();
+  @Output() formValueChanges = new EventEmitter<UnidadManejoSegurosSecano>();
 
   form = this.fb.group({
     cultivoId: [null, [Validators.required]],
@@ -64,7 +59,7 @@ export class UnidadesManejosSegurosSecanoFormComponent
     }
     this.form.valueChanges.subscribe(_ =>
       this.formValueChanges.emit({
-        ...this.formInput.componente,
+        ...this.formInput.unidad,
         ...this.form.value
       })
     );

@@ -1,8 +1,6 @@
 import { GetData } from '../get-data';
 import { InMemoryDb } from '../in-memory-db';
-import {
-  UnidadManejoSegurosSecano
-} from '../../unidades-manejos-seguros-secano/unidades-manejos-seguros-secano.model';
+import { UnidadManejoSegurosSecano } from '../../unidades-manejos-seguros-secano/unidades-manejos-seguros-secano.model';
 
 export class MockAddUnidades implements GetData {
   getData(payload: any, db?: InMemoryDb): any {

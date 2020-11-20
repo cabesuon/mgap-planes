@@ -13,7 +13,7 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class PlanesSecanoService {
+export class ComponentesProductivosSegurosSecanoService {
   url: string;
   token: string;
 

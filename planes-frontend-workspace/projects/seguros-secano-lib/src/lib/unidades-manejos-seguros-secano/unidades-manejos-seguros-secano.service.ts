@@ -3,65 +3,65 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import {
-  ComponenteProductivoSegurosSecano,
-  ComponentesProductivosSegurosSecanoQueryResults,
-  ComponentesProductivosSegurosSecanoAddResult,
-  ComponentesProductivosSegurosSecanoUpdateResult,
-  ComponentesProductivosSegurosSecanoDeleteResult
-} from './componentes-productivos-seguros-secano.model';
+  UnidadManejoSegurosSecano,
+  UnidadesManejosSegurosSecanoQueryResults,
+  UnidadesManejosSegurosSecanoAddResult,
+  UnidadesManejosSegurosSecanoUpdateResult,
+  UnidadesManejosSegurosSecanoDeleteResult
+} from './unidades-manejos-seguros-secano.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlanesSecanoService {
+export class UnidadesManejosSegurosSecanoService {
   url: string;
   token: string;
 
   constructor(private http: HttpClient) {}
 
-  getComponentesProductivosSegurosSecano(): Observable<{
-    queryResults: ComponentesProductivosSegurosSecanoQueryResults;
+  getUnidadesManejosSegurosSecano(): Observable<{
+    queryResults: UnidadesManejosSegurosSecanoQueryResults;
   }> {
     return this.http.post<{
-      queryResults: ComponentesProductivosSegurosSecanoQueryResults;
-    }>(`${this.url}/queryComponentesProductivos`, {
+      queryResults: UnidadesManejosSegurosSecanoQueryResults;
+    }>(`${this.url}/queryUnidadesManejos`, {
       token: this.token
     });
   }
 
-  addComponentesProductivosSegurosSecano(
-    c: ComponenteProductivoSegurosSecano
+  addUnidadesManejosSegurosSecano(
+    u: UnidadManejoSegurosSecano
   ): Observable<{
-    addResults: ComponentesProductivosSegurosSecanoAddResult[];
+    addResults: UnidadesManejosSegurosSecanoAddResult[];
   }> {
     return this.http.post<{
-      addResults: ComponentesProductivosSegurosSecanoAddResult[];
-    }>(`${this.url}/addComponentesProductivosSegurosSecano`, {
-      componentes: [{ ...c }]
+      addResults: UnidadesManejosSegurosSecanoAddResult[];
+    }>(`${this.url}/addUnidadesManejosSegurosSecano`, {
+      unidades: [{ ...u }]
     });
   }
 
-  changePlanesSecano(
-    c: ComponenteProductivoSegurosSecano
+  changeUnidadesManejosSecano(
+    u: UnidadManejoSegurosSecano
   ): Observable<{
-    updateResults: ComponentesProductivosSegurosSecanoUpdateResult[];
+    updateResults: UnidadesManejosSegurosSecanoUpdateResult[];
   }> {
     return this.http.post<{
-      updateResults: ComponentesProductivosSegurosSecanoUpdateResult[];
-    }>(`${this.url}/updateComponentesProductivosSegurosSecano`, {
-      planes: [{ ...c }]
+      updateResults: UnidadesManejosSegurosSecanoUpdateResult[];
+    }>(`${this.url}/updateUnidadesManejosSegurosSecano`, {
+      unidades: [{ ...u }]
     });
   }
 
-  deleteComponentesProductivosSegurosSecano(
-    c: ComponenteProductivoSegurosSecano
+  deleteUnidadesManejosSegurosSecano(
+    u: UnidadManejoSegurosSecano
   ): Observable<{
-    deleteResults: ComponentesProductivosSegurosSecanoDeleteResult[];
+    deleteResults: UnidadesManejosSegurosSecanoDeleteResult[];
   }> {
     return this.http.post<{
-      deleteResults: ComponentesProductivosSegurosSecanoDeleteResult[];
-    }>(`${this.url}/deleteComponentesProductivosSegurosSecano`, {
-      componentesIds: [c.componenteId]
+      deleteResults: UnidadesManejosSegurosSecanoDeleteResult[];
+    }>(`${this.url}/deleteUnidadesManejosSegurosSecano`, {
+      unidadesIds: [u.unidadId]
     });
   }
 }

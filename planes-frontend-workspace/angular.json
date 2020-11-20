@@ -433,9 +433,7 @@
               "projects/seguros-secano-visor/src/favicon.ico",
               "projects/seguros-secano-visor/src/assets"
             ],
-            "styles": [
-              "projects/seguros-secano-visor/src/styles.scss"
-            ],
+            "styles": ["projects/seguros-secano-visor/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -497,9 +495,7 @@
               "projects/seguros-secano-visor/src/favicon.ico",
               "projects/seguros-secano-visor/src/assets"
             ],
-            "styles": [
-              "projects/seguros-secano-visor/src/styles.scss"
-            ],
+            "styles": ["projects/seguros-secano-visor/src/styles.scss"],
             "scripts": []
           }
         },
@@ -511,9 +507,7 @@
               "projects/seguros-secano-visor/tsconfig.spec.json",
               "projects/seguros-secano-visor/e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {

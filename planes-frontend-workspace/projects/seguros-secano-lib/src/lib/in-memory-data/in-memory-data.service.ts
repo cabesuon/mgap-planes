@@ -20,10 +20,7 @@ import { MockQueryCultivos } from './cultivos-get-data';
 import { MockQueryCiclos } from './ciclos-get-data';
 import { MockQueryAseguradoras } from './aseguradoras-get-data';
 
-import {
-  MockQueryUnidades,
-  MockAddUnidades
-} from './unidades-get-data';
+import { MockQueryUnidades, MockAddUnidades } from './unidades-get-data';
 import {
   MockAddComponentes,
   MockQueryComponentes

@@ -4,7 +4,8 @@ import { InMemoryDb } from '../in-memory-db';
 
 export class MockAddComponentes implements GetData {
   getData(payload: any, db?: InMemoryDb): any {
-    const componentes: ComponenteProductivoSegurosSecano[] = payload.req.body.componentes;
+    const componentes: ComponenteProductivoSegurosSecano[] =
+      payload.req.body.componentes;
 
     const response = [];
 

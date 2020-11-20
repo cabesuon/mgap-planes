@@ -13,8 +13,7 @@ import { TableActionEvent, TableParams, TableRow } from 'planes-core-lib';
   templateUrl: './unidades-manejos-seguros-secano-table.component.html',
   styleUrls: ['./unidades-manejos-seguros-secano-table.component.css']
 })
-export class UnidadesManejosSegurosSecanoTableComponent
-  implements OnInit {
+export class UnidadesManejosSegurosSecanoTableComponent implements OnInit {
   // aux
   columns: UnidadesManejosSegurosSecanoTableColumn[] = [];
   rows: TableRow[] = [];
@@ -41,8 +40,7 @@ export class UnidadesManejosSegurosSecanoTableComponent
   update() {
     this.columns = [];
     this.columns =
-      this.params.columns ||
-      UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT;
+      this.params.columns || UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT;
     this.updateRows();
     this.tableParams = {
       columns: this.columns.map(c => ({ ...c })),

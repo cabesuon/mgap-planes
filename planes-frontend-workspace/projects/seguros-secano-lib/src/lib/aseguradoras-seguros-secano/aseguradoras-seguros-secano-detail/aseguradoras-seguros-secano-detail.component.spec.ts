@@ -1,8 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  AseguradorasSegurosSecanoDetailComponent
-} from './aseguradoras-seguros-secano-detail.component';
+import { AseguradorasSegurosSecanoDetailComponent } from './aseguradoras-seguros-secano-detail.component';
 
 describe('AseguradorasSegurosSecanoDetailComponent', () => {
   let component: AseguradorasSegurosSecanoDetailComponent;

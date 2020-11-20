@@ -5,7 +5,7 @@ import {
   ContactoCore,
   createBaseContactoCore,
   EmpresaCore,
-  createBaseEmpresaCore,
+  createBaseEmpresaCore
 } from 'planes-core-lib';
 
 import {
@@ -20,15 +20,9 @@ import {
   ComponenteProductivoSegurosSecano,
   createBaseComponenteProductivoSegurosSecano
 } from '../componentes-productivos-seguros-secano/componentes-productivos-seguros-secano.model';
-import {
-  CultivoSegurosSecano
-} from '../cultivos-seguros-secano/cultivos-seguros-secano.model';
-import {
-  CicloSegurosSecano
-} from '../ciclos-seguros-secano/ciclos-seguros-secano.model';
-import {
-  AseguradoraSegurosSecano
-} from '../aseguradoras-seguros-secano/aseguradoras-seguros-secano.model';
+import { CultivoSegurosSecano } from '../cultivos-seguros-secano/cultivos-seguros-secano.model';
+import { CicloSegurosSecano } from '../ciclos-seguros-secano/ciclos-seguros-secano.model';
+import { AseguradoraSegurosSecano } from '../aseguradoras-seguros-secano/aseguradoras-seguros-secano.model';
 
 export interface InMemoryDbData {
   tokens: Array<{ token: string; personaId: string }>;
@@ -58,9 +52,7 @@ export function createInMemoryDataDefault(): InMemoryDbData {
     }
   ];
 
-  const contactos: ContactoCore[] = [
-    createBaseContactoCore('1')
-  ];
+  const contactos: ContactoCore[] = [createBaseContactoCore('1')];
 
   const empresas: EmpresaCore[] = [
     {
@@ -185,48 +177,101 @@ export function createInMemoryDataDefault(): InMemoryDbData {
 
   const cgb = createBaseGeomChacraCore();
   const chacras: ChacraSegurosSecano[] = [
-    createBaseChacraSegurosSecano('1', '2', '1',''),
-    createBaseChacraSegurosSecano('2', '2', '1',''),
-    createBaseChacraSegurosSecano('3', '2', '1',''),
-    createBaseChacraSegurosSecano('4', '2', '1',''),
+    createBaseChacraSegurosSecano('1', '2', '1', ''),
+    createBaseChacraSegurosSecano('2', '2', '1', ''),
+    createBaseChacraSegurosSecano('3', '2', '1', ''),
+    createBaseChacraSegurosSecano('4', '2', '1', ''),
 
-    createBaseChacraSegurosSecano('5', null, '1',''),
-    createBaseChacraSegurosSecano('6', null, '1',''),
+    createBaseChacraSegurosSecano('5', null, '1', ''),
+    createBaseChacraSegurosSecano('6', null, '1', ''),
 
-
-    createBaseChacraSegurosSecano('7', '3', '2',''),
-    createBaseChacraSegurosSecano('8', '3', '2',''),
-    createBaseChacraSegurosSecano('9', '3', '2','')
+    createBaseChacraSegurosSecano('7', '3', '2', ''),
+    createBaseChacraSegurosSecano('8', '3', '2', ''),
+    createBaseChacraSegurosSecano('9', '3', '2', '')
   ];
 
   const componentes: ComponenteProductivoSegurosSecano[] = [
     createBaseComponenteProductivoSegurosSecano(
-      '1', '1', '5', '1', '6', '2', 'MA1234'
+      '1',
+      '1',
+      '5',
+      '1',
+      '6',
+      '2',
+      'MA1234'
     ),
     createBaseComponenteProductivoSegurosSecano(
-      '2', '2', '4', '1', '1', '1', 'BS5678'
+      '2',
+      '2',
+      '4',
+      '1',
+      '1',
+      '1',
+      'BS5678'
     ),
     createBaseComponenteProductivoSegurosSecano(
-      '3', '3', '5', '1', '2', '2', 'MA1234'
+      '3',
+      '3',
+      '5',
+      '1',
+      '2',
+      '2',
+      'MA1234'
     ),
     createBaseComponenteProductivoSegurosSecano(
-      '4', '4', '4', '1', '1', '1', 'BS5678'
+      '4',
+      '4',
+      '4',
+      '1',
+      '1',
+      '1',
+      'BS5678'
     ),
     createBaseComponenteProductivoSegurosSecano(
-      '5', '5', '4', '1', '1', '1', 'BS5678'
+      '5',
+      '5',
+      '4',
+      '1',
+      '1',
+      '1',
+      'BS5678'
     ),
     createBaseComponenteProductivoSegurosSecano(
-      '6', '6', '5', '1', '6', '2', 'MA1234'
+      '6',
+      '6',
+      '5',
+      '1',
+      '6',
+      '2',
+      'MA1234'
     ),
 
     createBaseComponenteProductivoSegurosSecano(
-      '7', '7', '3', '1', '4', '3', 'SU9810'
+      '7',
+      '7',
+      '3',
+      '1',
+      '4',
+      '3',
+      'SU9810'
     ),
     createBaseComponenteProductivoSegurosSecano(
-      '8', '8', '3', '1', '4', '3', 'SU9810'
+      '8',
+      '8',
+      '3',
+      '1',
+      '4',
+      '3',
+      'SU9810'
     ),
     createBaseComponenteProductivoSegurosSecano(
-      '9', '9', '5', '1', '6', '3', 'SU8912'
+      '9',
+      '9',
+      '5',
+      '1',
+      '6',
+      '3',
+      'SU8912'
     )
   ];
 

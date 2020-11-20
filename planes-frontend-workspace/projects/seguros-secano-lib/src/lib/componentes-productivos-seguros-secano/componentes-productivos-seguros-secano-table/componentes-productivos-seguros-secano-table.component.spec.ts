@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  ComponentesProductivosSegurosSecanoTableComponent
-} from './componentes-productivos-seguros-secano-table.component';
+import { ComponentesProductivosSegurosSecanoTableComponent } from './componentes-productivos-seguros-secano-table.component';
 
 describe('ComponentesProductivosSegurosSecanoTableComponent', () => {
   let component: ComponentesProductivosSegurosSecanoTableComponent;
-  let fixture: ComponentFixture<ComponentesProductivosSegurosSecanoTableComponent>;
+  let fixture: ComponentFixture<
+    ComponentesProductivosSegurosSecanoTableComponent
+  >;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -15,7 +15,9 @@ describe('ComponentesProductivosSegurosSecanoTableComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComponentesProductivosSegurosSecanoTableComponent);
+    fixture = TestBed.createComponent(
+      ComponentesProductivosSegurosSecanoTableComponent
+    );
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

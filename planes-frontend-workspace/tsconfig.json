@@ -21,6 +21,10 @@
       "planes-secano-lib": [
         "dist/planes-secano-lib/planes-secano-lib",
         "dist/planes-secano-lib"
+      ],
+      "seguros-secano-lib": [
+        "dist/seguros-secano-lib/seguros-secano-lib",
+        "dist/seguros-secano-lib"
       ]
     }
   },
