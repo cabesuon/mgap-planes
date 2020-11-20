@@ -370,6 +370,165 @@
           }
         }
       }
+    },
+    "seguros-secano-lib": {
+      "projectType": "library",
+      "root": "projects/seguros-secano-lib",
+      "sourceRoot": "projects/seguros-secano-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/seguros-secano-lib/tsconfig.lib.json",
+            "project": "projects/seguros-secano-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/seguros-secano-lib/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/seguros-secano-lib/src/test.ts",
+            "tsConfig": "projects/seguros-secano-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/seguros-secano-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/seguros-secano-lib/tsconfig.lib.json",
+              "projects/seguros-secano-lib/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
+    "seguros-secano-visor": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/seguros-secano-visor",
+      "sourceRoot": "projects/seguros-secano-visor/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/seguros-secano-visor",
+            "index": "projects/seguros-secano-visor/src/index.html",
+            "main": "projects/seguros-secano-visor/src/main.ts",
+            "polyfills": "projects/seguros-secano-visor/src/polyfills.ts",
+            "tsConfig": "projects/seguros-secano-visor/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/seguros-secano-visor/src/favicon.ico",
+              "projects/seguros-secano-visor/src/assets"
+            ],
+            "styles": [
+              "projects/seguros-secano-visor/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/seguros-secano-visor/src/environments/environment.ts",
+                  "with": "projects/seguros-secano-visor/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "seguros-secano-visor:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "seguros-secano-visor:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "seguros-secano-visor:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/seguros-secano-visor/src/test.ts",
+            "polyfills": "projects/seguros-secano-visor/src/polyfills.ts",
+            "tsConfig": "projects/seguros-secano-visor/tsconfig.spec.json",
+            "karmaConfig": "projects/seguros-secano-visor/karma.conf.js",
+            "assets": [
+              "projects/seguros-secano-visor/src/favicon.ico",
+              "projects/seguros-secano-visor/src/assets"
+            ],
+            "styles": [
+              "projects/seguros-secano-visor/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/seguros-secano-visor/tsconfig.app.json",
+              "projects/seguros-secano-visor/tsconfig.spec.json",
+              "projects/seguros-secano-visor/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/seguros-secano-visor/e2e/protractor.conf.js",
+            "devServerTarget": "seguros-secano-visor:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "seguros-secano-visor:serve:production"
+            }
+          }
+        }
+      }
     }
   },
   "cli": {
