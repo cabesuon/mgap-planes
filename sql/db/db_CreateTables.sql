@@ -35,9 +35,9 @@ CREATE TABLE [dbo].[Chacras] (
 		A -> Actual
 	*/
 	/* administrativos */
-	[FechaCreado] date NULL,
-	[FechaModificado] date NULL,
-	[FechaEliminado] date NULL,
+	[FechaCreado] datetime2(7) NULL,
+	[FechaModificado] datetime2(7) NULL,
+	[FechaEliminado] datetime2(7) NULL,
 
 	/* arcgis */
 	/* id */
@@ -61,9 +61,9 @@ CREATE TABLE [dbo].[Pendientes] (
 		M -> Manual
 	*/
   	/* administrativos */
-	[FechaCreado] date NULL,
-	[FechaModificado] date NULL,
-	[FechaEliminado] date NULL,
+	[FechaCreado] datetime2(7) NULL,
+	[FechaModificado] datetime2(7) NULL,
+	[FechaEliminado] datetime2(7) NULL,
 
 	/* arcgis */
 	/* id */
@@ -82,9 +82,9 @@ CREATE TABLE [dbo].[ZonasDeExclusion] (
 	/* aplicacion */
 	[PlanId] int NOT NULL,
 	/* administrativos */
-	[FechaCreado] date NULL,
-	[FechaModificado] date NULL,
-	[FechaEliminado] date NULL,
+	[FechaCreado] datetime2(7) NULL,
+	[FechaModificado] datetime2(7) NULL,
+	[FechaEliminado] datetime2(7) NULL,
 
 	/* arcgis */
 	/* id */
@@ -101,8 +101,8 @@ planes error
 
 CREATE TABLE [dbo].[PlanesError] (
 	[Id] int NOT NULL IDENTITY (1,1) UNIQUE,
-	[SystemDate] datetime NOT NULL,
-	[UtcDate] datetime NOT NULL,
+	[SystemDate] datetime2(7) NOT NULL,
+	[UtcDate] datetime2(7) NOT NULL,
 	[Severity] int NOT NULL,
 	[State] int NOT NULL,
 	[Procedure] varchar (128) NOT NULL,

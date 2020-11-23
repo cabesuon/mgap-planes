@@ -2,14 +2,14 @@
 
 ## Estructura
 
-* _db_ : Consultas relacionadas a la creación de bases, esquemas y tablas del modelo.
-* _functions_ : Consultas para crear las funciones para el modelo y para tests.
-* _procedures_ : Consultas para crear los procedimientos para el modelo y para tests.
-* _tests_ : Consultas para crear los tests unitarios del modelo.
-* _triggers_ : Consultas para crear los triggers del modelo.
-* _tsqlt_ : Consultas para instalar el framework de tests.
+- _db_ : Consultas relacionadas a la creación de bases, esquemas y tablas del modelo.
+- _functions_ : Consultas para crear las funciones para el modelo y para tests.
+- _procedures_ : Consultas para crear los procedimientos para el modelo y para tests.
+- _tests_ : Consultas para crear los tests unitarios del modelo.
+- _triggers_ : Consultas para crear los triggers del modelo.
+- _tsqlt_ : Consultas para instalar el framework de tests.
 
-## Programa "*run.sh*" y "*run.bat*"
+## Programa "_run.sh_" y "_run.bat_"
 
 ### Parámetros posicionales
 
@@ -22,19 +22,19 @@
 
 ### Comandos
 
-* _createdb_ : Crea la base de datos "_PlanesCoreGDB_".
-* _createschema_ : Crea el esquema "_PlanesCore_".
-* _createtables_ : Crea las tablas "_Chacras_","_Pendientes_" y "_ZonasDeExclusion_".
-* _addconstraints_ : Crea las restricciones de las tablas.
-* _createfunctions_ : Crea las funciones auxiliares del modelo.
-* _createprocedures_ : Crea los procedimientos axiliares del modelo.
-* _createtriggers_ : Crea los triggers de las tablas.
-* _addtsqlt_ : Instala el framework para test.
-* _addtestfunctions_ : Crea las funciones auxiliares para tests.
-* _addtestprocedures_ : Crea los procedimientos auxiliares para tests.
-* _test_ : Crea y ejecuta los tests.
-* _dropdb_ : Elimina la base "_PlanesCoreGDB_".
-* _doall_ : Ejecuta todos los comandos en orden excepto _dropdb_. Si el parametro _arcgis_ es utilizado, se ejecutan los comandos a partir de _addcontraints_.
+- _createdb_ : Crea la base de datos "_PlanesCoreGDB_".
+- _createschema_ : Crea el esquema "_PlanesCore_".
+- _createtables_ : Crea las tablas "_Chacras_","_Pendientes_" y "_ZonasDeExclusion_".
+- _addconstraints_ : Crea las restricciones de las tablas.
+- _createfunctions_ : Crea las funciones auxiliares del modelo.
+- _createprocedures_ : Crea los procedimientos axiliares del modelo.
+- _createtriggers_ : Crea los triggers de las tablas.
+- _addtsqlt_ : Instala el framework para test.
+- _addtestfunctions_ : Crea las funciones auxiliares para tests.
+- _addtestprocedures_ : Crea los procedimientos auxiliares para tests.
+- _test_ : Crea y ejecuta los tests.
+- _dropdb_ : Elimina la base "_PlanesCoreGDB_".
+- _doall_ : Ejecuta todos los comandos en orden excepto _dropdb_. Si el parametro _arcgis_ es utilizado, se ejecutan los comandos a partir de _addcontraints_.
 
 ### Nota
 

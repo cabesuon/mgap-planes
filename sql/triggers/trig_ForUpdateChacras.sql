@@ -28,7 +28,6 @@ BEGIN
 		restricciones sobre campos:
 			Id,
 			Nro,
-			PadreNro,
 			PlanId,
 			PlanNro,
 			Estado

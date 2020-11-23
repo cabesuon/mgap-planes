@@ -31,9 +31,9 @@ BEGIN
 		[PlanId] int NOT NULL,
 		[PlanNro] int NOT NULL,
 		[Estado] char (1) NULL,
-		[FechaCreado] date NULL,
-		[FechaModificado] date NULL,
-		[FechaEliminado] date NULL,
+		[FechaCreado] datetime2(7) NULL,
+		[FechaModificado] datetime2(7) NULL,
+		[FechaEliminado] datetime2(7) NULL,
 		[OBJECTID] int NOT NULL,
 		[SHAPE] geometry NOT NULL
 	);

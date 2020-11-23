@@ -27,8 +27,8 @@ BEGIN
 	IF OBJECT_ID(N'[PlanesErrorTablaTests].[PlanesError]') > 0 DROP TABLE [PlanesErrorTablaTests].[PlanesError];
 	CREATE TABLE [PlanesErrorTablaTests].[PlanesError] (
 		[Id] int NOT NULL,
-		[SystemDate] datetime NOT NULL,
-		[UtcDate] datetime NOT NULL,
+		[SystemDate] datetime2(7) NOT NULL,
+		[UtcDate] datetime2(7) NOT NULL,
 		[Severity] int NOT NULL,
 		[State] int NOT NULL,
 		[Procedure] varchar (128) NOT NULL,
@@ -93,12 +93,12 @@ GO
 
 
 /*
-	El campo Id de la tabla PlanesError es unico
+	4 - El campo Id de la tabla PlanesError es unico
 */
-IF OBJECT_ID(N'[PlanesErrorTablaTests].[test PlanesError Id es unico]', 'P') > 0
-	DROP PROCEDURE [PlanesErrorTablaTests].[test PlanesError Id es unico];
+IF OBJECT_ID(N'[PlanesErrorTablaTests].[test 4 PlanesError Id es unico]', 'P') > 0
+	DROP PROCEDURE [PlanesErrorTablaTests].[test 4 PlanesError Id es unico];
 GO
-CREATE PROCEDURE [PlanesErrorTablaTests].[test PlanesError Id es unico]
+CREATE PROCEDURE [PlanesErrorTablaTests].[test 4 PlanesError Id es unico]
 AS
 BEGIN
 	DECLARE @expectedError int = 2627;
@@ -155,12 +155,12 @@ END
 GO
 
 /*
-	El campo UtcDate de la tabla PlanesError tiene default
+	5 - El campo UtcDate de la tabla PlanesError tiene default
 */
-IF OBJECT_ID(N'[PlanesErrorTablaTests].[test PlanesError UtcDate tiene default]', 'P') > 0
-	DROP PROCEDURE [PlanesErrorTablaTests].[test PlanesError UtcDate tiene default];
+IF OBJECT_ID(N'[PlanesErrorTablaTests].[test 5 PlanesError UtcDate tiene default]', 'P') > 0
+	DROP PROCEDURE [PlanesErrorTablaTests].[test 5 PlanesError UtcDate tiene default];
 GO
-CREATE PROCEDURE [PlanesErrorTablaTests].[test PlanesError UtcDate tiene default]
+CREATE PROCEDURE [PlanesErrorTablaTests].[test 5 PlanesError UtcDate tiene default]
 AS
 BEGIN
 	DECLARE @startDate date = GETDATE();
@@ -180,12 +180,12 @@ END
 GO
 
 /*
-	El campo SystemDate de la tabla PlanesError tiene default
+	6 - El campo SystemDate de la tabla PlanesError tiene default
 */
-IF OBJECT_ID(N'[PlanesErrorTablaTests].[test PlanesError SystemDate tiene default]', 'P') > 0
-	DROP PROCEDURE [PlanesErrorTablaTests].[test PlanesError SystemDate tiene default];
+IF OBJECT_ID(N'[PlanesErrorTablaTests].[test 6 PlanesError SystemDate tiene default]', 'P') > 0
+	DROP PROCEDURE [PlanesErrorTablaTests].[test 6 PlanesError SystemDate tiene default];
 GO
-CREATE PROCEDURE [PlanesErrorTablaTests].[test PlanesError SystemDate tiene default]
+CREATE PROCEDURE [PlanesErrorTablaTests].[test 6 PlanesError SystemDate tiene default]
 AS
 BEGIN
 	DECLARE @startDate date = GETDATE();

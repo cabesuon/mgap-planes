@@ -13,7 +13,15 @@ CREATE PROCEDURE [dbo].[RaiseRollback] (
 )
 AS
 BEGIN
-  ROLLBACK TRANSACTION;
+  -- ************************************************
+  -- la siguiente linea esta para:
+  -- - garantizar rollback ante un error de planes
+  -- - poder hacer log en la tabla PlanesError
+  IF(@@TRANCOUNT>0) ROLLBACK TRANSACTION;
+  -- es una decision al menos controvertida
+  -- eventualmente evaluar y hacerlo de otra forma
+  -- ************************************************
+  
   EXEC [dbo].[PlanesErrorBuilder]
     @Severity = @severity,
     @State = @state,
