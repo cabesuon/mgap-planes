@@ -3,22 +3,22 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Store, select } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 
 import {
   TableValueType,
   TableActionEvent,
-  FormActionType
+  FormActionType,
+  EmpresaCore
 } from 'planes-core-lib';
 
 import {
-  PlanSecano,
-  createEmptyPlanSecano,
-  PLANESSECANOTABLE_COLUMNS_DEFAULT,
-  PlanesSecanoTableParams,
-  PlanesSecanoTableAction,
-  PlanSecanoEstado
-} from 'planes-secano-lib';
+  UnidadManejoSegurosSecano,
+  createEmptyUnidadManejoSegurosSecano,
+  UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT,
+  UnidadesManejosSegurosSecanoTableParams,
+  UnidadesManejosSegurosSecanoTableAction
+} from 'seguros-secano-lib';
 
 import { NotificationService } from '../../../core/notifications/notification.service';
 
@@ -26,15 +26,16 @@ import { LoggingService } from '../../../core/logging/logging.service';
 
 import { AppState } from '../../../core/core.state';
 
-import { selectAllEntityPlanes } from '../../entity-planes/entity-planes.selectors';
+import { selectAllEntityUnidadesManejos } from '../../entity-unidades/entity-unidades.selectors';
 import { selectAllEntityPersonas } from '../../entity-personas/entity-personas.selectors';
-import { selectAllEntityIngenierosAgronomos } from '../../entity-ingenieros-agronomos/entity-ingenieros-agronomos.selectors';
 import { selectAllEntityEmpresas } from '../../entity-empresas/entity-empresas.selectors';
+import { selectAllEntityCiclos } from '../../entity-ciclos/entity-ciclos.selectors';
+import { selectAllEntityCultivos } from '../../entity-cultivos/entity-cultivos.selectors';
 
 import {
-  EntityPlanesFormDialogData,
-  EntityPlanesFormDialogComponent
-} from '../../entity-planes/entity-planes-form-dialog/entity-planes-form-dialog.component';
+  EntityUnidadesFormDialogData,
+  EntityUnidadesFormDialogComponent
+} from '../../entity-unidades/entity-unidades-form-dialog/entity-unidades-form-dialog.component';
 
 const DIALOG_WIDTH = '300px';
 const DIALOG_MAX_HEIGHT = '500px';
@@ -45,62 +46,48 @@ const DIALOG_MAX_HEIGHT = '500px';
   styleUrls: ['./vista-principal.component.scss']
 })
 export class VistaPrincipalComponent implements OnInit {
-  planesTableColumns = [
-    ...PLANESSECANOTABLE_COLUMNS_DEFAULT,
+  unidadesTableColumns = [
+    ...UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT,
     {
       type: TableValueType.ACTION,
       name: 'EstadoAction',
       label: '',
       sort: false,
       filter: false,
-      actionFormat: (p: PlanSecano) => {
-        switch (p.planSecanoEstado) {
-          case PlanSecanoEstado.EDICION:
-            return {
-              value: PlanesSecanoTableAction.PRESENTAR,
-              text: 'Presentar Plan',
-              icon: 'file-signature'
-            };
-          case PlanSecanoEstado.PRESENTADO:
-            return null;
-        }
+      actionFormat: (u: UnidadManejoSegurosSecano) => {
+        return {
+          value: UnidadesManejosSegurosSecanoTableAction.ENVIAR,
+          text: 'Enviar Unidad de Manejo',
+          icon: 'file-signature'
+        };
       }
     },
     {
       type: TableValueType.ACTION,
-      name: 'RemoveAction',
+      name: 'SaveAction',
       label: '',
       sort: false,
       filter: false,
-      actionFormat: (p: PlanSecano) => {
-        switch (p.planSecanoEstado) {
-          case PlanSecanoEstado.EDICION:
-            return {
-              value: PlanesSecanoTableAction.DESCARTAR,
-              text: 'Descartar Plan',
-              icon: 'trash'
-            };
-          case PlanSecanoEstado.PRESENTADO:
-            return {
-              value: PlanesSecanoTableAction.CANCELAR,
-              text: 'Cancelar Plan',
-              icon: 'ban'
-            };
-        }
+      actionFormat: (u: UnidadManejoSegurosSecano) => {
+        return {
+          value: UnidadesManejosSegurosSecanoTableAction.GUARDAR,
+          text: 'Guardar Unidad de Manejo',
+          icon: 'save'
+        };
       }
     }
   ];
 
-  planesTableParams: PlanesSecanoTableParams = {
-    columns: this.planesTableColumns,
+  unidadesTableParams: UnidadesManejosSegurosSecanoTableParams = {
+    columns: this.unidadesTableColumns,
+    unidades: [],
     sources: {
-      ingenierosAgronomos: [],
-      personas: [],
-      empresas: [],
-      responsables: []
-    },
-    planes: []
+      ciclos: [],
+      cultivos: []
+    }
   };
+
+  empresas: EmpresaCore[] = [];
 
   constructor(
     private store: Store<AppState>,
@@ -112,61 +99,49 @@ export class VistaPrincipalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    combineLatest(
-      this.store.pipe(select(selectAllEntityPlanes)),
+    combineLatest(      
+      this.store.pipe(select(selectAllEntityCiclos)),
+      this.store.pipe(select(selectAllEntityCultivos)),
       this.store.pipe(select(selectAllEntityPersonas)),
-      this.store.pipe(select(selectAllEntityIngenierosAgronomos)),
       this.store.pipe(select(selectAllEntityEmpresas)),
-      (planes, personas, ingenierosAgronomos, empresas) => ({
-        planes,
+      this.store.pipe(select(selectAllEntityUnidadesManejos)),
+      (ciclos, cultivos, personas, empresas, unidades) => ({
+        ciclos,
+        cultivos,
         personas,
-        ingenierosAgronomos,
-        empresas
+        empresas,
+        unidades
       })
-    ).subscribe(
+    ).subscribe((
       sources =>
-        (this.planesTableParams = {
-          columns: this.planesTableColumns,
-          sources: {
-            personas: sources.personas,
-            ingenierosAgronomos: sources.ingenierosAgronomos,
-            empresas: sources.empresas,
-            responsables: []
-          },
-          planes: sources.planes
-        })
-    );
+        {
+          this.unidadesTableParams = {
+            columns: this.unidadesTableColumns,
+            sources: {
+              ciclos: sources.ciclos,
+              cultivos: sources.cultivos,
+            },
+            unidades: sources.unidades
+          };
+          this.empresas = sources.empresas;
+        }
+    ));
   }
 
-  planesTableActioned(actionValue: TableActionEvent) {
+  unidadesTableActioned(actionValue: TableActionEvent) {
     switch (actionValue.value) {
-      case PlanesSecanoTableAction.GOTOVISTAMAPA:
+      /*case UnidadesManejosSegurosSecanoTableAction.GOTOVISTAMAPA:
         this.router.navigate([
           '/features/mapa',
-          { PlanId: actionValue.obj.planId }
+          { UnidadId: actionValue.obj.unidadId }
         ]);
         break;
-      case PlanesSecanoTableAction.GOTOVISTADMINISTRATIVA:
+      case UnidadesManejosSegurosSecanoTableAction.GOTOVISTADMINISTRATIVA:
         this.router.navigate([
           '/features/administrativo',
-          { PlanId: actionValue.obj.planId }
+          { UnidadId: actionValue.obj.unidadId }
         ]);
-        break;
-      case PlanesSecanoTableAction.PRESENTAR:
-        this.notificationService.info(
-          `[No Implementado] Presentar ${actionValue.obj.planId}`
-        );
-        break;
-      case PlanesSecanoTableAction.CANCELAR:
-        this.notificationService.info(
-          `[No Implementado] Cancelar ${actionValue.obj.planId}`
-        );
-        break;
-      case PlanesSecanoTableAction.DESCARTAR:
-        this.notificationService.info(
-          `[No Implementado] Descartar ${actionValue.obj.planId}`
-        );
-        break;
+        break;*/
       default:
         this.notificationService.info(
           `[No Implementado] ? ${actionValue.obj.planId}`
@@ -175,20 +150,20 @@ export class VistaPrincipalComponent implements OnInit {
     }
   }
 
-  newPlan() {
-    this.openDialogPlan(FormActionType.Add);
+  newUnidadManejo() {
+    this.openDialogUnidadManejo(FormActionType.Add);
   }
 
   // dialogs
 
-  openDialogPlan(action: FormActionType) {
-    const inData: EntityPlanesFormDialogData = {
-      plan: createEmptyPlanSecano(),
+  openDialogUnidadManejo(action: FormActionType) {
+    const inData: EntityUnidadesFormDialogData = {
+      unidad: createEmptyUnidadManejoSegurosSecano(),
       action: action
       // empresas: this.planesTableParams.sources.empresas,
       // ingenieroAgronomoId: '1'
     };
-    this.dialog.open(EntityPlanesFormDialogComponent, {
+    this.dialog.open(EntityUnidadesFormDialogComponent, {
       width: DIALOG_WIDTH,
       maxHeight: DIALOG_MAX_HEIGHT,
       data: inData

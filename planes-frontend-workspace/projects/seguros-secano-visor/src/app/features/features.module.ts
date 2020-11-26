@@ -27,11 +27,12 @@ import { EntityCiclosEffects } from './entity-ciclos/entity-ciclos.effects';
 import { EntityUnidadesManejosEffects } from './entity-unidades/entity-unidades.effects';
 // dialogs
 import { EntityChacrasFormDialogComponent } from './entity-chacras/entity-chacras-form-dialog/entity-chacras-form-dialog.component';
+import { EntityUnidadesFormDialogComponent } from './entity-unidades/entity-unidades-form-dialog/entity-unidades-form-dialog.component';
 // vistas
 import { VistaPrincipalComponent } from './vista-principal/vista-principal/vista-principal.component';
 import { VistaLoginComponent } from './vista-login/vista-login/vista-login.component';
-import { VistaMapaComponent } from './vista-mapa/vista-mapa/vista-mapa.component';
-import { VistaAdministrativoComponent } from './vista-administrativo/vista-administrativo/vista-administrativo.component';
+//import { VistaMapaComponent } from './vista-mapa/vista-mapa/vista-mapa.component';
+//import { VistaAdministrativoComponent } from './vista-administrativo/vista-administrativo/vista-administrativo.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -68,11 +69,15 @@ import { VistaAdministrativoComponent } from './vista-administrativo/vista-admin
     // vistas
     VistaPrincipalComponent,
     VistaLoginComponent,
-    VistaMapaComponent,
-    VistaAdministrativoComponent,
+  //  VistaMapaComponent,
+  //  VistaAdministrativoComponent,
     // dialogs
-    EntityChacrasFormDialogComponent
+    EntityChacrasFormDialogComponent,
+    EntityUnidadesFormDialogComponent
   ],
-  entryComponents: [EntityChacrasFormDialogComponent]
+  entryComponents: [
+    EntityChacrasFormDialogComponent,
+    EntityUnidadesFormDialogComponent
+  ]
 })
 export class FeaturesModule {}

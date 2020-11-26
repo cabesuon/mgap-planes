@@ -18,7 +18,7 @@ import {
 import { DibujoCore } from 'planes-core-lib';
 
 export interface EntityUnidadesFormDialogData {
-  componente: UnidadManejoSegurosSecano;
+  unidad: UnidadManejoSegurosSecano;
   action: FormActionType;
 }
 
@@ -73,7 +73,7 @@ export class EntityUnidadesFormDialogComponent implements OnInit {
           new EntityUnidadesManejosChangeRequestAction({ item })
         );
       }
-      this.data.componente = item;
+      this.data.unidad = item;
       this.dialogRef.close(this.data);
     }
   }

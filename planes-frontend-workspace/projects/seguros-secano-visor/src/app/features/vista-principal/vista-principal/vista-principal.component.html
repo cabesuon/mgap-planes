@@ -1,40 +1,24 @@
 <div class="container-fluid">
-  <!-- planes list -->
+  <!-- empresas list -->
   <div class="row">
     <div class="col-md-12">
-      <h1 rtl class="main-heading">Planes</h1>
+      <h1 rtl class="main-heading">Empresas</h1>
     </div>
   </div>
   <div class="row mb-2">
     <div class="col-md-12 float-right">
-      <button mat-stroked-button (click)="newPlan()" color="primary">
+      <button mat-stroked-button (click)="newUnidadManejo()" color="primary">
         <fa-icon icon="plus-circle"></fa-icon>
-        <span class="ml-2">Nuevo Plan</span>
+        <span class="ml-2">Nueva Unidad de Manejo</span>
       </button>
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngFor="let e of empresas;">
     <div class="col">
-      <lib-planes-core-table
-        [params]="planesTableParams"
-        (actioned)="planesTableActioned($event)">
-      </lib-planes-core-table>
+      <lib-unidades-manejos-seguros-secano-table
+      [params]="unidadesTableParams"
+      (actioned)="unidadesTableActioned($event)">
+      </lib-unidades-manejos-seguros-secano-table>      
     </div>
   </div>
-  <!-- note -->
-  <div class="row mt-4">
-    <div class="col-md-12">
-      <h1 rtl class="main-heading">Nota</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <small>
-        Esta aplicación es un ejemplo funcional de las capacidades de la librería del núcleo, con el objetivo es aportar conocimiento al equipo de desarrollo del Ministerio.
-        <br>
-        Este ejemplo funcional presenta muchas pero no todas las funcionalidades de la librería del núcleo.
-      </small>
-    </div>
-  </div>
-
 </div>

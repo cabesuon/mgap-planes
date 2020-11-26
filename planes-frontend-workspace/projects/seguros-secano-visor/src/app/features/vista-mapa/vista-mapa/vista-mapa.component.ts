@@ -21,11 +21,11 @@ import { NotificationService } from '../../../core/notifications/notification.se
 import { LoggingService } from '../../../core/logging/logging.service';
 import { FileService } from '../../../core/file/file.service';
 
-import { PlanSecano } from '../../entity-planes/entity-planes.state';
+/*import { PlanSecano } from '../../entity-planes/entity-planes.state';
 import {
   selectAllEntityPlanes,
   selectPlanById
-} from '../../entity-planes/entity-planes.selectors';
+} from '../../entity-planes/entity-planes.selectors';*/
 
 import { ChacraSecano } from '../../entity-chacras/entity-chacras.state';
 import {
@@ -36,9 +36,6 @@ import {
   EntityChacrasFormDialogData,
   EntityChacrasFormDialogComponent
 } from '../../entity-chacras/entity-chacras-form-dialog/entity-chacras-form-dialog.component';
-
-import { ZonaExclusionCore } from '../../entity-zonas-exclusion/entity-zonas-exclusion.state';
-import { selectZonasExclusionByChacrasId } from '../../entity-zonas-exclusion/entity-zonas-exclusion.selectors';
 
 import { DibujoCore } from '../../entity-dibujos/entity-dibujos.state';
 import {
@@ -62,10 +59,9 @@ const DIALOG_MAX_HEIGHT = '500px';
 })
 export class VistaMapaComponent implements OnInit {
   planId: string = null;
-
-  planes$: Observable<PlanSecano[]>;
+  
   chacras$: Observable<ChacraSecano[]>;
-  zonasExclusion$: Observable<ZonaExclusionCore[]>;
+
   polygons$: Observable<DibujoCore[]>;
   dibujos: DibujoCore[];
 

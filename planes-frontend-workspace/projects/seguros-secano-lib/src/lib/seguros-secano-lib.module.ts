@@ -33,10 +33,10 @@ import {
   MatPaginatorIntlCoreService
 } from 'planes-core-lib';
 
+import { AseguradorasSegurosSecanoDetailComponent } from './aseguradoras-seguros-secano/aseguradoras-seguros-secano-detail/aseguradoras-seguros-secano-detail.component'
+
 import { ChacrasSegurosSecanoDetailComponent } from './chacras-seguros-secano/chacras-seguros-secano-detail/chacras-seguros-secano-detail.component';
 import { ChacrasSegurosSecanoFormComponent } from './chacras-seguros-secano/chacras-seguros-secano-form/chacras-seguros-secano-form.component';
-
-import { CultivosSegurosSecanoDetailComponent } from './cultivos-seguros-secano/cultivos-seguros-secano-detail/cultivos-seguros-secano-detail.component';
 
 import { CiclosSegurosSecanoDetailComponent } from './ciclos-seguros-secano/ciclos-seguros-secano-detail/ciclos-seguros-secano-detail.component';
 
@@ -44,16 +44,26 @@ import { ComponentesProductivosSegurosSecanoDetailComponent } from './componente
 import { ComponentesProductivosSegurosSecanoFormComponent } from './componentes-productivos-seguros-secano/componentes-productivos-seguros-secano-form/componentes-productivos-seguros-secano-form.component';
 import { ComponentesProductivosSegurosSecanoTableComponent } from './componentes-productivos-seguros-secano/componentes-productivos-seguros-secano-table/componentes-productivos-seguros-secano-table.component';
 
+import { CultivosSegurosSecanoDetailComponent } from './cultivos-seguros-secano/cultivos-seguros-secano-detail/cultivos-seguros-secano-detail.component';
+
+import { UnidadesManejosSegurosSecanoDetailComponent } from './unidades-manejos-seguros-secano/unidades-manejos-seguros-secano-detail/unidades-manejos-seguros-secano-detail.component';
+import { UnidadesManejosSegurosSecanoFormComponent } from './unidades-manejos-seguros-secano/unidades-manejos-seguros-secano-form/unidades-manejos-seguros-secano-form.component';
+import { UnidadesManejosSegurosSecanoTableComponent } from './unidades-manejos-seguros-secano/unidades-manejos-seguros-secano-table/unidades-manejos-seguros-secano-table.component';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
+    AseguradorasSegurosSecanoDetailComponent,
     ChacrasSegurosSecanoDetailComponent,
     ChacrasSegurosSecanoFormComponent,
     CultivosSegurosSecanoDetailComponent,
     CiclosSegurosSecanoDetailComponent,
     ComponentesProductivosSegurosSecanoDetailComponent,
     ComponentesProductivosSegurosSecanoFormComponent,
-    ComponentesProductivosSegurosSecanoTableComponent
+    ComponentesProductivosSegurosSecanoTableComponent,
+    UnidadesManejosSegurosSecanoDetailComponent,
+    UnidadesManejosSegurosSecanoFormComponent,
+    UnidadesManejosSegurosSecanoTableComponent
   ],
   imports: [
     CommonModule,
