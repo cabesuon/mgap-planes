@@ -83,7 +83,7 @@ export function createEmptyComponenteProductivoSegurosSecano(): ComponenteProduc
 }
 
 export function createBaseComponenteProductivoSegurosSecano(
-  id: string,
+  componenteId: string,
   chacraId: string,
   cultivoId: string,
   cicloId: string,
@@ -92,6 +92,13 @@ export function createBaseComponenteProductivoSegurosSecano(
   polizaId: string
 ) {
   return {
-    ...createEmptyComponenteProductivoSegurosSecano()
+    ...createEmptyComponenteProductivoSegurosSecano(),
+    componenteId,
+    chacraId,
+    cultivoId,
+    cicloId,
+    cultivoAntecesorId,
+    aseguradoraId,
+    polizaId
   };
 }

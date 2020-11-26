@@ -24,7 +24,7 @@ export class UnidadesManejosSegurosSecanoService {
   }> {
     return this.http.post<{
       queryResults: UnidadesManejosSegurosSecanoQueryResults;
-    }>(`${this.url}/queryUnidadesManejos`, {
+    }>(`${this.url}/queryUnidades`, {
       token: this.token
     });
   }

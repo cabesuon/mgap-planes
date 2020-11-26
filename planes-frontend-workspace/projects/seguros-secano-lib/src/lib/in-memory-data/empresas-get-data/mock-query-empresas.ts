@@ -9,7 +9,8 @@ export class MockQueryEmpresas implements GetData {
       queryResults: {
         success: true,
         error: null,
-        empresas: db.getEmpresasCoreByPersonaId(persona.personaId)
+        //empresas: db.getEmpresasCoreByPersonaId(persona.personaId)
+        empresas: db.d.empresas
       }
     };
     return response;

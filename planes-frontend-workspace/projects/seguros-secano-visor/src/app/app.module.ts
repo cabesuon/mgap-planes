@@ -17,8 +17,8 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { FeaturesModule } from './features/features.module';
 
-import { PlanesSecanoLibModule, InMemoryDataService } from 'planes-secano-lib';
-import { SegurosSecanoLibModule } from 'seguros-secano-lib';
+import { PlanesSecanoLibModule } from 'planes-secano-lib';
+import { SegurosSecanoLibModule, InMemoryDataService } from 'seguros-secano-lib';
 
 @NgModule({
   declarations: [AppComponent],

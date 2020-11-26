@@ -17,12 +17,16 @@ import {
   routeAnimations
 } from './core/core.module';
 
+import { EntityAseguradorasLoadRequestAction } from './features/entity-aseguradoras/entity-aseguradoras.actions';
 import { EntityChacrasLoadRequestAction } from './features/entity-chacras/entity-chacras.actions';
-import { EntityPersonasLoadRequestAction } from './features/entity-personas/entity-personas.actions';
-import { EntityEmpresasLoadRequestAction } from './features/entity-empresas/entity-empresas.actions';
+import { EntityCiclosLoadRequestAction } from './features/entity-ciclos/entity-ciclos.actions';
 import { EntityComponentesLoadRequestAction } from './features/entity-componentes/entity-componentes.actions';
 import { EntityCultivosLoadRequestAction } from './features/entity-cultivos/entity-cultivos.actions';
-import { EntityAseguradorasLoadRequestAction } from './features/entity-aseguradoras/entity-aseguradoras.actions';
+import { EntityUnidadesManejosLoadRequestAction } from './features/entity-unidades/entity-unidades.actions';
+
+import { EntityPersonasLoadRequestAction } from './features/entity-personas/entity-personas.actions';
+import { EntityEmpresasLoadRequestAction } from './features/entity-empresas/entity-empresas.actions';
+
 import { PersonaCore } from 'planes-core-lib';
 import { selectPersonaById } from './features/entity-personas/entity-personas.selectors';
 
@@ -90,8 +94,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new EntityPersonasLoadRequestAction());
     this.store.dispatch(new EntityEmpresasLoadRequestAction());
     this.store.dispatch(new EntityChacrasLoadRequestAction());
+    this.store.dispatch(new EntityCiclosLoadRequestAction());
     this.store.dispatch(new EntityComponentesLoadRequestAction());
     this.store.dispatch(new EntityCultivosLoadRequestAction());
     this.store.dispatch(new EntityAseguradorasLoadRequestAction());
+    this.store.dispatch(new EntityUnidadesManejosLoadRequestAction());
+
   }
 }

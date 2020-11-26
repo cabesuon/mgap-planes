@@ -34,7 +34,7 @@ const postMethodGetDataRepo = {
   queryChacras: new MockQueryChacras(),
   addChacras: new MockAddChacras(),
   queryComponentes: new MockQueryComponentes(),
-  addQueryComponentes: new MockAddComponentes(),
+  addComponentes: new MockAddComponentes(),
 
   queryPersonas: new MockQueryPersonas(),
   queryTokens: new MockQueryTokens(),

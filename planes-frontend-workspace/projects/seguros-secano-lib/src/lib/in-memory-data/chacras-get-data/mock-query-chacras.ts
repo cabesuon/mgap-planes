@@ -9,7 +9,8 @@ export class MockQueryChacras implements GetData {
       queryResults: {
         success: true,
         error: null,
-        chacras: db.getChacrasSegurosSecanoByPersonaId(personaId)
+        //chacras: db.getChacrasSegurosSecanoByPersonaId(personaId)
+        chacras: db.d.chacras
       }
     };
     return response;

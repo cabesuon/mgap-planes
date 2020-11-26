@@ -13,12 +13,20 @@
       </button>
     </div>
   </div>
-  <div class="row" *ngFor="let e of empresas;">
-    <div class="col">
-      <lib-unidades-manejos-seguros-secano-table
-      [params]="unidadesTableParams"
-      (actioned)="unidadesTableActioned($event)">
-      </lib-unidades-manejos-seguros-secano-table>      
+  <!--<div class="row" *ngFor="let e of empresas;">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 rtl class="main-empresas">{{e.empresaRazonSocial}}</h2>
+      </div>
+    </div> -->
+        
+    <div class="row">
+      <div class="col">
+        <lib-unidades-manejos-seguros-secano-table
+        [params]="unidadesTableParams"
+        (actioned)="unidadesTableActioned($event)">
+        </lib-unidades-manejos-seguros-secano-table>      
+      </div>
     </div>
-  </div>
+  <!--</div>-->
 </div>

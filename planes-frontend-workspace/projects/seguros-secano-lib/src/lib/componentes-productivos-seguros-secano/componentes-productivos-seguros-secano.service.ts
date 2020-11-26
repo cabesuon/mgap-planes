@@ -24,7 +24,7 @@ export class ComponentesProductivosSegurosSecanoService {
   }> {
     return this.http.post<{
       queryResults: ComponentesProductivosSegurosSecanoQueryResults;
-    }>(`${this.url}/queryComponentesProductivos`, {
+    }>(`${this.url}/queryComponentes`, {
       token: this.token
     });
   }
@@ -36,7 +36,7 @@ export class ComponentesProductivosSegurosSecanoService {
   }> {
     return this.http.post<{
       addResults: ComponentesProductivosSegurosSecanoAddResult[];
-    }>(`${this.url}/addComponentesProductivosSegurosSecano`, {
+    }>(`${this.url}/addComponentes`, {
       componentes: [{ ...c }]
     });
   }

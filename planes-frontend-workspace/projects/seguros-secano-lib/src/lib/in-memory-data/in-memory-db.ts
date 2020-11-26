@@ -49,8 +49,8 @@ export class InMemoryDb {
 
   getChacrasSegurosSecanoByPersonaId(personaId: string): ChacraSegurosSecano[] {
     const empresas = this.getEmpresasCoreByPersonaId(personaId);
-    return this.d.chacras.filter(e =>
-      empresas.some(e => e.empresaId === e.empresaId)
+    return this.d.chacras.filter(chacra =>
+      empresas.some(e => e.empresaId === chacra.empresaId)
     );
   }
 }

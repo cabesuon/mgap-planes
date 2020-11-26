@@ -9,9 +9,12 @@ export class MockQueryUnidades implements GetData {
       queryResults: {
         success: true,
         error: null,
-        unidades: db.getUnidadesManejosSegurosSecanoByPersonaId(personaId)
+        //unidades: db.getUnidadesManejosSegurosSecanoByPersonaId(personaId)
+        unidades: db.d.unidades
       }
     };
+    console.log("MockQueryUnidades");
+    console.log(response);
     return response;
   }
 }

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 import {
   TableValueType,
@@ -114,7 +114,7 @@ export class VistaPrincipalComponent implements OnInit {
       })
     ).subscribe((
       sources =>
-        {
+        (
           this.unidadesTableParams = {
             columns: this.unidadesTableColumns,
             sources: {
@@ -122,9 +122,10 @@ export class VistaPrincipalComponent implements OnInit {
               cultivos: sources.cultivos,
             },
             unidades: sources.unidades
-          };
-          this.empresas = sources.empresas;
-        }
+          },
+          console.log(sources.unidades),
+          this.empresas = sources.empresas
+        )
     ));
   }
 
