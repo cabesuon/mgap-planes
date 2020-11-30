@@ -7,7 +7,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 
-import { ChacraCore, ChacrasCoreService } from 'planes-core-lib';
+import { ChacraSegurosSecano, ChacrasSegurosSecanoService} from 'seguros-secano-lib';
 import * as entityChacrasActions from './entity-chacras.actions';
 
 import { deleteDibujos } from '../entity-dibujos/entity-dibujos.actions';
@@ -15,10 +15,10 @@ import { deleteDibujos } from '../entity-dibujos/entity-dibujos.actions';
 @Injectable()
 export class EntityChacrasEffects {
   constructor(
-    private chacrasCoreService: ChacrasCoreService,
+    private chacrasSeguroSecanoService: ChacrasSegurosSecanoService,
     private actions$: Actions
   ) {
-    this.chacrasCoreService.url = environment.apiUrl;
+    this.chacrasSeguroSecanoService.url = environment.apiUrl;
   }
 
   // load
@@ -28,7 +28,7 @@ export class EntityChacrasEffects {
       entityChacrasActions.EntityChacrasActionTypes.ENTITYCHACRAS_LOAD_REQUEST
     ),
     switchMap(() => {
-      return this.chacrasCoreService.getChacrasCore().pipe(
+      return this.chacrasSeguroSecanoService.getChacrasSegurosSecano().pipe(
         map(results => results.queryResults),
         map(queryResults => {
           return queryResults.success
@@ -62,7 +62,7 @@ export class EntityChacrasEffects {
         action.payload
     ),
     switchMap(payload => {
-      return this.chacrasCoreService.addChacrasCore(payload.item).pipe(
+      return this.chacrasSeguroSecanoService.addChacrasSegurosSecano(payload.item).pipe(
         map(results => results.addResults),
         map(addResults => {
           return addResults.length === 1 && addResults[0].success
@@ -106,11 +106,11 @@ export class EntityChacrasEffects {
         action.payload
     ),
     switchMap(payload =>
-      this.chacrasCoreService.changeChacrasCore(payload.item).pipe(
+      this.chacrasSeguroSecanoService.changeChacrasSegurosSecano(payload.item).pipe(
         map(results => results.updateResults),
         map(updateResults => {
           if (updateResults.length === 1 && updateResults[0].success) {
-            const uc: Update<ChacraCore> = {
+            const uc: Update<ChacraSegurosSecano> = {
               id: updateResults[0].chacra.chacraId,
               changes: {
                 ...updateResults[0].chacra
@@ -158,7 +158,7 @@ export class EntityChacrasEffects {
         action.payload.item
     ),
     switchMap(item =>
-      this.chacrasCoreService.deleteChacrasCore(item).pipe(
+      this.chacrasSeguroSecanoService.deleteChacrasSegurosSecano(item).pipe(
         map(results => results.deleteResults),
         map(deleteResults =>
           deleteResults.length === 1 && deleteResults[0].success

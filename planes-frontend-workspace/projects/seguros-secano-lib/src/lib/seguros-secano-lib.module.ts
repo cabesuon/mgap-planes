@@ -85,9 +85,18 @@ import { UnidadesManejosSegurosSecanoTableComponent } from './unidades-manejos-s
 
     PlanesCoreLibModule
   ],
-  exports: [
+  exports: [    
+    AseguradorasSegurosSecanoDetailComponent,
     ChacrasSegurosSecanoDetailComponent,
-    ChacrasSegurosSecanoFormComponent
+    ChacrasSegurosSecanoFormComponent,
+    CultivosSegurosSecanoDetailComponent,
+    CiclosSegurosSecanoDetailComponent,
+    ComponentesProductivosSegurosSecanoDetailComponent,
+    ComponentesProductivosSegurosSecanoFormComponent,
+    ComponentesProductivosSegurosSecanoTableComponent,
+    UnidadesManejosSegurosSecanoDetailComponent,
+    UnidadesManejosSegurosSecanoFormComponent,
+    UnidadesManejosSegurosSecanoTableComponent
   ]
 })
 export class SegurosSecanoLibModule {

@@ -37,9 +37,9 @@ export class UnidadesManejosSegurosSecanoTableComponent implements OnInit {
     values: []
   };
 
-  update() {
+  update() {    
     this.columns = [];
-    this.columns =
+    this.columns = 
       this.params.columns || UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT;
     this.updateRows();
     this.tableParams = {
@@ -48,9 +48,11 @@ export class UnidadesManejosSegurosSecanoTableComponent implements OnInit {
     };
   }
 
-  constructor() {}
+  constructor() {    
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {    
+  }
 
   // datasource
 

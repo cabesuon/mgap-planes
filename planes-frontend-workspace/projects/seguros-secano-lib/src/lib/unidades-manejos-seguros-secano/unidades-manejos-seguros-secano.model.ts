@@ -11,11 +11,11 @@ export interface UnidadManejoSegurosSecano {
 
   aseguradoraId: string;
   polizaId: string;
-
+  porcentajeRiego: number;
   superficieSembrada: number;
-  superficieCocechada: number;
+  superficieCosechada: number;
   fechaSiembra: Date;
-  fechaCocecha: Date;
+  fechaCosecha: Date;
   fertilizacionP2O5: number;
   fertilizacionK2O: number;
   fertilizacionN: number;
@@ -41,13 +41,13 @@ export interface UnidadesManejosSegurosSecanoQueryResults {
 export interface UnidadesManejosSegurosSecanoAddResult {
   success: boolean;
   error: { code: number; description: string };
-  unidades: UnidadManejoSegurosSecano;
+  unidad: UnidadManejoSegurosSecano;
 }
 
 export interface UnidadesManejosSegurosSecanoUpdateResult {
   success: boolean;
   error: { code: number; description: string };
-  unidades: UnidadManejoSegurosSecano;
+  unidad: UnidadManejoSegurosSecano;
 }
 
 export interface UnidadesManejosSegurosSecanoDeleteResult {
@@ -67,9 +67,10 @@ export function createEmptyUnidadManejoSegurosSecano(): UnidadManejoSegurosSecan
     aseguradoraId: null,
     polizaId: null,
     superficieSembrada: null,
-    superficieCocechada: null,
+    superficieCosechada: null,
+    porcentajeRiego: null,
     fechaSiembra: null,
-    fechaCocecha: null,
+    fechaCosecha: null,
     fertilizacionP2O5: null,
     fertilizacionK2O: null,
     fertilizacionN: null,

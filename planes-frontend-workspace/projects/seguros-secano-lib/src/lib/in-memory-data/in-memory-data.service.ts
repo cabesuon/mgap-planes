@@ -62,7 +62,7 @@ export class InMemoryDataService implements InMemoryDbService {
     return undefined;
   }
 
-  post(reqInfo: RequestInfo) {
+  post(reqInfo: RequestInfo) {    
     if (postMethodGetDataRepo.hasOwnProperty(reqInfo.collectionName)) {
       return this.handleRequest(reqInfo, postMethodGetDataRepo);
     }

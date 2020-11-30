@@ -10,6 +10,7 @@ import {
 import { ChacraSegurosSecano } from '../chacras-seguros-secano/chacras-seguros-secano.model';
 import { CicloSegurosSecano } from '../ciclos-seguros-secano/ciclos-seguros-secano.model';
 import { CultivoSegurosSecano } from '../cultivos-seguros-secano/cultivos-seguros-secano.model';
+import { AseguradoraSegurosSecano } from '../aseguradoras-seguros-secano/aseguradoras-seguros-secano.model';
 
 import { UnidadManejoSegurosSecano } from './unidades-manejos-seguros-secano.model';
 
@@ -25,7 +26,8 @@ export interface UnidadesManejosSegurosSecanoTableParams {
 }
 
 export enum UnidadesManejosSegurosSecanoTableAction {
-  GUARDAR = 'Guardar',
+  GOTOVISTAMAPA = 'GotoVistaMapa',
+  GOTOVISTADMINISTRATIVA = 'GotoVistaAdministrativa',
   ENVIAR = 'Enviar'
 }
 
@@ -37,6 +39,8 @@ export interface UnidadesManejosSegurosSecanoTableActionValue {
 export interface UnidadesManejosSegurosSecanoTableSources {
   ciclos: CicloSegurosSecano[];
   cultivos: CultivoSegurosSecano[];
+  aseguradoras: AseguradoraSegurosSecano[];
+  empresas: EmpresaCore[];
 }
 
 export function resolveUnidadesManejosSegurosSecanoTableCellValue(
@@ -50,13 +54,45 @@ export function resolveUnidadesManejosSegurosSecanoTableCellValue(
 
     switch (names[0]) {
       case 'cultivoId':
+        const cultivos = sources.cultivos.find(
+          c => unidad[names[0]] === c.cultivoId
+        );
+        if (cultivos) {
+          os = [cultivos];
+        }
         break;
       case 'cicloId':
+        const ciclos = sources.ciclos.find(
+          c => unidad[names[0]] === c.cicloId
+        );
+        if (ciclos) {
+          os = [ciclos];
+        }
         break;
       case 'cultivoAntecesorId':
+        const cultivosAntecesores = sources.cultivos.find(
+          c => unidad[names[0]] === c.cultivoId
+        );
+        if (cultivosAntecesores) {
+          os = [cultivosAntecesores];
+        }
         break;
       case 'aseguradoraId':
+        const aseguradoras = sources.aseguradoras.find(
+          a => unidad[names[0]] === a.aseguradoraId
+        );
+        if (aseguradoras) {
+          os = [aseguradoras];
+        }
         break;
+      case 'empresaId':
+          const empresas = sources.empresas.find(
+            e => unidad[names[0]] === e.empresaId
+          );
+          if (empresas) {
+            os = [empresas];
+          }
+          break;
     }
 
     const vs: string[] = [];
@@ -100,7 +136,7 @@ export function createUnidadesManejosSegurosSecanoTableRow(
           column,
           sources
         );
-        break;
+        break; 
     }
   }
   return row;
@@ -110,29 +146,43 @@ export const UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT: UnidadesManejosS
   // acciones
   {
     type: TableValueType.ACTION,
-    name: UnidadesManejosSegurosSecanoTableAction.GUARDAR,
+    name: UnidadesManejosSegurosSecanoTableAction.GOTOVISTAMAPA,
     label: '',
     sort: false,
     filter: false,
     actionFormat: _ => ({
-      value: UnidadesManejosSegurosSecanoTableAction.GUARDAR,
-      text: 'Guardar',
-      icon: 'disk'
+      value: UnidadesManejosSegurosSecanoTableAction.GOTOVISTAMAPA,
+      text: 'Ver en Mapa',
+      icon: 'map'
     })
   },
   {
     type: TableValueType.ACTION,
-    name: UnidadesManejosSegurosSecanoTableAction.ENVIAR,
+    name: UnidadesManejosSegurosSecanoTableAction.GOTOVISTADMINISTRATIVA,
     label: '',
     sort: false,
     filter: false,
     actionFormat: _ => ({
-      value: UnidadesManejosSegurosSecanoTableAction.ENVIAR,
-      text: 'Enviar',
-      icon: 'mail'
+      value: UnidadesManejosSegurosSecanoTableAction.GOTOVISTADMINISTRATIVA,
+      text: 'Ver en Administrativo',
+      icon: 'search'
     })
   },
   // literales
+  {
+    type: TableValueType.LITERAL,
+    name: 'empresaId.empresaRazonSocial',
+    label: 'Empresa',
+    sort: true,
+    filter: true
+  },
+  {
+    type: TableValueType.LITERAL,
+    name: 'unidadNombre',
+    label: 'Nombre',
+    sort: true,
+    filter: true
+  },
   {
     type: TableValueType.LITERAL,
     name: 'cultivoId.cultivoNombre',

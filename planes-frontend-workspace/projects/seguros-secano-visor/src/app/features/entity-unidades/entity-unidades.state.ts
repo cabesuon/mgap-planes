@@ -24,4 +24,4 @@ export const initialState: EntityUnidadesManejosState = entityUnidadesManejosAda
     isLoading: false,
     error: null
   }
-);
+); 

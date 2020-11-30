@@ -1,10 +1,41 @@
 <form [formGroup]="form">
 
+  <!-- unidadNombre -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Nombre"
+      formControlName="unidadNombre">
+    </mat-form-field>
+  </div>
+
+  <!-- empresa -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Empresa</mat-label>
+      <mat-select formControlName="empresaId">
+        <mat-option *ngFor="let e of formInput.empresas"
+        [value]="e.empresaId">{{e.empresaRazonSocial}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   <!-- cultivo -->
   <div class="row">
     <mat-form-field class="col" appearance="fill">
       <mat-label>Cultivo</mat-label>
       <mat-select formControlName="cultivoId">
+        <mat-option *ngFor="let c of formInput.cultivos"
+        [value]="c.cultivoId">{{c.cultivoNombre}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- cultivo antecesor -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Cultivo antecesor</mat-label>
+      <mat-select formControlName="cultivoAntecesorId">
         <mat-option *ngFor="let c of formInput.cultivos"
         [value]="c.cultivoId">{{c.cultivoNombre}}</mat-option>
       </mat-select>
@@ -21,5 +52,146 @@
       </mat-select>
     </mat-form-field>
   </div>
+
+  <!-- aseguradora -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Aseguradora</mat-label>
+      <mat-select formControlName="aseguradoraId">
+        <mat-option *ngFor="let a of formInput.aseguradoras"
+        [value]="a.aseguradoraId">{{a.aseguradoraNombre}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- porcentajeRiego -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Id. Póliza"
+      type="text"
+      formControlName="polizaId">
+    </mat-form-field>
+  </div>
+
+  <!-- fecha de siembra -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Nombre"
+      type="date"
+      formControlName="fechaSiembra">
+    </mat-form-field>
+  </div>
+
+  <!-- superficieSembrada -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Superficie sembrada"
+      type="number"
+      formControlName="superficieSembrada">
+    </mat-form-field>
+  </div>
+
+  <!-- fecha de cosecha -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Fecha de cosecha"
+      type="date"
+      formControlName="fechaCosecha">
+    </mat-form-field>
+  </div>  
+
+  <!-- superficieCosechada -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Superficie cosechada"
+      type="number"
+      formControlName="superficieCosechada">
+    </mat-form-field>
+  </div>
+
+  <!-- porcentajeRiego -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Porcentaje de área bajo riego"
+      type="number"
+      formControlName="fechaSiembra">
+    </mat-form-field>
+  </div>
+
+  <!-- fertilizacionP2O5 -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Fertilización P205"
+      type="number"
+      formControlName="fertilizacionP2O5">
+    </mat-form-field>
+  </div>
+
+  <!-- fertilizacionK2O -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Fertilización K20"
+      type="number"
+      formControlName="fertilizacionK2O">
+    </mat-form-field>
+  </div>
+
+  <!-- fertilizacionN -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Fertilización N"
+      type="number"
+      formControlName="fertilizacionN">
+    </mat-form-field>
+  </div>
+
+  <!-- fertilizacionS -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Fertilización S"
+      type="number"
+      formControlName="fertilizacionS">
+    </mat-form-field>
+  </div>  
+
+  <!-- analisisSueloPBray -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Análisis suelo PBray"
+      type="number"
+      formControlName="analisisSueloPBray">
+    </mat-form-field>
+  </div> 
+
+  <!-- analisisSueloK -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Análisis suelo K"
+      type="number"
+      formControlName="analisisSueloK">
+    </mat-form-field>
+  </div> 
+
+  <!-- fertilizacionS -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Rendimiento"
+      type="number"
+      formControlName="rendimiento">
+    </mat-form-field>
+  </div> 
 
 </form>

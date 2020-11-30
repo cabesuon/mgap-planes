@@ -1,18 +1,17 @@
 import { EntityAdapter, createEntityAdapter, EntityState } from '@ngrx/entity';
 
-import { ChacraSecano } from 'planes-secano-lib';
-
-export { ChacraSecano } from 'planes-secano-lib';
+import { ChacraSegurosSecano } from 'seguros-secano-lib';
+export { ChacraSegurosSecano } from 'seguros-secano-lib';
 
 export const entityChacrasAdapter: EntityAdapter<
-  ChacraSecano
-> = createEntityAdapter<ChacraSecano>({
+ChacraSegurosSecano
+> = createEntityAdapter<ChacraSegurosSecano>({
   selectId: model => model.chacraId,
-  sortComparer: (a: ChacraSecano, b: ChacraSecano): number =>
+  sortComparer: (a: ChacraSegurosSecano, b: ChacraSegurosSecano): number =>
     b.chacraId.toString().localeCompare(a.chacraId.toString())
 });
 
-export interface EntityChacrasState extends EntityState<ChacraSecano> {
+export interface EntityChacrasState extends EntityState<ChacraSegurosSecano> {
   isLoading?: boolean;
   error?: string | null;
 }

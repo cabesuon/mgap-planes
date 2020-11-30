@@ -5,7 +5,36 @@
       <h1 rtl class="main-heading">Empresas</h1>
     </div>
   </div>
-  <div class="row mb-2">
+  <div class="row" *ngFor="let e of empresas;">
+    <mat-card>
+      <mat-card-header>      
+        <mat-card-title>{{e.empresaRazonSocial}}</mat-card-title>
+        <mat-card-subtitle>{{e.empresaRut}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Unidades de manejo</h3>          
+            <div class="row" *ngFor="let um of unidades" >
+              <ng-container *ngIf="um.empresaId == e.empresaId">
+                {{um.unidadNombre}}
+              </ng-container>
+            </div>            
+          </div>
+          <div class="col-md-6">
+            <h3>Chacras sin unidad de manejo</h3>          
+            <div class="row" *ngFor="let c of chacras" >
+              <ng-container *ngIf="c.empresaId == e.empresaId">
+                {{c.chacraNombre}}
+              </ng-container>                
+            </div>            
+          </div>
+        </div>        
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!--<div class="row mb-2">
     <div class="col-md-12 float-right">
       <button mat-stroked-button (click)="newUnidadManejo()" color="primary">
         <fa-icon icon="plus-circle"></fa-icon>
@@ -13,14 +42,14 @@
       </button>
     </div>
   </div>
-  <!--<div class="row" *ngFor="let e of empresas;">
+  <div class="row" *ngFor="let e of empresas;">
     <div class="row">
       <div class="col-md-12">
         <h2 rtl class="main-empresas">{{e.empresaRazonSocial}}</h2>
       </div>
     </div> -->
         
-    <div class="row">
+  <!--  <div class="row">
       <div class="col">
         <lib-unidades-manejos-seguros-secano-table
         [params]="unidadesTableParams"
@@ -28,5 +57,5 @@
         </lib-unidades-manejos-seguros-secano-table>      
       </div>
     </div>
-  <!--</div>-->
+  </div>-->
 </div>

@@ -15,9 +15,7 @@ export class MockQueryComponentes implements GetData {
         //)
         componentes: db.d.componentes
       }
-    };
-    //console.log("MockQueryComponentes");
-    //console.log(response);
+    };    
     return response;
   }
 }

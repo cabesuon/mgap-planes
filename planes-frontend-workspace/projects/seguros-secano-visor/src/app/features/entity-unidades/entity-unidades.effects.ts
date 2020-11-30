@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
+import { Update } from '@ngrx/entity';
+
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
@@ -58,4 +60,112 @@ export class EntityUnidadesManejosEffects {
       );
     })
   );
+
+  // add
+  @Effect()
+  EntityUnidadesManejosAddRequestEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<entityUnidadesManejosActions.EntityUnidadesManejosAddRequestAction>(
+      entityUnidadesManejosActions.EntityUnidadesManejosActionTypes.ENTITYUNIDADESMANEJOS_ADD_REQUEST
+    ),
+    map(
+      (action: entityUnidadesManejosActions.EntityUnidadesManejosAddRequestAction) =>
+        action.payload.item
+    ),
+    switchMap(item => {
+      return this.unidadesManejosService.addUnidadesManejosSegurosSecano(item).pipe(                
+        map(results => results.addResults),
+        map(addResults =>
+          addResults.length === 1 && addResults[0].success
+            ? new entityUnidadesManejosActions.EntityUnidadesManejosAddSuccessAction({
+                item: addResults[0].unidad
+              })
+            : new entityUnidadesManejosActions.EntityUnidadesManejosAddFailureAction({
+                error: 'Error al crear la unidad.'
+              })
+        ),
+        catchError(error =>
+          observableOf(
+            new entityUnidadesManejosActions.EntityUnidadesManejosAddFailureAction({
+              error: 'Error al crear la unidad de manejo (fallo en conexion a servidor).'
+            })
+          )
+        )
+      );
+    })
+  );
+
+  // change
+  @Effect()
+  EntityUnidadesManejosChangeRequestEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<entityUnidadesManejosActions.EntityUnidadesManejosChangeRequestAction>(
+      entityUnidadesManejosActions.EntityUnidadesManejosActionTypes.ENTITYUNIDADESMANEJOS_CHANGE_REQUEST
+    ),
+    map(
+      (action: entityUnidadesManejosActions.EntityUnidadesManejosChangeRequestAction) =>
+        action.payload.item
+    ),
+    switchMap(item =>
+      this.unidadesManejosService.changeUnidadesManejosSecano(item).pipe(
+        map(results => results.updateResults),
+        map(updateResults => {
+          if (updateResults.length === 1 && updateResults[0].success) {
+            const uc: Update<UnidadManejoSegurosSecano> = {
+              id: updateResults[0].unidad.unidadId,
+              changes: {
+                ...updateResults[0].unidad
+              }
+            };
+            return new entityUnidadesManejosActions.EntityUnidadesManejosChangeSuccessAction({
+              item: uc
+            });
+          }
+          return new entityUnidadesManejosActions.EntityUnidadesManejosChangeFailureAction({
+            error: 'Error al actualizar la unidad de manejo.'
+          });
+        }),
+        catchError(error =>
+          observableOf(
+            new entityUnidadesManejosActions.EntityUnidadesManejosChangeFailureAction({
+              error:
+                'Error al actualizar la unidad de manejo(fallo en conexion a servidor).'
+            })
+          )
+        )
+      )
+    )
+  );
+
+  // delete
+  @Effect()
+  EntityUnidadesManejosDeleteRequestEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<entityUnidadesManejosActions.EntityUnidadesManejosDeleteRequestAction>(
+      entityUnidadesManejosActions.EntityUnidadesManejosActionTypes.ENTITYUNIDADESMANEJOS_DELETE_REQUEST
+    ),
+    map(
+      (action: entityUnidadesManejosActions.EntityUnidadesManejosDeleteRequestAction) =>
+        action.payload.item
+    ),
+    switchMap(item =>
+      this.unidadesManejosService.deleteUnidadesManejosSegurosSecano(item).pipe(
+        map(results => results.deleteResults),
+        map(deleteResults => 
+          deleteResults.length === 1 && deleteResults[0].success
+            ? new entityUnidadesManejosActions.EntityUnidadesManejosDeleteSuccessAction({
+                item
+              })
+            : new entityUnidadesManejosActions.EntityUnidadesManejosDeleteFailureAction({
+                error: 'Error al eliminar la unidad de manejo.'
+              })
+        ),
+        catchError(error =>
+          observableOf(
+            new entityUnidadesManejosActions.EntityUnidadesManejosDeleteFailureAction({
+              error: 'Error al eliminar la unidad de manejo (fallo en conexion a servidor).'
+            })
+          )
+        )
+      )
+    )
+  );
+
 }

@@ -60,7 +60,7 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       tipoSocialId: null,
       empresaPersonaCi: null,
       empresaRazonSocial: 'Adken',
-      empresaRut: null,
+      empresaRut: '216216220016',
       contactos: [contactos[1]]
     },
     {
@@ -68,7 +68,7 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       tipoSocialId: null,
       empresaPersonaCi: null,
       empresaRazonSocial: 'Figares SA',
-      empresaRut: null,
+      empresaRut: '211003420017',
       contactos: [contactos[1]]
     }
   ];
@@ -99,15 +99,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       unidadId: '1',
       unidadNombre: 'Las Glicinas',
       empresaId: '1',
-      cultivoId: null,
-      cicloId: null,
+      cultivoId: '1',
+      cicloId: '1',
       cultivoAntecesorId: null,
-      aseguradoraId: null,
+      aseguradoraId: '3',
       polizaId: null,
       superficieSembrada: null,
-      superficieCocechada: null,
+      superficieCosechada: null,
       fechaSiembra: null,
-      fechaCocecha: null,
+      fechaCosecha: null,
       fertilizacionP2O5: null,
       fertilizacionK2O: null,
       fertilizacionN: null,
@@ -119,21 +119,22 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       anio: null,
       fechaCreado: null,
       fechaModificado: null,
-      fechaEnviado: null
+      fechaEnviado: null,
+      porcentajeRiego: null
     },
     {
       unidadId: '2',
       unidadNombre: 'Las Higueras',
       empresaId: '1',
-      cultivoId: null,
-      cicloId: null,
+      cultivoId: '2',
+      cicloId: '2',
       cultivoAntecesorId: null,
-      aseguradoraId: null,
+      aseguradoraId: '2',
       polizaId: null,
       superficieSembrada: null,
-      superficieCocechada: null,
+      superficieCosechada: null,
       fechaSiembra: null,
-      fechaCocecha: null,
+      fechaCosecha: null,
       fertilizacionP2O5: null,
       fertilizacionK2O: null,
       fertilizacionN: null,
@@ -145,21 +146,22 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       anio: null,
       fechaCreado: null,
       fechaModificado: null,
-      fechaEnviado: null
+      fechaEnviado: null,
+      porcentajeRiego: null
     },
     {
       unidadId: '3',
       unidadNombre: 'Buena Vista - Rocha',
       empresaId: '2',
-      cultivoId: null,
-      cicloId: null,
+      cultivoId: '3',
+      cicloId: '1',
       cultivoAntecesorId: null,
-      aseguradoraId: null,
+      aseguradoraId: '1',
       polizaId: null,
       superficieSembrada: null,
-      superficieCocechada: null,
+      superficieCosechada: null,
       fechaSiembra: null,
-      fechaCocecha: null,
+      fechaCosecha: null,
       fertilizacionP2O5: null,
       fertilizacionK2O: null,
       fertilizacionN: null,
@@ -171,7 +173,8 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       anio: null,
       fechaCreado: null,
       fechaModificado: null,
-      fechaEnviado: null
+      fechaEnviado: null,
+      porcentajeRiego: null
     }
   ];
 

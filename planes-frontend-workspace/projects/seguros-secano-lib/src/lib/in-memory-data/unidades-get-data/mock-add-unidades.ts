@@ -7,7 +7,8 @@ export class MockAddUnidades implements GetData {
     const unidades: UnidadManejoSegurosSecano[] = payload.req.body.unidades;
 
     const response = [];
-
+    console.log("mockaddunidades");
+    console.log(unidades);
     for (const u of unidades) {
       u.unidadId = db.nextId();
       db.d.unidades.push(u);

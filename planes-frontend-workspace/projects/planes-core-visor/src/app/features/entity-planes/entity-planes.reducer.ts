@@ -13,7 +13,7 @@ export function entityPlanesReducer(
   action: EntityPlanesActions
 ): EntityPlanesState {
   switch (action.type) {
-    // load
+    // load 
     case EntityPlanesActionTypes.ENTITYPLANES_LOAD_REQUEST: {
       return {
         ...state,

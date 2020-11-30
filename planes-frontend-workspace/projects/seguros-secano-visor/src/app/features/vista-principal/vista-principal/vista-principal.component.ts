@@ -9,7 +9,8 @@ import {
   TableValueType,
   TableActionEvent,
   FormActionType,
-  EmpresaCore
+  EmpresaCore,
+  ChacraCore
 } from 'planes-core-lib';
 
 import {
@@ -17,7 +18,8 @@ import {
   createEmptyUnidadManejoSegurosSecano,
   UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT,
   UnidadesManejosSegurosSecanoTableParams,
-  UnidadesManejosSegurosSecanoTableAction
+  UnidadesManejosSegurosSecanoTableAction,
+  ChacraSegurosSecano
 } from 'seguros-secano-lib';
 
 import { NotificationService } from '../../../core/notifications/notification.service';
@@ -29,6 +31,7 @@ import { AppState } from '../../../core/core.state';
 import { selectAllEntityUnidadesManejos } from '../../entity-unidades/entity-unidades.selectors';
 import { selectAllEntityPersonas } from '../../entity-personas/entity-personas.selectors';
 import { selectAllEntityEmpresas } from '../../entity-empresas/entity-empresas.selectors';
+import { selectAllEntityChacras } from '../../entity-chacras/entity-chacras.selectors';
 import { selectAllEntityCiclos } from '../../entity-ciclos/entity-ciclos.selectors';
 import { selectAllEntityCultivos } from '../../entity-cultivos/entity-cultivos.selectors';
 
@@ -36,6 +39,7 @@ import {
   EntityUnidadesFormDialogData,
   EntityUnidadesFormDialogComponent
 } from '../../entity-unidades/entity-unidades-form-dialog/entity-unidades-form-dialog.component';
+import { selectAllEntityAseguradoras } from '../../entity-aseguradoras/entity-aseguradoras.selectors';
 
 const DIALOG_WIDTH = '300px';
 const DIALOG_MAX_HEIGHT = '500px';
@@ -61,20 +65,6 @@ export class VistaPrincipalComponent implements OnInit {
           icon: 'file-signature'
         };
       }
-    },
-    {
-      type: TableValueType.ACTION,
-      name: 'SaveAction',
-      label: '',
-      sort: false,
-      filter: false,
-      actionFormat: (u: UnidadManejoSegurosSecano) => {
-        return {
-          value: UnidadesManejosSegurosSecanoTableAction.GUARDAR,
-          text: 'Guardar Unidad de Manejo',
-          icon: 'save'
-        };
-      }
     }
   ];
 
@@ -83,11 +73,15 @@ export class VistaPrincipalComponent implements OnInit {
     unidades: [],
     sources: {
       ciclos: [],
-      cultivos: []
+      cultivos: [],
+      aseguradoras: [],
+      empresas: []
     }
   };
 
   empresas: EmpresaCore[] = [];
+  unidades: UnidadManejoSegurosSecano[] = [];
+  chacras: ChacraSegurosSecano [] = [];
 
   constructor(
     private store: Store<AppState>,
@@ -105,12 +99,16 @@ export class VistaPrincipalComponent implements OnInit {
       this.store.pipe(select(selectAllEntityPersonas)),
       this.store.pipe(select(selectAllEntityEmpresas)),
       this.store.pipe(select(selectAllEntityUnidadesManejos)),
-      (ciclos, cultivos, personas, empresas, unidades) => ({
+      this.store.pipe(select(selectAllEntityAseguradoras)),
+      this.store.pipe(select(selectAllEntityChacras)),
+      (ciclos, cultivos, personas, empresas, unidades, aseguradoras, chacras) => ({
         ciclos,
         cultivos,
         personas,
         empresas,
-        unidades
+        unidades,
+        aseguradoras,
+        chacras
       })
     ).subscribe((
       sources =>
@@ -120,11 +118,15 @@ export class VistaPrincipalComponent implements OnInit {
             sources: {
               ciclos: sources.ciclos,
               cultivos: sources.cultivos,
+              aseguradoras: sources.aseguradoras,
+              empresas: sources.empresas
             },
             unidades: sources.unidades
           },
           console.log(sources.unidades),
-          this.empresas = sources.empresas
+          this.empresas = sources.empresas,
+          this.unidades = sources.unidades,
+          this.chacras = sources.chacras
         )
     ));
   }
@@ -133,7 +135,7 @@ export class VistaPrincipalComponent implements OnInit {
     switch (actionValue.value) {
       /*case UnidadesManejosSegurosSecanoTableAction.GOTOVISTAMAPA:
         this.router.navigate([
-          '/features/mapa',
+          '/features/mapa', 
           { UnidadId: actionValue.obj.unidadId }
         ]);
         break;
@@ -160,9 +162,11 @@ export class VistaPrincipalComponent implements OnInit {
   openDialogUnidadManejo(action: FormActionType) {
     const inData: EntityUnidadesFormDialogData = {
       unidad: createEmptyUnidadManejoSegurosSecano(),
-      action: action
-      // empresas: this.planesTableParams.sources.empresas,
-      // ingenieroAgronomoId: '1'
+      action: action,
+      aseguradoras: this.unidadesTableParams.sources.aseguradoras,
+      cultivos: this.unidadesTableParams.sources.cultivos,
+      ciclos: this.unidadesTableParams.sources.ciclos,
+      empresas: this.unidadesTableParams.sources.empresas      
     };
     this.dialog.open(EntityUnidadesFormDialogComponent, {
       width: DIALOG_WIDTH,

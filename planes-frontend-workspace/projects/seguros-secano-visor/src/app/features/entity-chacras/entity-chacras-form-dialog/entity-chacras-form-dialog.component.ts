@@ -3,11 +3,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 
-import {
-  ChacraCore,
+import {  
   FormActionType,
   ChacrasCoreFormInput
 } from 'planes-core-lib';
+
+import { ChacraSegurosSecano } from 'seguros-secano-lib';
 
 import { AppState } from '../../../core/core.state';
 import { LoggingService } from '../../../core/logging/logging.service';
@@ -31,7 +32,7 @@ export class EntityChacrasFormDialogComponent implements OnInit {
   cancelText = 'Cancelar';
 
   formValid: boolean;
-  formValue: ChacraCore;
+  formValue: ChacraSegurosSecano;
 
   constructor(
     private store: Store<AppState>,
@@ -51,7 +52,7 @@ export class EntityChacrasFormDialogComponent implements OnInit {
     this.formValid = status === 'VALID';
   }
 
-  formValueChanges(chacra: ChacraCore) {
+  formValueChanges(chacra: ChacraSegurosSecano) {
     this.formValue = chacra;
   }
 
