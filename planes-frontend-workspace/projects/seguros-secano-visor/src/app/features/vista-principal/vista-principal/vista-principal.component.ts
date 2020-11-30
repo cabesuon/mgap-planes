@@ -3,21 +3,18 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 import {
-  TableValueType,
-  TableActionEvent,
-  FormActionType,
-  EmpresaCore
+  EmpresaCore,
+  nameEmpresaCore,
+  numberEmpresaCore
 } from 'planes-core-lib';
 
 import {
   UnidadManejoSegurosSecano,
-  createEmptyUnidadManejoSegurosSecano,
-  UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT,
-  UnidadesManejosSegurosSecanoTableParams,
-  UnidadesManejosSegurosSecanoTableAction
+  ChacraSegurosSecano,
+  ComponenteProductivoSegurosSecano
 } from 'seguros-secano-lib';
 
 import { NotificationService } from '../../../core/notifications/notification.service';
@@ -27,18 +24,9 @@ import { LoggingService } from '../../../core/logging/logging.service';
 import { AppState } from '../../../core/core.state';
 
 import { selectAllEntityUnidadesManejos } from '../../entity-unidades/entity-unidades.selectors';
-import { selectAllEntityPersonas } from '../../entity-personas/entity-personas.selectors';
 import { selectAllEntityEmpresas } from '../../entity-empresas/entity-empresas.selectors';
-import { selectAllEntityCiclos } from '../../entity-ciclos/entity-ciclos.selectors';
-import { selectAllEntityCultivos } from '../../entity-cultivos/entity-cultivos.selectors';
-
-import {
-  EntityUnidadesFormDialogData,
-  EntityUnidadesFormDialogComponent
-} from '../../entity-unidades/entity-unidades-form-dialog/entity-unidades-form-dialog.component';
-
-const DIALOG_WIDTH = '300px';
-const DIALOG_MAX_HEIGHT = '500px';
+import { selectAllEntityChacras } from '../../entity-chacras/entity-chacras.selectors';
+import { selectAllEntityComponentes } from '../../entity-componentes/entity-component.selectors';
 
 @Component({
   selector: 'app-vista-principal',
@@ -46,127 +34,108 @@ const DIALOG_MAX_HEIGHT = '500px';
   styleUrls: ['./vista-principal.component.scss']
 })
 export class VistaPrincipalComponent implements OnInit {
-  unidadesTableColumns = [
-    ...UNIDADESMANEJOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT,
-    {
-      type: TableValueType.ACTION,
-      name: 'EstadoAction',
-      label: '',
-      sort: false,
-      filter: false,
-      actionFormat: (u: UnidadManejoSegurosSecano) => {
-        return {
-          value: UnidadesManejosSegurosSecanoTableAction.ENVIAR,
-          text: 'Enviar Unidad de Manejo',
-          icon: 'file-signature'
-        };
-      }
-    },
-    {
-      type: TableValueType.ACTION,
-      name: 'SaveAction',
-      label: '',
-      sort: false,
-      filter: false,
-      actionFormat: (u: UnidadManejoSegurosSecano) => {
-        return {
-          value: UnidadesManejosSegurosSecanoTableAction.GUARDAR,
-          text: 'Guardar Unidad de Manejo',
-          icon: 'save'
-        };
-      }
-    }
-  ];
-
-  unidadesTableParams: UnidadesManejosSegurosSecanoTableParams = {
-    columns: this.unidadesTableColumns,
-    unidades: [],
-    sources: {
-      ciclos: [],
-      cultivos: []
-    }
-  };
-
   empresas: EmpresaCore[] = [];
+  empresasName: string[] = [];
+  empresasNumber: string[] = [];
+  unidades: UnidadManejoSegurosSecano[] = [];
+  chacras: ChacraSegurosSecano[] = [];
+  componentes: ComponenteProductivoSegurosSecano[] = [];
+  rdata = {};
 
   constructor(
     private store: Store<AppState>,
     private notificationService: NotificationService,
     private loggingService: LoggingService,
     private route: ActivatedRoute,
-    private router: Router,
-    private dialog: MatDialog
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    combineLatest(      
-      this.store.pipe(select(selectAllEntityCiclos)),
-      this.store.pipe(select(selectAllEntityCultivos)),
-      this.store.pipe(select(selectAllEntityPersonas)),
+    combineLatest(
       this.store.pipe(select(selectAllEntityEmpresas)),
       this.store.pipe(select(selectAllEntityUnidadesManejos)),
-      (ciclos, cultivos, personas, empresas, unidades) => ({
-        ciclos,
-        cultivos,
-        personas,
+      this.store.pipe(select(selectAllEntityChacras)),
+      this.store.pipe(select(selectAllEntityComponentes)),
+      (empresas, unidades, chacras, componentes) => ({
         empresas,
-        unidades
+        unidades,
+        chacras,
+        componentes
       })
-    ).subscribe((
-      sources =>
-        {
-          this.unidadesTableParams = {
-            columns: this.unidadesTableColumns,
-            sources: {
-              ciclos: sources.ciclos,
-              cultivos: sources.cultivos,
-            },
-            unidades: sources.unidades
-          };
-          this.empresas = sources.empresas;
-        }
-    ));
+    ).subscribe(sources => {
+      this.empresas = sources.empresas;
+      this.unidades = sources.unidades;
+      this.chacras = sources.chacras;
+      this.componentes = sources.componentes;
+      this.relateData();
+    });
   }
 
-  unidadesTableActioned(actionValue: TableActionEvent) {
-    switch (actionValue.value) {
-      /*case UnidadesManejosSegurosSecanoTableAction.GOTOVISTAMAPA:
-        this.router.navigate([
-          '/features/mapa',
-          { UnidadId: actionValue.obj.unidadId }
-        ]);
-        break;
-      case UnidadesManejosSegurosSecanoTableAction.GOTOVISTADMINISTRATIVA:
-        this.router.navigate([
-          '/features/administrativo',
-          { UnidadId: actionValue.obj.unidadId }
-        ]);
-        break;*/
-      default:
-        this.notificationService.info(
-          `[No Implementado] ? ${actionValue.obj.planId}`
-        );
-        break;
+  relateData() {
+    this.rdata = {};
+    if (!this.empresas) {
+      return;
+    }
+    for (const e of this.empresas) {
+      this.empresasName.push(nameEmpresaCore(e));
+      this.empresasNumber.push(numberEmpresaCore(e));
+      this.rdata[e.empresaId] = {
+        empresa: e,
+        unidades: {},
+        chacras: {},
+        unidadesArr: [],
+        chacrasArr: []
+      };
+    }
+    if (!this.unidades) {
+      return;
+    }
+    for (const u of this.unidades) {
+      this.rdata[u.empresaId].unidadesArr.push(u);
+      this.rdata[u.empresaId].unidades[u.unidadId] = {
+        unidad: u,
+        chacras: {},
+        componentes: {},
+        chacrasArr: [],
+        componentesArr: []
+      };
+    }
+    if (!this.chacras) {
+      return;
+    }
+    for (const c of this.chacras) {
+      if (c.unidadId) {
+        this.rdata[c.empresaId].unidades[c.unidadId].chacrasArr.push(c);
+        this.rdata[c.empresaId].unidades[c.unidadId].chacras[c.chacraId] = {
+          chacra: c,
+          componentes: {},
+          componentesArr: []
+        };
+      } else {
+        this.rdata[c.empresaId].chacrasArr.push(c);
+        this.rdata[c.empresaId].chacras[c.chacraId] = {
+          chacra: c,
+          componentes: {},
+          componentesArr: []
+        };
+      }
     }
   }
 
-  newUnidadManejo() {
-    this.openDialogUnidadManejo(FormActionType.Add);
-  }
-
-  // dialogs
-
-  openDialogUnidadManejo(action: FormActionType) {
-    const inData: EntityUnidadesFormDialogData = {
-      unidad: createEmptyUnidadManejoSegurosSecano(),
-      action: action
-      // empresas: this.planesTableParams.sources.empresas,
-      // ingenieroAgronomoId: '1'
-    };
-    this.dialog.open(EntityUnidadesFormDialogComponent, {
-      width: DIALOG_WIDTH,
-      maxHeight: DIALOG_MAX_HEIGHT,
-      data: inData
-    });
+  actionClick(action: string, empresa: EmpresaCore) {
+    switch (action) {
+      case 'GotoVistaMapa':
+        this.router.navigate([
+          '/features/mapa',
+          { EmpresaId: empresa.empresaId }
+        ]);
+        break;
+      case 'GotoVistaAdministrativo':
+        this.router.navigate([
+          '/features/administrativo',
+          { EmpresaId: empresa.empresaId }
+        ]);
+        break;
+    }
   }
 }

@@ -2,25 +2,20 @@
   <div class="row pr-3 pl-3 mt-2">
     <div class="col">
       <div class="row mapa-toolbar-tool-row">
-
-        <ng-container *ngIf="!!planId; else noPlanId">
-          <p class="title">{{plan ? plan.planNombre : ''}}</p>
+        <ng-container *ngIf="!!empresa">
+          <p>
+            <span class="title">
+              {{empresaName}}
+            </span>
+            <span class="title-extra">
+              {{empresaNumber}}
+            </span>
+          </p>
         </ng-container>
-        <ng-template #noPlanId>
-          <mat-form-field appearance="fill" color="primary" *ngIf="!!planes">
-            <mat-label>Plan</mat-label>
-            <mat-select (selectionChange)="planesChange($event.value)">
-              <mat-option *ngFor="let p of planes" [value]="p" [selected]="p===plan">
-                {{p ? p.planNombre : ''}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </ng-template>
-
       </div>
     </div>
 
-    <div class="col">
+    <!-- <div class="col">
       <div class="row mapa-toolbar-tool-row">
 
         <button mat-stroked-button (click)="toggleGeneralRow()" color="basic" class="mr-2">
@@ -28,106 +23,48 @@
           <span class="ml-2">General</span>
         </button>
 
-        <button mat-stroked-button (click)="toggleChacrasRow()" color="basic" class="mr-2" [disabled]="!chacrasRow">
-          <fa-icon icon="{{chacrasRowVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
-          <span class="ml-2">Chacras</span>
-        </button>
-
-        <button mat-stroked-button (click)="toggleRotacionRow()" color="basic" [disabled]="!rotacionRow">
-          <fa-icon icon="{{rotacionRowVisible ? 'eye-slash' : 'eye'}}"></fa-icon>
-          <span class="ml-2">Rotación</span>
-        </button>
-
       </div>
-    </div>
+    </div> -->
   </div>
 
-  <ng-container *ngIf="plan">
-    <div class="row pr-3 pl-3 mt-2" *ngIf="generalRowVisible">
+  <ng-container *ngIf="empresa">
+    <!-- <div class="row pr-3 pl-3 mt-2" *ngIf="generalRowVisible">
       <h2>General</h2>
-    </div>
+    </div> -->
     <!-- info general -->
-    <div class="row mb-2" *ngIf="generalRowVisible">
+    <!-- <div class="row mb-2" *ngIf="generalRowVisible">
       <div class="col">
-        <h3>Detalles Plan</h3>
+        <h3>Detalles Empresa</h3>
         <mat-card class="mb-1">
-          <lib-planes-secano-detail [params]="planDetailParams"></lib-planes-secano-detail>
-        </mat-card>
-        <h3>Técnico Responsable</h3>
-        <mat-card class="mb-1">
-          <lib-ingenieros-agronomos-core-detail [params]="ingenieroDetailParams">
-          </lib-ingenieros-agronomos-core-detail>
+          <lib-empresas-core-detail [params]="empresaDetailParams"></lib-empresas-core-detail>
         </mat-card>
       </div>
-      <div class="col">
-        <h3>Responsable Propietarios</h3>
-        <mat-card class="mb-1">
-          <lib-responsables-secano-detail [params]="propietarioResponsableDetailParams">
-          </lib-responsables-secano-detail>
-        </mat-card>
-        <h3>Empresas Propietarias</h3>
-        <mat-card class="mb-1" *ngFor="let propietarioDetailParam of propietariosDetailParams">
-          <mat-card-content>
-            <lib-empresas-core-detail [params]="propietarioDetailParam">
-            </lib-empresas-core-detail>
-          </mat-card-content>
-        </mat-card>
+    </div> -->
+    <!-- unidades -->
+    <div class="row pr-3 pl-3 mt-2">
+      <h2 class="mat-h2">Unidades de Manejo</h2>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-12 float-right">
+        <button mat-stroked-button (click)="newUnidadManejo()" color="primary">
+          <fa-icon icon="plus-circle"></fa-icon>
+          <span class="ml-2">Nueva Unidad</span>
+        </button>
       </div>
-      <div class="col" *ngIf="plan.arrendatarios.length > 0 || !!plan.tctResponsableId">
-        <div class="row" *ngIf="!!plan.tctResponsableId">
-          <h3>Responsable Arrendatarios</h3>
-          <mat-card class="mb-1">
-            <lib-responsables-secano-detail [params]="arrendatarioResponsableDetailParams">
-            </lib-responsables-secano-detail>
-          </mat-card>
+    </div>
+    <div class="row mr-3 ml-3 mb-2">
+      <div class="col">
+        <div class="row" *ngFor="let ua of uuaaArr">
+          <div class="row">
+            <h3 class="mat-h3 mt-2">{{ua.unidad.unidadNombre}}</h3>
+          </div>
+          <div class="row table-container">
+            <lib-componentes-productivos-seguros-secano-table
+            [params]="ua.ctps"
+            (actioned)="componentesTableAction($event)">
+            </lib-componentes-productivos-seguros-secano-table>
+          </div>
         </div>
-        <div class="row" *ngIf="plan.arrendatarios.length > 0">
-          <h3>Empresas Arrendatarias</h3>
-          <mat-card class="mb-1" *ngFor="let arrendatarioDetailParams of arrendatariosDetailParams">
-            <mat-card-content>
-              <lib-empresas-core-detail [params]="arrendatarioDetailParams"></lib-empresas-core-detail>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </div>
-    </div>
-    <!-- chacras -->
-    <div class="row pr-3 pl-3 mt-2" *ngIf="chacrasRowVisible">
-      <h2>Chacras</h2>
-    </div>
-    <div class="row mb-2" *ngIf="chacrasRowVisible">
-      <div class="col">
-        <lib-chacras-core-table [params]="chacrasTableParams" (actioned)="chacrasTableAction($event)">
-        </lib-chacras-core-table>
-      </div>
-    </div>
-    <!-- rotacion -->
-    <div class="row pr-3 pl-3 mt-2" *ngIf="rotacionRowVisible">
-      <h2>Rotación</h2>
-    </div>
-    <div class="row mb-2" *ngIf="rotacionRowVisible">
-      <div class="col-4">
-        <mat-card class="mb-1">
-          <lib-rotaciones-secano-detail [params]="rotacionDetailParams">
-          </lib-rotaciones-secano-detail>
-        </mat-card>
-      </div>
-      <div class="col-8">
-        <mat-accordion>
-          <mat-expansion-panel *ngFor="let componenteDetailParams of componentesDetailParams">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{componenteDetailParams.componente.componenteNombre}}
-              </mat-panel-title>
-              <mat-panel-description>
-                Año {{componenteDetailParams.componente.componenteAnio}} |
-                {{componenteDetailParams.componente.componenteEstacion === 1 ? 'Verano' : (componenteDetailParams.componente.componenteEstacion === 2 ? 'Invierno' : 'Anual')}}
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <lib-componentes-secano-detail [params]="componenteDetailParams">
-            </lib-componentes-secano-detail>
-          </mat-expansion-panel>
-        </mat-accordion>
       </div>
     </div>
   </ng-container>

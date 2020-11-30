@@ -3,17 +3,9 @@
 
     <div class="col-2">
       <div class="row mapa-toolbar-tool-row">
-        <!-- <mat-form-field appearance="fill" color="primary" class="mr-1">
-          <mat-label>Plan</mat-label>
-          <mat-select #plan>
-            <mat-option *ngFor="let p of (planes$ | async)" [value]="p.PlanId">
-              {{p.PlanNombre}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field> -->
 
         <button mat-stroked-button (click)="toolClicked('AddChacra', null)" color="primary"
-        [disabled]="!planId || !(polygons$ | async) || (polygons$ | async).length === 0">
+        [disabled]="!empresaId || !(polygons$ | async) || (polygons$ | async).length === 0">
           <fa-icon icon="plus-circle"></fa-icon>
           <span class="ml-2">Nueva Chacra</span>
         </button>
@@ -47,12 +39,12 @@
 
     <div class="col-2">
       <div class="row mapa-toolbar-tool-row">
-        <button mat-stroked-button (click)="fileInput.click()" color="basic">
+        <!-- <button mat-stroked-button (click)="fileInput.click()" color="basic">
           <fa-icon icon="file-import"></fa-icon>
           <span class="ml-2">Importar Dibujos</span>
           <input #fileInput type="file" style="display:none;" accept=".zip"
           (change)="importDibujos($event)"/>
-        </button>
+        </button> -->
 
       </div>
     </div>
@@ -62,7 +54,6 @@
     <div class="col">
       <lib-map-core-control
         [chacrasCore]="(chacras$ | async)"
-        [zonasExclusionCore]="(zonasExclusion$ | async)"
         [dibujosCore]="dibujos"
         (dibujoCreatedEvent)="dibujoCreatedEvent($event)"
         (dibujosDeletedEvent)="dibujosDeletedEvent($event)"

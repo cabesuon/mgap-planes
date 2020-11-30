@@ -34,7 +34,7 @@ const postMethodGetDataRepo = {
   queryChacras: new MockQueryChacras(),
   addChacras: new MockAddChacras(),
   queryComponentes: new MockQueryComponentes(),
-  addQueryComponentes: new MockAddComponentes(),
+  addComponentes: new MockAddComponentes(),
 
   queryPersonas: new MockQueryPersonas(),
   queryTokens: new MockQueryTokens(),
@@ -70,6 +70,7 @@ export class InMemoryDataService implements InMemoryDbService {
   }
 
   private handleRequest(reqInfo: RequestInfo, dataRepo: any) {
+    console.log(`[HandleRequest][START][${reqInfo.collectionName}]`);
     return reqInfo.utils.createResponse$(() => {
       const dataEncapsulation = reqInfo.utils.getConfig().dataEncapsulation;
       const data = dataRepo[reqInfo.collectionName].getData(reqInfo, this.db);
@@ -82,6 +83,9 @@ export class InMemoryDataService implements InMemoryDbService {
             body: { error: `'Internal Server Error` },
             status: STATUS.INTERNAL_SERVER_ERROR
           };
+      console.log(
+        `[HandleRequest][END][${reqInfo.collectionName}] STATUS ${options.status}`
+      );
       return this.finishOptions(options, reqInfo);
     });
   }

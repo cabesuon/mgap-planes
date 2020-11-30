@@ -5,7 +5,7 @@ import {
 } from '@ngrx/store';
 import {
   entityChacrasAdapter,
-  ChacraSecano,
+  ChacraSegurosSecano,
   EntityChacrasState
 } from './entity-chacras.state';
 
@@ -23,16 +23,16 @@ export const selectEntityChacrasState = createSelector(
 
 export const selectAllEntityChacras: (
   state: object
-) => ChacraSecano[] = entityChacrasAdapter.getSelectors(
+) => ChacraSegurosSecano[] = entityChacrasAdapter.getSelectors(
   selectEntityChacrasState
 ).selectAll;
 
-export const selectChacrasByPlanId = (id: string) =>
+export const selectChacrasByEmpresaId = (id: string) =>
   createSelector(
     selectAllEntityChacras,
-    (allChacras: ChacraSecano[]) => {
+    (allChacras: ChacraSegurosSecano[]) => {
       if (allChacras) {
-        return allChacras.filter(c => c.planId === id);
+        return allChacras.filter(c => c.empresaId === id);
       } else {
         return [];
       }
@@ -42,7 +42,7 @@ export const selectChacrasByPlanId = (id: string) =>
 export const selectChacraById = (id: string) =>
   createSelector(
     selectAllEntityChacras,
-    (allChacras: ChacraSecano[]) => {
+    (allChacras: ChacraSegurosSecano[]) => {
       if (allChacras) {
         return allChacras.find(c => c.chacraId === id);
       } else {

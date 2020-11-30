@@ -24,7 +24,7 @@ export class UnidadesManejosSegurosSecanoService {
   }> {
     return this.http.post<{
       queryResults: UnidadesManejosSegurosSecanoQueryResults;
-    }>(`${this.url}/queryUnidadesManejos`, {
+    }>(`${this.url}/queryUnidades`, {
       token: this.token
     });
   }
@@ -36,7 +36,7 @@ export class UnidadesManejosSegurosSecanoService {
   }> {
     return this.http.post<{
       addResults: UnidadesManejosSegurosSecanoAddResult[];
-    }>(`${this.url}/addUnidadesManejosSegurosSecano`, {
+    }>(`${this.url}/addUnidades`, {
       unidades: [{ ...u }]
     });
   }

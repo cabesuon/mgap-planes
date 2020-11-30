@@ -27,7 +27,7 @@ export const selectAllEntityEmpresas: (
   selectEntityEmpresasState
 ).selectAll;
 
-export const selectPersonaById = (id: string) =>
+export const selectEmpresaById = (id: string) =>
   createSelector(
     selectAllEntityEmpresas,
     (allEmpresas: EmpresaCore[]) => {

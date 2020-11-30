@@ -46,7 +46,9 @@ export class ComponentesProductivosSegurosSecanoTableComponent
     this.updateRows();
     this.tableParams = {
       columns: this.columns.map(c => ({ ...c })),
-      values: this.rows.map(r => ({ ...r }))
+      values: this.rows.map(r => ({ ...r })),
+      filter: false,
+      pagination: false
     };
   }
 

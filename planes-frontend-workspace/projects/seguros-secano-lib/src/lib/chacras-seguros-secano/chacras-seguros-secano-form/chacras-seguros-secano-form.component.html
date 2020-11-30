@@ -1,0 +1,16 @@
+<form [formGroup]="form">
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Unidad de Manejo</mat-label>
+      <mat-select formControlName="unidadId">
+        <mat-option *ngFor="let u of unidades" [value]="u.unidadId">
+          {{u.unidadNombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
+<lib-chacras-core-form [formInput]="coreData"
+  (formValueChanges)="coreFormValueChanges($event)"
+  (formStatusChanges)="coreFormStatusChanges($event)"
+></lib-chacras-core-form>

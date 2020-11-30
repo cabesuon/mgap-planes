@@ -32,11 +32,14 @@ export interface TableColumn {
   label?: string;
   sort?: boolean;
   filter?: boolean;
+  sticky?: boolean;
 }
 
 export interface TableParams {
   columns: TableColumn[];
   values: TableRow[];
+  filter?: boolean;
+  pagination?: boolean;
 }
 
 export interface TableActionEvent {

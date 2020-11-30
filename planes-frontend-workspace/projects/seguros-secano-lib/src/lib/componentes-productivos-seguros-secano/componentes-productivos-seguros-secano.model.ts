@@ -39,13 +39,13 @@ export interface ComponentesProductivosSegurosSecanoQueryResults {
 export interface ComponentesProductivosSegurosSecanoAddResult {
   success: boolean;
   error: { code: number; description: string };
-  componentes: ComponenteProductivoSegurosSecano;
+  componente: ComponenteProductivoSegurosSecano;
 }
 
 export interface ComponentesProductivosSegurosSecanoUpdateResult {
   success: boolean;
   error: { code: number; description: string };
-  componentes: ComponenteProductivoSegurosSecano;
+  componente: ComponenteProductivoSegurosSecano;
 }
 
 export interface ComponentesProductivosSegurosSecanoDeleteResult {
@@ -83,15 +83,54 @@ export function createEmptyComponenteProductivoSegurosSecano(): ComponenteProduc
 }
 
 export function createBaseComponenteProductivoSegurosSecano(
-  id: string,
+  componenteId: string,
   chacraId: string,
   cultivoId: string,
   cicloId: string,
   cultivoAntecesorId: string,
   aseguradoraId: string,
-  polizaId: string
+  polizaId: string,
+  superficieSembrada: number,
+  superficieCocechada: number,
+  fechaSiembra: Date,
+  fechaCocecha: Date,
+  fertilizacionP2O5: number,
+  fertilizacionK2O: number,
+  fertilizacionN: number,
+  fertilizacionS: number,
+  analisisSueloPBray: number,
+  analisisSueloK: number,
+  rendimiento: number,
+  zafra: string,
+  anio: number,
+  fechaCreado: Date,
+  fechaModificado: Date,
+  fechaEnviado: Date
 ) {
   return {
-    ...createEmptyComponenteProductivoSegurosSecano()
+    ...createEmptyComponenteProductivoSegurosSecano(),
+    componenteId,
+    chacraId,
+    cultivoId,
+    cicloId,
+    cultivoAntecesorId,
+    aseguradoraId,
+    polizaId,
+    superficieSembrada,
+    superficieCocechada,
+    fechaSiembra,
+    fechaCocecha,
+    fertilizacionP2O5,
+    fertilizacionK2O,
+    fertilizacionN,
+    fertilizacionS,
+    analisisSueloPBray,
+    analisisSueloK,
+    rendimiento,
+    zafra,
+    anio,
+    fechaCreado,
+    fechaModificado,
+    fechaEnviado
   };
 }

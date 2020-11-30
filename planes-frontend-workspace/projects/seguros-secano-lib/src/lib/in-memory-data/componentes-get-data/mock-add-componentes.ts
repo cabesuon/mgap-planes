@@ -8,7 +8,6 @@ export class MockAddComponentes implements GetData {
       payload.req.body.componentes;
 
     const response = [];
-
     for (const c of componentes) {
       c.componenteId = db.nextId();
       db.d.componentes.push(c);
@@ -18,7 +17,6 @@ export class MockAddComponentes implements GetData {
         componente: c
       });
     }
-
     return {
       addResults: response
     };

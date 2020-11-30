@@ -18,3 +18,21 @@ ul {
 .w-50 {
   max-width: 50px;
 }
+
+.mat-header-cell,
+.mat-footer-cell,
+.mat-cell {
+  padding: 0 4px;
+  text-align: center;
+  min-width: 80px;
+}
+
+.mat-column-Guardar {
+  flex: none;
+  width: 40px;
+}
+
+.mat-column-Enviar {
+  flex: none;
+  width: 40px;
+}

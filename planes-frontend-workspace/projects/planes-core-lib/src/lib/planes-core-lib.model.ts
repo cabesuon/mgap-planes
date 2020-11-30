@@ -3,6 +3,7 @@ export * from './map-core/map-core.model';
 export * from './chacras-core/chacras-core.model';
 export * from './chacras-core/chacras-core-table.model';
 export * from './chacras-core/chacras-core-detail.model';
+export * from './chacras-core/chacras-core-form.model';
 
 export * from './zonas-exclusion-core/zonas-exclusion-core.model';
 

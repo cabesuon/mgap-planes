@@ -31,8 +31,8 @@ import { EntityUnidadesFormDialogComponent } from './entity-unidades/entity-unid
 // vistas
 import { VistaPrincipalComponent } from './vista-principal/vista-principal/vista-principal.component';
 import { VistaLoginComponent } from './vista-login/vista-login/vista-login.component';
-//import { VistaMapaComponent } from './vista-mapa/vista-mapa/vista-mapa.component';
-//import { VistaAdministrativoComponent } from './vista-administrativo/vista-administrativo/vista-administrativo.component';
+import { VistaMapaComponent } from './vista-mapa/vista-mapa/vista-mapa.component';
+import { VistaAdministrativoComponent } from './vista-administrativo/vista-administrativo/vista-administrativo.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -69,8 +69,8 @@ import { VistaLoginComponent } from './vista-login/vista-login/vista-login.compo
     // vistas
     VistaPrincipalComponent,
     VistaLoginComponent,
-  //  VistaMapaComponent,
-  //  VistaAdministrativoComponent,
+    VistaMapaComponent,
+    VistaAdministrativoComponent,
     // dialogs
     EntityChacrasFormDialogComponent,
     EntityUnidadesFormDialogComponent

@@ -26,3 +26,15 @@ export const selectAllEntityUnidadesManejos: (
 ) => UnidadManejoSegurosSecano[] = entityUnidadesManejosAdapter.getSelectors(
   selectEntityUnidadesManejosState
 ).selectAll;
+
+export const selectUnidadesManejosByEmpresaId = (id: string) =>
+  createSelector(
+    selectAllEntityUnidadesManejos,
+    (allUnidades: UnidadManejoSegurosSecano[]) => {
+      if (allUnidades) {
+        return allUnidades.filter(u => u.empresaId === id);
+      } else {
+        return [];
+      }
+    }
+  );

@@ -2,23 +2,29 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
-import { Observable, of as observableOf } from 'rxjs';
+import { Observable, of as observableOf, from as observableFrom } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 
-import { ChacraCore, ChacrasCoreService } from 'planes-core-lib';
+import {
+  ChacraSegurosSecano,
+  ChacrasSegurosSecanoService
+} from 'seguros-secano-lib';
 import * as entityChacrasActions from './entity-chacras.actions';
+import { createEmptyComponenteProductivoSegurosSecano } from 'seguros-secano-lib';
+import { EntityComponentesAddRequestAction } from '../entity-componentes/entity-componentes.actions';
 
 import { deleteDibujos } from '../entity-dibujos/entity-dibujos.actions';
+import { create } from 'domain';
 
 @Injectable()
 export class EntityChacrasEffects {
   constructor(
-    private chacrasCoreService: ChacrasCoreService,
+    private chacrasSegurosSecanoService: ChacrasSegurosSecanoService,
     private actions$: Actions
   ) {
-    this.chacrasCoreService.url = environment.apiUrl;
+    this.chacrasSegurosSecanoService.url = environment.apiUrl;
   }
 
   // load
@@ -28,7 +34,7 @@ export class EntityChacrasEffects {
       entityChacrasActions.EntityChacrasActionTypes.ENTITYCHACRAS_LOAD_REQUEST
     ),
     switchMap(() => {
-      return this.chacrasCoreService.getChacrasCore().pipe(
+      return this.chacrasSegurosSecanoService.getChacrasSegurosSecano().pipe(
         map(results => results.queryResults),
         map(queryResults => {
           return queryResults.success
@@ -62,26 +68,29 @@ export class EntityChacrasEffects {
         action.payload
     ),
     switchMap(payload => {
-      return this.chacrasCoreService.addChacrasCore(payload.item).pipe(
-        map(results => results.addResults),
-        map(addResults => {
-          return addResults.length === 1 && addResults[0].success
-            ? new entityChacrasActions.EntityChacrasAddSuccessAction({
-                item: addResults[0].chacra,
-                dibujosId: payload.dibujosId
+      return this.chacrasSegurosSecanoService
+        .addChacrasSegurosSecano(payload.item)
+        .pipe(
+          map(results => results.addResults),
+          map(addResults => {
+            return addResults.length === 1 && addResults[0].success
+              ? new entityChacrasActions.EntityChacrasAddSuccessAction({
+                  item: addResults[0].chacra,
+                  dibujosId: payload.dibujosId
+                })
+              : new entityChacrasActions.EntityChacrasAddFailureAction({
+                  error: 'Error al crear la chacra.'
+                });
+          }),
+          catchError(error =>
+            observableOf(
+              new entityChacrasActions.EntityChacrasAddFailureAction({
+                error:
+                  'Error al crear la chacra (fallo en conexion a servidor).'
               })
-            : new entityChacrasActions.EntityChacrasAddFailureAction({
-                error: 'Error al crear la chacra.'
-              });
-        }),
-        catchError(error =>
-          observableOf(
-            new entityChacrasActions.EntityChacrasAddFailureAction({
-              error: 'Error al crear la chacra (fallo en conexion a servidor).'
-            })
+            )
           )
-        )
-      );
+        );
     })
   );
 
@@ -90,8 +99,17 @@ export class EntityChacrasEffects {
     ofType<entityChacrasActions.EntityChacrasAddSuccessAction>(
       entityChacrasActions.EntityChacrasActionTypes.ENTITYCHACRAS_ADD_SUCCESS
     ),
-    map((action: entityChacrasActions.EntityChacrasAddSuccessAction) => {
-      return deleteDibujos({ ids: action.payload.dibujosId });
+    switchMap((action: entityChacrasActions.EntityChacrasAddSuccessAction) => {
+      return [
+        deleteDibujos({ ids: action.payload.dibujosId }),
+        new EntityComponentesAddRequestAction({
+          item: {
+            ...createEmptyComponenteProductivoSegurosSecano(),
+            chacraId: action.payload.item.chacraId
+            // todo: obtener y agregar los campos por default de unidad
+          }
+        })
+      ];
     })
   );
 
@@ -106,34 +124,36 @@ export class EntityChacrasEffects {
         action.payload
     ),
     switchMap(payload =>
-      this.chacrasCoreService.changeChacrasCore(payload.item).pipe(
-        map(results => results.updateResults),
-        map(updateResults => {
-          if (updateResults.length === 1 && updateResults[0].success) {
-            const uc: Update<ChacraCore> = {
-              id: updateResults[0].chacra.chacraId,
-              changes: {
-                ...updateResults[0].chacra
-              }
-            };
-            return new entityChacrasActions.EntityChacrasChangeSuccessAction({
-              item: uc,
-              dibujosId: payload.dibujosId
+      this.chacrasSegurosSecanoService
+        .changeChacrasSegurosSecano(payload.item)
+        .pipe(
+          map(results => results.updateResults),
+          map(updateResults => {
+            if (updateResults.length === 1 && updateResults[0].success) {
+              const uc: Update<ChacraSegurosSecano> = {
+                id: updateResults[0].chacra.chacraId,
+                changes: {
+                  ...updateResults[0].chacra
+                }
+              };
+              return new entityChacrasActions.EntityChacrasChangeSuccessAction({
+                item: uc,
+                dibujosId: payload.dibujosId
+              });
+            }
+            return new entityChacrasActions.EntityChacrasChangeFailureAction({
+              error: 'Error al actualizar la chacra.'
             });
-          }
-          return new entityChacrasActions.EntityChacrasChangeFailureAction({
-            error: 'Error al actualizar la chacra.'
-          });
-        }),
-        catchError(error =>
-          observableOf(
-            new entityChacrasActions.EntityChacrasChangeFailureAction({
-              error:
-                'Error al actualizar la chacra (fallo en conexion a servidor).'
-            })
+          }),
+          catchError(error =>
+            observableOf(
+              new entityChacrasActions.EntityChacrasChangeFailureAction({
+                error:
+                  'Error al actualizar la chacra (fallo en conexion a servidor).'
+              })
+            )
           )
         )
-      )
     )
   );
 
@@ -158,7 +178,7 @@ export class EntityChacrasEffects {
         action.payload.item
     ),
     switchMap(item =>
-      this.chacrasCoreService.deleteChacrasCore(item).pipe(
+      this.chacrasSegurosSecanoService.deleteChacrasSegurosSecano(item).pipe(
         map(results => results.deleteResults),
         map(deleteResults =>
           deleteResults.length === 1 && deleteResults[0].success

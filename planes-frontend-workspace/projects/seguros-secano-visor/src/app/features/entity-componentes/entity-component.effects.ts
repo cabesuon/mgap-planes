@@ -57,4 +57,41 @@ export class EntityComponentesEffects {
         );
     })
   );
+
+  // add
+  @Effect()
+  EntityComponentesAddRequestEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<entityComponentesActions.EntityComponentesAddRequestAction>(
+      entityComponentesActions.EntityComponentesActionTypes
+        .ENTITYCOMPONENTES_ADD_REQUEST
+    ),
+    map(
+      (action: entityComponentesActions.EntityComponentesAddRequestAction) =>
+        action.payload
+    ),
+    switchMap(payload => {
+      return this.componentesService
+        .addComponentesProductivosSegurosSecano(payload.item)
+        .pipe(
+          map(results => results.addResults),
+          map(addResults => {
+            return addResults.length === 1 && addResults[0].success
+              ? new entityComponentesActions.EntityComponentesAddSuccessAction({
+                  item: addResults[0].componente
+                })
+              : new entityComponentesActions.EntityComponentesAddFailureAction({
+                  error: 'Error al crear el componente.'
+                });
+          }),
+          catchError(error =>
+            observableOf(
+              new entityComponentesActions.EntityComponentesAddFailureAction({
+                error:
+                  'Error al crear la componente (fallo en conexion a servidor).'
+              })
+            )
+          )
+        );
+    })
+  );
 }

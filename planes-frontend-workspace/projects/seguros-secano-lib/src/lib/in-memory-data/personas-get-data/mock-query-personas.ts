@@ -10,7 +10,7 @@ export class MockQueryPersonas implements GetData {
       queryResults: {
         success: true,
         error: null,
-        personas: db.getPersonaCoreByToken(token).personaId
+        personas: [db.getPersonaCoreByToken(token)]
       }
     };
     return response;

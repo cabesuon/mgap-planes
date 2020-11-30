@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
-import { ChacraSecano } from './entity-chacras.state';
+import { ChacraSegurosSecano } from './entity-chacras.state';
 
 export enum EntityChacrasActionTypes {
   ENTITYCHACRAS_LOAD_REQUEST = '[ENTITYCHACRAS] Load Request',
@@ -31,14 +31,16 @@ export class EntityChacrasLoadFailureAction implements Action {
 
 export class EntityChacrasLoadSuccessAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_LOAD_SUCCESS;
-  constructor(public payload: { items: ChacraSecano[] }) {}
+  constructor(public payload: { items: ChacraSegurosSecano[] }) {}
 }
 
 // add
 
 export class EntityChacrasAddRequestAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_ADD_REQUEST;
-  constructor(public payload: { item: ChacraSecano; dibujosId: number[] }) {}
+  constructor(
+    public payload: { item: ChacraSegurosSecano; dibujosId: number[] }
+  ) {}
 }
 
 export class EntityChacrasAddFailureAction implements Action {
@@ -48,14 +50,18 @@ export class EntityChacrasAddFailureAction implements Action {
 
 export class EntityChacrasAddSuccessAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_ADD_SUCCESS;
-  constructor(public payload: { item: ChacraSecano; dibujosId: number[] }) {}
+  constructor(
+    public payload: { item: ChacraSegurosSecano; dibujosId: number[] }
+  ) {}
 }
 
 // change
 
 export class EntityChacrasChangeRequestAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_CHANGE_REQUEST;
-  constructor(public payload: { item: ChacraSecano; dibujosId: number[] }) {}
+  constructor(
+    public payload: { item: ChacraSegurosSecano; dibujosId: number[] }
+  ) {}
 }
 
 export class EntityChacrasChangeFailureAction implements Action {
@@ -66,7 +72,7 @@ export class EntityChacrasChangeFailureAction implements Action {
 export class EntityChacrasChangeSuccessAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_CHANGE_SUCCESS;
   constructor(
-    public payload: { item: Update<ChacraSecano>; dibujosId: number[] }
+    public payload: { item: Update<ChacraSegurosSecano>; dibujosId: number[] }
   ) {}
 }
 
@@ -74,7 +80,7 @@ export class EntityChacrasChangeSuccessAction implements Action {
 
 export class EntityChacrasDeleteRequestAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_DELETE_REQUEST;
-  constructor(public payload: { item: ChacraSecano }) {}
+  constructor(public payload: { item: ChacraSegurosSecano }) {}
 }
 
 export class EntityChacrasDeleteFailureAction implements Action {
@@ -84,7 +90,7 @@ export class EntityChacrasDeleteFailureAction implements Action {
 
 export class EntityChacrasDeleteSuccessAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_DELETE_SUCCESS;
-  constructor(public payload: { item: ChacraSecano }) {}
+  constructor(public payload: { item: ChacraSegurosSecano }) {}
 }
 
 // actions

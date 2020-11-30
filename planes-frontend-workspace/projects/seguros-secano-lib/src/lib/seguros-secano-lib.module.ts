@@ -25,7 +25,11 @@ import {
   faFileInvoiceDollar,
   faMap,
   faSearch,
-  faTrash
+  faTrash,
+  faCheck,
+  faSave,
+  faEdit,
+  faBomb
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -33,7 +37,7 @@ import {
   MatPaginatorIntlCoreService
 } from 'planes-core-lib';
 
-import { AseguradorasSegurosSecanoDetailComponent } from './aseguradoras-seguros-secano/aseguradoras-seguros-secano-detail/aseguradoras-seguros-secano-detail.component'
+import { AseguradorasSegurosSecanoDetailComponent } from './aseguradoras-seguros-secano/aseguradoras-seguros-secano-detail/aseguradoras-seguros-secano-detail.component';
 
 import { ChacrasSegurosSecanoDetailComponent } from './chacras-seguros-secano/chacras-seguros-secano-detail/chacras-seguros-secano-detail.component';
 import { ChacrasSegurosSecanoFormComponent } from './chacras-seguros-secano/chacras-seguros-secano-form/chacras-seguros-secano-form.component';
@@ -53,17 +57,17 @@ import { UnidadesManejosSegurosSecanoTableComponent } from './unidades-manejos-s
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
-    AseguradorasSegurosSecanoDetailComponent,
+    UnidadesManejosSegurosSecanoDetailComponent,
+    UnidadesManejosSegurosSecanoFormComponent,
+    UnidadesManejosSegurosSecanoTableComponent,
     ChacrasSegurosSecanoDetailComponent,
     ChacrasSegurosSecanoFormComponent,
-    CultivosSegurosSecanoDetailComponent,
-    CiclosSegurosSecanoDetailComponent,
     ComponentesProductivosSegurosSecanoDetailComponent,
     ComponentesProductivosSegurosSecanoFormComponent,
     ComponentesProductivosSegurosSecanoTableComponent,
-    UnidadesManejosSegurosSecanoDetailComponent,
-    UnidadesManejosSegurosSecanoFormComponent,
-    UnidadesManejosSegurosSecanoTableComponent
+    AseguradorasSegurosSecanoDetailComponent,
+    CultivosSegurosSecanoDetailComponent,
+    CiclosSegurosSecanoDetailComponent
   ],
   imports: [
     CommonModule,
@@ -86,8 +90,17 @@ import { UnidadesManejosSegurosSecanoTableComponent } from './unidades-manejos-s
     PlanesCoreLibModule
   ],
   exports: [
+    UnidadesManejosSegurosSecanoDetailComponent,
+    UnidadesManejosSegurosSecanoFormComponent,
+    UnidadesManejosSegurosSecanoTableComponent,
     ChacrasSegurosSecanoDetailComponent,
-    ChacrasSegurosSecanoFormComponent
+    ChacrasSegurosSecanoFormComponent,
+    ComponentesProductivosSegurosSecanoDetailComponent,
+    ComponentesProductivosSegurosSecanoFormComponent,
+    ComponentesProductivosSegurosSecanoTableComponent,
+    AseguradorasSegurosSecanoDetailComponent,
+    CultivosSegurosSecanoDetailComponent,
+    CiclosSegurosSecanoDetailComponent
   ]
 })
 export class SegurosSecanoLibModule {
@@ -97,7 +110,11 @@ export class SegurosSecanoLibModule {
       faFileInvoiceDollar,
       faMap,
       faSearch,
-      faTrash
+      faTrash,
+      faCheck,
+      faSave,
+      faEdit,
+      faBomb
     );
   }
 }

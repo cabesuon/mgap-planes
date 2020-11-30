@@ -11,8 +11,15 @@ import { filter, map } from 'rxjs/operators';
 import {
   FormActionType,
   createEmptyChacraCore,
-  DibujoCoreType
+  DibujoCoreType,
+  EmpresaCore
 } from 'planes-core-lib';
+
+import {
+  ChacraSegurosSecano,
+  createEmptyChacraSegurosSecano,
+  UnidadManejoSegurosSecano
+} from 'seguros-secano-lib';
 
 import { MapCoreService } from 'projects/planes-core-lib/src/lib/map-core/map-core.service';
 
@@ -21,16 +28,18 @@ import { NotificationService } from '../../../core/notifications/notification.se
 import { LoggingService } from '../../../core/logging/logging.service';
 import { FileService } from '../../../core/file/file.service';
 
-/*import { PlanSecano } from '../../entity-planes/entity-planes.state';
 import {
-  selectAllEntityPlanes,
-  selectPlanById
-} from '../../entity-planes/entity-planes.selectors';*/
+  selectAllEntityEmpresas,
+  selectEmpresaById
+} from '../../entity-empresas/entity-empresas.selectors';
+import {
+  selectAllEntityUnidadesManejos,
+  selectUnidadesManejosByEmpresaId
+} from '../../entity-unidades/entity-unidades.selectors';
 
-import { ChacraSecano } from '../../entity-chacras/entity-chacras.state';
 import {
   selectAllEntityChacras,
-  selectChacrasByPlanId
+  selectChacrasByEmpresaId
 } from '../../entity-chacras/entity-chacras.selectors';
 import {
   EntityChacrasFormDialogData,
@@ -58,9 +67,12 @@ const DIALOG_MAX_HEIGHT = '500px';
   styleUrls: ['./vista-mapa.component.scss']
 })
 export class VistaMapaComponent implements OnInit {
-  planId: string = null;
-  
-  chacras$: Observable<ChacraSecano[]>;
+  empresaId: string = null;
+  empresas$: Observable<EmpresaCore[]>;
+
+  unidades: UnidadManejoSegurosSecano[] = [];
+
+  chacras$: Observable<ChacraSegurosSecano[]>;
 
   polygons$: Observable<DibujoCore[]>;
   dibujos: DibujoCore[];
@@ -76,29 +88,18 @@ export class VistaMapaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.planId = this.route.snapshot.paramMap.get('PlanId');
+    this.empresaId = this.route.snapshot.paramMap.get('EmpresaId');
 
-    this.planes$ = this.planId
+    this.empresas$ = this.empresaId
       ? this.store.pipe(
-          select(selectPlanById(this.planId)),
+          select(selectEmpresaById(this.empresaId)),
           map(p => [p])
         )
-      : this.store.pipe(select(selectAllEntityPlanes));
+      : this.store.pipe(select(selectAllEntityEmpresas));
 
-    this.chacras$ = this.planId
-      ? this.store.pipe(select(selectChacrasByPlanId(this.planId)))
+    this.chacras$ = this.empresaId
+      ? this.store.pipe(select(selectChacrasByEmpresaId(this.empresaId)))
       : this.store.pipe(select(selectAllEntityChacras));
-
-    this.chacras$
-      .pipe(filter(chacras => !!chacras))
-      .subscribe(
-        chacras =>
-          (this.zonasExclusion$ = this.store.pipe(
-            select(
-              selectZonasExclusionByChacrasId(chacras.map(c => c.chacraId))
-            )
-          ))
-      );
 
     this.polygons$ = this.store.pipe(
       select(selectAllEntityDibujosByTipo(DibujoCoreType.POLYGON))
@@ -107,6 +108,10 @@ export class VistaMapaComponent implements OnInit {
     this.store
       .pipe(select(selectAllEntityDibujos))
       .subscribe(dibujos => (this.dibujos = dibujos));
+
+    this.store
+      .pipe(select(selectUnidadesManejosByEmpresaId(this.empresaId)))
+      .subscribe(unidades => (this.unidades = unidades));
   }
 
   toolClicked(tool: string, chacraId: number) {
@@ -130,12 +135,13 @@ export class VistaMapaComponent implements OnInit {
   // dialogs
 
   openDialogChacra(action: FormActionType) {
-    const chacra = createEmptyChacraCore();
-    chacra.planId = this.planId;
+    const chacra = createEmptyChacraSegurosSecano();
+    chacra.empresaId = this.empresaId;
     const inData: EntityChacrasFormDialogData = {
       chacra,
       action: action,
-      dibujos: this.dibujos
+      dibujos: this.dibujos,
+      unidades: this.unidades
     };
     this.dialog.open(EntityChacrasFormDialogComponent, {
       width: DIALOG_WIDTH,

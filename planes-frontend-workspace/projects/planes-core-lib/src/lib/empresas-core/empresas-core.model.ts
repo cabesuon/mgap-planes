@@ -23,7 +23,7 @@ export function createBaseEmpresaCore(
   };
 }
 
-export function nameEmpresaCore(empresa: EmpresaCore) {
+export function nameEmpresaCore(empresa: EmpresaCore): string {
   return `${empresa.empresaRazonSocial}`;
 }
 
@@ -32,6 +32,14 @@ export function personaRelEmpresaCore(
   personaId: string
 ): boolean {
   return !!empresa.contactos.find(c => c.personaId === personaId);
+}
+
+export function numberEmpresaCore(empresa: EmpresaCore): string {
+  return empresa.empresaRut
+    ? `RUT ${empresa.empresaRut}`
+    : empresa.empresaPersonaCi
+    ? `CI ${empresa.empresaPersonaCi}`
+    : '';
 }
 
 export interface EmpresasCoreQueryResults {

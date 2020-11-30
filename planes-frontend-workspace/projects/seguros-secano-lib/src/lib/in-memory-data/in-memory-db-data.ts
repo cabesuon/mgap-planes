@@ -36,6 +36,10 @@ export interface InMemoryDbData {
   ciclos: CicloSegurosSecano[];
 }
 
+function randomNumber(b: number): number {
+  return Math.random() * b;
+}
+
 export function createInMemoryDataDefault(): InMemoryDbData {
   const tokens: Array<{ token: string; personaId: string }> = [
     { personaId: '1', token: '1111' }
@@ -60,8 +64,8 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       tipoSocialId: null,
       empresaPersonaCi: null,
       empresaRazonSocial: 'Adken',
-      empresaRut: null,
-      contactos: [contactos[1]]
+      empresaRut: '111122223333',
+      contactos: [contactos[0]]
     },
     {
       empresaId: '2',
@@ -69,7 +73,7 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       empresaPersonaCi: null,
       empresaRazonSocial: 'Figares SA',
       empresaRut: null,
-      contactos: [contactos[1]]
+      contactos: [contactos[0]]
     }
   ];
 
@@ -175,19 +179,119 @@ export function createInMemoryDataDefault(): InMemoryDbData {
     }
   ];
 
+  const D = 0.03;
   const cgb = createBaseGeomChacraCore();
   const chacras: ChacraSegurosSecano[] = [
-    createBaseChacraSegurosSecano('1', '2', '1', ''),
-    createBaseChacraSegurosSecano('2', '2', '1', ''),
-    createBaseChacraSegurosSecano('3', '2', '1', ''),
-    createBaseChacraSegurosSecano('4', '2', '1', ''),
+    createBaseChacraSegurosSecano(
+      '1',
+      '2',
+      '1',
+      JSON.stringify(
+        Object.assign({}, cgb, {
+          rings: [
+            cgb.rings[0].map((v: number[]) => [v[0] + 1 * D, v[1] + 1 * D])
+          ]
+        })
+      )
+    ),
+    createBaseChacraSegurosSecano(
+      '2',
+      '2',
+      '1',
+      JSON.stringify(
+        Object.assign({}, cgb, {
+          rings: [
+            cgb.rings[0].map((v: number[]) => [v[0] + 2 * D, v[1] + 2 * D])
+          ]
+        })
+      )
+    ),
+    createBaseChacraSegurosSecano(
+      '3',
+      '2',
+      '1',
+      JSON.stringify(
+        Object.assign({}, cgb, {
+          rings: [
+            cgb.rings[0].map((v: number[]) => [v[0] + 3 * D, v[1] + 3 * D])
+          ]
+        })
+      )
+    ),
+    createBaseChacraSegurosSecano(
+      '4',
+      '2',
+      '1',
+      JSON.stringify(
+        Object.assign({}, cgb, {
+          rings: [
+            cgb.rings[0].map((v: number[]) => [v[0] + 4 * D, v[1] + 4 * D])
+          ]
+        })
+      )
+    ),
 
-    createBaseChacraSegurosSecano('5', null, '1', ''),
-    createBaseChacraSegurosSecano('6', null, '1', ''),
+    createBaseChacraSegurosSecano(
+      '5',
+      null,
+      '1',
+      JSON.stringify(
+        Object.assign({}, cgb, {
+          rings: [
+            cgb.rings[0].map((v: number[]) => [v[0] + 5 * D, v[1] + 5 * D])
+          ]
+        })
+      )
+    ),
+    createBaseChacraSegurosSecano(
+      '6',
+      null,
+      '1',
+      JSON.stringify(
+        Object.assign({}, cgb, {
+          rings: [
+            cgb.rings[0].map((v: number[]) => [v[0] + 6 * D, v[1] + 6 * D])
+          ]
+        })
+      )
+    ),
 
-    createBaseChacraSegurosSecano('7', '3', '2', ''),
-    createBaseChacraSegurosSecano('8', '3', '2', ''),
-    createBaseChacraSegurosSecano('9', '3', '2', '')
+    createBaseChacraSegurosSecano(
+      '7',
+      '3',
+      '2',
+      JSON.stringify(
+        Object.assign({}, cgb, {
+          rings: [
+            cgb.rings[0].map((v: number[]) => [v[0] + 7 * D, v[1] + 7 * D])
+          ]
+        })
+      )
+    ),
+    createBaseChacraSegurosSecano(
+      '8',
+      '3',
+      '2',
+      JSON.stringify(
+        Object.assign({}, cgb, {
+          rings: [
+            cgb.rings[0].map((v: number[]) => [v[0] + 8 * D, v[1] + 8 * D])
+          ]
+        })
+      )
+    ),
+    createBaseChacraSegurosSecano(
+      '9',
+      '3',
+      '2',
+      JSON.stringify(
+        Object.assign({}, cgb, {
+          rings: [
+            cgb.rings[0].map((v: number[]) => [v[0] + 9 * D, v[1] + 9 * D])
+          ]
+        })
+      )
+    )
   ];
 
   const componentes: ComponenteProductivoSegurosSecano[] = [
@@ -198,7 +302,23 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       '1',
       '6',
       '2',
-      'MA1234'
+      'MA1234',
+      randomNumber(1000),
+      randomNumber(1000),
+      new Date(2020, 12, 20),
+      new Date(2020, 12, 20),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      'Verano',
+      2020,
+      new Date(2020, 7, 1),
+      new Date(2020, 12, 22),
+      new Date(2020, 12, 22)
     ),
     createBaseComponenteProductivoSegurosSecano(
       '2',
@@ -207,7 +327,23 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       '1',
       '1',
       '1',
-      'BS5678'
+      'BS5678',
+      randomNumber(1000),
+      randomNumber(1000),
+      new Date(2020, 12, 20),
+      new Date(2020, 12, 20),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      'Verano',
+      2020,
+      new Date(2020, 7, 1),
+      new Date(2020, 12, 22),
+      new Date(2020, 12, 22)
     ),
     createBaseComponenteProductivoSegurosSecano(
       '3',
@@ -216,7 +352,23 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       '1',
       '2',
       '2',
-      'MA1234'
+      'MA1234',
+      randomNumber(1000),
+      randomNumber(1000),
+      new Date(2020, 12, 20),
+      new Date(2020, 12, 20),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      'Verano',
+      2020,
+      new Date(2020, 7, 1),
+      new Date(2020, 12, 22),
+      new Date(2020, 12, 22)
     ),
     createBaseComponenteProductivoSegurosSecano(
       '4',
@@ -225,7 +377,23 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       '1',
       '1',
       '1',
-      'BS5678'
+      'BS5678',
+      randomNumber(1000),
+      randomNumber(1000),
+      new Date(2020, 12, 20),
+      new Date(2020, 12, 20),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      'Verano',
+      2020,
+      new Date(2020, 7, 1),
+      new Date(2020, 12, 22),
+      new Date(2020, 12, 22)
     ),
     createBaseComponenteProductivoSegurosSecano(
       '5',
@@ -234,7 +402,23 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       '1',
       '1',
       '1',
-      'BS5678'
+      'BS5678',
+      randomNumber(1000),
+      randomNumber(1000),
+      new Date(2020, 12, 20),
+      new Date(2020, 12, 20),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      'Verano',
+      2020,
+      new Date(2020, 7, 1),
+      new Date(2020, 12, 22),
+      new Date(2020, 12, 22)
     ),
     createBaseComponenteProductivoSegurosSecano(
       '6',
@@ -243,7 +427,23 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       '1',
       '6',
       '2',
-      'MA1234'
+      'MA1234',
+      randomNumber(1000),
+      randomNumber(1000),
+      new Date(2020, 12, 20),
+      new Date(2020, 12, 20),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      'Verano',
+      2020,
+      new Date(2020, 7, 1),
+      new Date(2020, 12, 22),
+      new Date(2020, 12, 22)
     ),
 
     createBaseComponenteProductivoSegurosSecano(
@@ -253,7 +453,23 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       '1',
       '4',
       '3',
-      'SU9810'
+      'SU9810',
+      randomNumber(1000),
+      randomNumber(1000),
+      new Date(2020, 12, 20),
+      new Date(2020, 12, 20),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      'Verano',
+      2020,
+      new Date(2020, 7, 1),
+      new Date(2020, 12, 22),
+      new Date(2020, 12, 22)
     ),
     createBaseComponenteProductivoSegurosSecano(
       '8',
@@ -262,7 +478,23 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       '1',
       '4',
       '3',
-      'SU9810'
+      'SU9810',
+      randomNumber(1000),
+      randomNumber(1000),
+      new Date(2020, 12, 20),
+      new Date(2020, 12, 20),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      'Verano',
+      2020,
+      new Date(2020, 7, 1),
+      new Date(2020, 12, 22),
+      new Date(2020, 12, 22)
     ),
     createBaseComponenteProductivoSegurosSecano(
       '9',
@@ -271,7 +503,23 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       '1',
       '6',
       '3',
-      'SU8912'
+      'SU8912',
+      randomNumber(1000),
+      randomNumber(1000),
+      new Date(2020, 12, 20),
+      new Date(2020, 12, 20),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      randomNumber(1000),
+      'Verano',
+      2020,
+      new Date(2020, 7, 1),
+      new Date(2020, 12, 22),
+      new Date(2020, 12, 22)
     )
   ];
 

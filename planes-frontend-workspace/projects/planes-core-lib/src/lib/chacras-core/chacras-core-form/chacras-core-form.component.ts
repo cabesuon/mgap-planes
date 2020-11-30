@@ -2,18 +2,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 
 import { FormActionType } from '../../extras/extras-form';
-import { ChacraCore } from '../chacras-core.model';
 import {
   DibujoCore,
   DibujoCoreType
 } from '../../dibujos-core/dibujos-core.model';
 
-export interface ChacrasCoreFormInput {
-  action: FormActionType;
-  chacra: ChacraCore;
-  dibujos: DibujoCore[];
-}
-
+import { ChacraCore } from '../chacras-core.model';
+import { ChacrasCoreFormInput } from '../chacras-core-form.model';
 @Component({
   selector: 'lib-chacras-core-form',
   templateUrl: './chacras-core-form.component.html',

@@ -21,3 +21,37 @@ button {
   height: 40px;
   font-size: 12px;
 }
+
+.title {
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.title-extra {
+  font-size: 14px;
+  vertical-align: text-bottom;
+}
+
+.border-primary {
+  margin: 10px;
+  border: transparent solid 5px;
+  text-align: center;
+}
+
+.border-secondary {
+  margin: 10px;
+  border: lightgray solid 1px;
+  text-align: center;
+}
+
+.huge-number {
+  font-size: 64px;
+  font-weight: 900;
+}
+
+ul.no-bullets {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

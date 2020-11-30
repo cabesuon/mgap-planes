@@ -34,6 +34,12 @@ button {
   font-weight: 900;
   text-transform: uppercase;
 }
+
+.title-extra {
+  font-size: 14px;
+  vertical-align: text-bottom;
+}
+
 h2 {
   font-size: 18px;
   font-weight: 700;
@@ -43,3 +49,21 @@ h3 {
   font-size: 12px;
   text-transform: uppercase;
 }
+
+.table-container {
+  overflow: auto;
+}
+
+// .mat-header-cell, .mat-footer-cell, .mat-cell {
+//   min-width: 80px;
+//   box-sizing: border-box;
+// }
+
+// .mat-header-row, .mat-footer-row, .mat-row {
+//   min-width: 1920px; /* 24 columns, 80px each */
+// }
+
+// .mat-cell {
+//   text-align: right !important;
+//   border-right: 1px solid #e0e0e0 !important;
+// }

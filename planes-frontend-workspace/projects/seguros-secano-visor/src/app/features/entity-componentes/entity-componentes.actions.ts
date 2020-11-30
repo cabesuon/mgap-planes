@@ -38,11 +38,7 @@ export class EntityComponentesLoadSuccessAction implements Action {
 
 export class EntityComponentesAddRequestAction implements Action {
   readonly type = EntityComponentesActionTypes.ENTITYCOMPONENTES_ADD_REQUEST;
-  constructor(
-    public payload: {
-      item: ComponenteProductivoSegurosSecano /* dibujosId: number[] TODO: Completar*/;
-    }
-  ) {}
+  constructor(public payload: { item: ComponenteProductivoSegurosSecano }) {}
 }
 
 export class EntityComponentesAddFailureAction implements Action {
