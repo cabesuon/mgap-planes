@@ -17,6 +17,7 @@
     "build:seguros-secano-lib": "ng build seguros-secano-lib",
     "build:watch:seguros-secano-lib": "ng build seguros-secano-lib --watch=true",
     "build:seguros-secano-visor": "ng build seguros-secano-visor",
+    "build:dev:seguros-secano-visor": "ng build seguros-secano-visor --baseHref=/seguros-secano-visor/",
     "start:seguros-secano-visor": "ng serve seguros-secano-visor",
     "test:planes-core-lib": "ng test planes-core-lib",
     "test:planes-core-visor": "ng test planes-core-visor",

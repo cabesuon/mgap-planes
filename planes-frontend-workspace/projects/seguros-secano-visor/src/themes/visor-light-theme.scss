@@ -1,4 +1,38 @@
-$visor-light-primary: mat-palette($mat-grey, 800, 50);
+/* For use in src/lib/core/theming/_palette.scss */
+$mgappalette: (
+    50 : #e1e8f4,
+    100 : #b3c5e4,
+    200 : #809ed3,
+    300 : #4d77c1,
+    400 : #2759b3,
+    500 : #013ca6,
+    600 : #01369e,
+    700 : #012e95,
+    800 : #01278b,
+    900 : #001a7b,
+    A100 : #a8b4ff,
+    A200 : #7587ff,
+    A400 : #425bff,
+    A700 : #2945ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$visor-light-primary: mat-palette($mgappalette);
 $visor-light-accent: mat-palette($mat-green, 400);
 $visor-light-warn: mat-palette($mat-red, 500);
 

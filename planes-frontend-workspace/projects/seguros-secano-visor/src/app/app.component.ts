@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   version = env.versions.app;
   useMockServer = env.useMockServer ? 'TRUE' : 'FALSE';
   year = new Date().getFullYear();
-  logo = 'assets/MGAP blanco + fondo azul.png'; // require('../');
+  logo = 'assets/LogoPaint.png'; // require('../');
   navigation = [
     { link: '/features/principal', label: 'Principal' },
     { link: '/features/mapa', label: 'Mapa' },
