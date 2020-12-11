@@ -59,7 +59,7 @@ export class EntityComponentesEffects {
   );
 
   // add
-  @Effect()
+  @Effect() 
   EntityComponentesAddRequestEffect$: Observable<Action> = this.actions$.pipe(
     ofType<entityComponentesActions.EntityComponentesAddRequestAction>(
       entityComponentesActions.EntityComponentesActionTypes
@@ -93,5 +93,79 @@ export class EntityComponentesEffects {
           )
         );
     })
+  );
+
+  // change
+  @Effect()
+  EntityComponentesChangeRequestEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<entityComponentesActions.EntityComponentesChangeRequestAction>(
+      entityComponentesActions.EntityComponentesActionTypes.ENTITYCOMPONENTES_CHANGE_REQUEST
+    ),
+    map(
+      (action: entityComponentesActions.EntityComponentesChangeRequestAction) =>
+        action.payload.item
+    ),
+    switchMap(item =>
+      this.componentesService.changeComponentesProductivosSegurosSecano(item).pipe(
+        map(results => results.updateResults),
+        map(updateResults => {
+          if (updateResults.length === 1 && updateResults[0].success) {
+            const uc: Update<ComponenteProductivoSegurosSecano> = {
+              id: updateResults[0].componente.componenteId,
+              changes: {
+                ...updateResults[0].componente
+              }
+            };
+            return new entityComponentesActions.EntityComponentesChangeSuccessAction({
+              item: uc
+            });
+          }
+          return new entityComponentesActions.EntityComponentesChangeFailureAction({
+            error: 'Error al actualizar el componente productivo.'
+          });
+        }),
+        catchError(error =>
+          observableOf(
+            new entityComponentesActions.EntityComponentesChangeFailureAction({
+              error:
+                'Error al actualizar el componente productivo (fallo en conexion a servidor).'
+            })
+          )
+        )
+      )
+    )
+  );
+
+  // delete
+  @Effect()
+  EntityComponentesDeleteRequestEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<entityComponentesActions.EntityComponentesDeleteRequestAction>(
+      entityComponentesActions.EntityComponentesActionTypes.ENTITYCOMPONENTES_DELETE_REQUEST
+    ),
+    map(
+      (action: entityComponentesActions.EntityComponentesDeleteRequestAction) =>
+        action.payload.item
+    ),
+    switchMap(item =>
+      this.componentesService.deleteComponentesProductivosSegurosSecano(item).pipe(
+        map(results => results.deleteResults),
+        map(deleteResults =>
+          deleteResults.length === 1 && deleteResults[0].success
+            ? new entityComponentesActions.EntityComponentesDeleteSuccessAction({
+                item
+              })
+            : new entityComponentesActions.EntityComponentesDeleteFailureAction({
+                error: 'Error al eliminar el componente productivo.'
+              })
+        ),
+        catchError(error =>
+          observableOf(
+            new entityComponentesActions.EntityComponentesDeleteFailureAction({
+              error: 'Error al eliminar el componente productivo (fallo en conexion a servidor).'
+            })
+          )
+        )
+      )
+    )
   );
 }

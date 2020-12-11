@@ -176,12 +176,12 @@ export const COMPONENTESPRODUCTIVOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT: Component
   // acciones
   {
     type: TableValueType.ACTION,
-    name: ComponentesProductivosSegurosSecanoTableAction.GUARDAR,
+    name: ComponentesProductivosSegurosSecanoTableAction.EDITAR,
     label: '',
     sort: false,
     filter: false,
     actionFormat: _ => ({
-      value: ComponentesProductivosSegurosSecanoTableAction.GUARDAR,
+      value: ComponentesProductivosSegurosSecanoTableAction.EDITAR,
       text: 'Editar',
       icon: 'edit'
     })
@@ -261,16 +261,16 @@ export const COMPONENTESPRODUCTIVOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT: Component
   },
   {
     type: TableValueType.LITERAL,
-    name: 'fechaCocecha',
-    label: 'Fecha Cocecha',
+    name: 'fechaCosecha',
+    label: 'Fecha Cosecha',
     sort: true,
     filter: true,
     literalFormat: formatDate
   },
   {
     type: TableValueType.LITERAL,
-    name: 'superficieCocechada',
-    label: 'Sup. Cocechada (ha)',
+    name: 'superficieCosechada',
+    label: 'Sup. Cosechada (ha)',
     sort: true,
     filter: true,
     literalFormat: formatNumber

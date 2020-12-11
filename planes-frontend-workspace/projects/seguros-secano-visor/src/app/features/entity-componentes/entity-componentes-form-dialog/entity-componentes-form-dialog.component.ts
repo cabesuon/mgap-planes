@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { FormActionType } from 'planes-core-lib';
 
-import { ComponenteProductivoSegurosSecano } from 'seguros-secano-lib';
+import { ComponenteProductivoSegurosSecano, ComponentesProductivosSegurosSecanoFormInput } from 'seguros-secano-lib';
 
 import { AppState } from '../../../core/core.state';
 import { LoggingService } from '../../../core/logging/logging.service';
@@ -17,19 +17,18 @@ import {
 
 import { DibujoCore } from 'projects/planes-core-lib/src/public-api';
 
-export interface EntityComponentesFormDialogData {
-  componente: ComponenteProductivoSegurosSecano;
-  action: FormActionType;
+export interface EntityComponentesFormDialogData extends ComponentesProductivosSegurosSecanoFormInput {  
 }
 
 @Component({
   selector: 'lib-entity-componentes-form-dialog',
   templateUrl: './entity-componentes-form-dialog.component.html',
   styleUrls: ['./entity-componentes-form-dialog.component.css']
-})
+})  
 export class EntityComponentesFormDialogComponent implements OnInit {
   title = 'Crear Componente Productivo';
   submitText = 'Crear';
+  sendText = 'Presentar';
   cancelText = 'Cancelar';
 
   formValid: boolean;
@@ -62,6 +61,19 @@ export class EntityComponentesFormDialogComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.formValid) {
+      const item = { ...this.formValue };
+      if (this.data.action === FormActionType.Add) {
+        this.store.dispatch(new EntityComponentesAddRequestAction({ item }));
+      } else {
+        this.store.dispatch(new EntityComponentesChangeRequestAction({ item }));
+      }
+      this.data.componente = item;
+      this.dialogRef.close(this.data);  
+    }
+  }
+
+  onSend() {
     if (this.formValid) {
       const item = { ...this.formValue };
       if (this.data.action === FormActionType.Add) {

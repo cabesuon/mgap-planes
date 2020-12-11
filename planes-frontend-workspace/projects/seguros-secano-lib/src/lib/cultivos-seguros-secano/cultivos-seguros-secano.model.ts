@@ -1,6 +1,8 @@
 export interface CultivoSegurosSecano {
   cultivoId: string;
   cultivoNombre: string;
+  cultivoEstacionId: string;
+  cultivoCicloId: string[];
 }
 
 export interface CultivosSegurosSecanoQueryResults {
@@ -10,10 +12,15 @@ export interface CultivosSegurosSecanoQueryResults {
 }
 
 export function createBaseCultivoSegurosSecano(
-  cultivoId: string
+  cultivoId: string,
+  cultivoNombre: string,
+  cultivoEstacionId: string,
+  cultivoCicloId: string []
 ): CultivoSegurosSecano {
   return {
     cultivoId,
-    cultivoNombre: `Cultivo ${cultivoId}`
+    cultivoNombre,
+    cultivoEstacionId,
+    cultivoCicloId
   };
 }

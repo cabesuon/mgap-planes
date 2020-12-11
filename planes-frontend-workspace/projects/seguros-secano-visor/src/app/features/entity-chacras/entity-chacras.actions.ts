@@ -3,6 +3,8 @@ import { Update } from '@ngrx/entity';
 
 import { ChacraSegurosSecano } from './entity-chacras.state';
 
+import { ComponenteProductivoSegurosSecano } from '../entity-componentes/entity-componentes.state';
+
 export enum EntityChacrasActionTypes {
   ENTITYCHACRAS_LOAD_REQUEST = '[ENTITYCHACRAS] Load Request',
   ENTITYCHACRAS_LOAD_FAILURE = '[ENTITYCHACRAS] Load Failure',
@@ -39,7 +41,7 @@ export class EntityChacrasLoadSuccessAction implements Action {
 export class EntityChacrasAddRequestAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_ADD_REQUEST;
   constructor(
-    public payload: { item: ChacraSegurosSecano; dibujosId: number[] }
+    public payload: { item: ChacraSegurosSecano; dibujosId: number[], componente: ComponenteProductivoSegurosSecano }
   ) {}
 }
 
@@ -51,7 +53,7 @@ export class EntityChacrasAddFailureAction implements Action {
 export class EntityChacrasAddSuccessAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_ADD_SUCCESS;
   constructor(
-    public payload: { item: ChacraSegurosSecano; dibujosId: number[] }
+    public payload: { item: ChacraSegurosSecano; dibujosId: number[], componente: ComponenteProductivoSegurosSecano }
   ) {}
 }
 
@@ -60,7 +62,7 @@ export class EntityChacrasAddSuccessAction implements Action {
 export class EntityChacrasChangeRequestAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_CHANGE_REQUEST;
   constructor(
-    public payload: { item: ChacraSegurosSecano; dibujosId: number[] }
+    public payload: { item: ChacraSegurosSecano; dibujosId: number[], componente: ComponenteProductivoSegurosSecano }
   ) {}
 }
 

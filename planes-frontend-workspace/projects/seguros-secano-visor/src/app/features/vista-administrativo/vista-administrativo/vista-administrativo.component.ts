@@ -19,8 +19,9 @@ import {
 
 import {
   UnidadManejoSegurosSecano,
-  createEmptyUnidadManejoSegurosSecano,
-  ComponentesProductivosSegurosSecanoTableParams
+  createEmptyUnidadManejoSegurosSecano,      
+  createEmptyComponenteProductivoSegurosSecano,  
+  ComponentesProductivosSegurosSecanoTableParams,
 } from 'seguros-secano-lib';
 
 import { AppState } from '../../../core/core.state';
@@ -31,6 +32,11 @@ import { ChacraSegurosSecano } from '../../entity-chacras/entity-chacras.state';
 import { ComponenteProductivoSegurosSecano } from '../../entity-componentes/entity-componentes.state';
 import { CultivoSegurosSecano } from '../../entity-cultivos/entity-cultivos.state';
 import { CicloSegurosSecano } from '../../entity-ciclos/entity-ciclos.state';
+
+import { 
+  EntityComponentesFormDialogData, 
+  EntityComponentesFormDialogComponent 
+} from '../../entity-componentes/entity-componentes-form-dialog/entity-componentes-form-dialog.component';
 
 import {
   EntityUnidadesFormDialogData,
@@ -82,7 +88,9 @@ export class VistaAdministrativoComponent implements OnInit {
   generalRowVisible = true;
 
   uuaaDic: { [key: string]: UnidadTreeNode } = null;
-  uuaaArr: UnidadTreeNode[] = [];
+  uuaaArr: UnidadTreeNode[] = []; 
+  componenteChacrasSM = [];
+  chacrasSinUm = null; 
 
   constructor(
     private store: Store<AppState>,
@@ -172,6 +180,30 @@ export class VistaAdministrativoComponent implements OnInit {
 
     this.uuaaDic = {};
     this.uuaaArr = [];
+    this.componenteChacrasSM = [];
+    const csum = [];
+    for (const ch of this.chacras){
+      if (ch.empresaId === this.empresa.empresaId && ch.unidadId == null){
+        const comp = this.componentes.filter(
+          c => c.chacraId === ch.chacraId
+        );
+        csum.push(ch);
+        if (comp){
+          this.componenteChacrasSM.push(comp[0]);
+        }
+      }
+    }
+    this.chacrasSinUm = {
+      componentes: this.componenteChacrasSM,
+      sources: {
+        empresas: this.empresas,
+        chacras: csum,
+        cultivos: this.cultivos,
+        ciclos: this.ciclos,
+        aseguradoras: this.aseguradoras
+      }
+    };
+
     for (const unidad of unidadesEmpresa) {
       const u = {
         unidad,
@@ -207,13 +239,8 @@ export class VistaAdministrativoComponent implements OnInit {
 
   componentesTableAction(action: TableActionEvent) {
     switch (action.value) {
-      case 'Guardar':
-        this.notification.info(
-          `Guardar Componente ${action.obj.componenteId}.`
-        );
-        break;
-      case 'Enviar':
-        this.notification.info(`Enviar Componente ${action.obj.componenteId}.`);
+      case 'Editar':        
+        this.editComponente(action.obj);
         break;
     }
   }
@@ -226,17 +253,50 @@ export class VistaAdministrativoComponent implements OnInit {
     this.openDialogUnidadManejo(FormActionType.Add);
   }
 
-  // dialogs
+  editComponente(componente){
+    this.openDialogComponente(FormActionType.Update, componente);
+  }
 
+  actionClick(action: string, empresa: EmpresaCore) {
+    switch (action) {
+      case 'GotoVistaMapa':
+        this.router.navigate([
+          '/features/mapa',
+          { EmpresaId: empresa.empresaId }
+        ]);
+        break;      
+    }
+  }
+
+  // dialogs
   openDialogUnidadManejo(action: FormActionType) {
     const inData: EntityUnidadesFormDialogData = {
       unidad: createEmptyUnidadManejoSegurosSecano(),
-      action: action
+      action: action,
+      aseguradoras: this.aseguradoras,
+      cultivos: this.cultivos,
+      ciclos: this.ciclos,
+      empresas: this.empresas
     };
     this.dialog.open(EntityUnidadesFormDialogComponent, {
       width: DIALOG_WIDTH,
       maxHeight: DIALOG_MAX_HEIGHT,
       data: inData
     });
+  }
+
+  openDialogComponente(action: FormActionType, componente) {
+    const inData: EntityComponentesFormDialogData = {
+      action: action,
+      componente: componente,
+      ciclos: this.ciclos,
+      cultivos: this.cultivos,
+      aseguradoras: this.aseguradoras
+    };
+    this.dialog.open(EntityComponentesFormDialogComponent, {
+      width: DIALOG_WIDTH,
+      maxHeight: DIALOG_MAX_HEIGHT,
+      data: inData
+    }); 
   }
 }

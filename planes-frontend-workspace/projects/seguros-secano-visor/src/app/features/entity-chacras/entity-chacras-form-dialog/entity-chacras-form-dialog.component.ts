@@ -10,7 +10,8 @@ import { LoggingService } from '../../../core/logging/logging.service';
 
 import {
   ChacraSegurosSecano,
-  ChacrasSegurosSecanoFormInput
+  ChacrasSegurosSecanoFormInput,  
+  createEmptyComponenteProductivoSegurosSecano
 } from 'seguros-secano-lib';
 
 import {
@@ -74,7 +75,7 @@ export class EntityChacrasFormDialogComponent implements OnInit {
           )
         );
       }
-      if (this.formValue.chacraFactorLSGeometriaAsignado) {
+      /*if (this.formValue.chacraFactorLSGeometriaAsignado) {
         dibujos.push(
           this.data.dibujos.find(
             d =>
@@ -82,15 +83,28 @@ export class EntityChacrasFormDialogComponent implements OnInit {
               this.formValue.chacraFactorLSGeometriaAsignado
           )
         );
-      }
+      }*/
+      
+      const unidad = this.data.unidades.find(unidad => unidad.unidadId === item.unidadId);
+      console.log(unidad);
+      let componente = {
+        ...createEmptyComponenteProductivoSegurosSecano(),
+        ...unidad,
+        // hardcodeado la zafra y el año. obtenerla luego de una db
+        zafra: "Verano",
+        anio: 2020
+      };
+      console.log("compoennte");
+      console.log(componente);
+      /* crear un compoennte poniendole los campos de uniad de manejo */
       const dibujosId: number[] = dibujos.map(d => d.dibujoId);
       if (this.data.action === FormActionType.Add) {
         this.store.dispatch(
-          new EntityChacrasAddRequestAction({ item, dibujosId })
+          new EntityChacrasAddRequestAction({ item, dibujosId, componente })
         );
       } else {
         this.store.dispatch(
-          new EntityChacrasChangeRequestAction({ item, dibujosId })
+          new EntityChacrasChangeRequestAction({ item, dibujosId, componente })
         );
       }
       this.data.chacra = item;

@@ -11,6 +11,13 @@
               {{empresaNumber}}
             </span>
           </p>
+          <div>
+            <button mat-icon-button
+            (click)="actionClick('GotoVistaMapa', empresa)"
+            matTooltip="Ver en Mapa">
+              <mat-icon><fa-icon icon="map"></fa-icon></mat-icon>
+            </button>            
+          </div>
         </ng-container>
       </div>
     </div>
@@ -67,6 +74,23 @@
         </div>
       </div>
     </div>
+    <!-- chacras sin um -->
+    <div class="row pr-3 pl-3 mt-2">
+      <h2 class="mat-h2">Chacras (sin unidad de manejo)</h2>
+    </div>
+    <div class="row mr-3 ml-3 mb-2">
+      <div class="col">
+        <div class="row">          
+          <div class="row table-container">    
+            <lib-componentes-productivos-seguros-secano-table
+                  [params]="chacrasSinUm"
+                  (actioned)="componentesTableAction($event)">
+                  </lib-componentes-productivos-seguros-secano-table>  
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </ng-container>
 
 </div>

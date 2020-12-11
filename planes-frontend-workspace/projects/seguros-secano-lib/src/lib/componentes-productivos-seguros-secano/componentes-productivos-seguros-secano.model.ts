@@ -9,11 +9,13 @@ export interface ComponenteProductivoSegurosSecano {
 
   aseguradoraId: string;
   polizaId: string;
+  contratoSeguroZPId: string;
 
   superficieSembrada: number;
-  superficieCocechada: number;
+  superficieCosechada: number;
   fechaSiembra: Date;
-  fechaCocecha: Date;
+  fechaCosecha: Date;
+  porcentajeRiego: number;
   fertilizacionP2O5: number;
   fertilizacionK2O: number;
   fertilizacionN: number;
@@ -63,10 +65,12 @@ export function createEmptyComponenteProductivoSegurosSecano(): ComponenteProduc
     cultivoAntecesorId: null,
     aseguradoraId: null,
     polizaId: null,
+    contratoSeguroZPId: null,
     superficieSembrada: null,
-    superficieCocechada: null,
+    superficieCosechada: null,
     fechaSiembra: null,
-    fechaCocecha: null,
+    fechaCosecha: null,
+    porcentajeRiego: null,
     fertilizacionP2O5: null,
     fertilizacionK2O: null,
     fertilizacionN: null,
@@ -90,10 +94,12 @@ export function createBaseComponenteProductivoSegurosSecano(
   cultivoAntecesorId: string,
   aseguradoraId: string,
   polizaId: string,
+  contratoSeguroZPId: string,
   superficieSembrada: number,
-  superficieCocechada: number,
+  superficieCosechada: number,
   fechaSiembra: Date,
-  fechaCocecha: Date,
+  fechaCosecha: Date,
+  porcentajeRiego: number,
   fertilizacionP2O5: number,
   fertilizacionK2O: number,
   fertilizacionN: number,
@@ -116,10 +122,12 @@ export function createBaseComponenteProductivoSegurosSecano(
     cultivoAntecesorId,
     aseguradoraId,
     polizaId,
+    contratoSeguroZPId,
     superficieSembrada,
-    superficieCocechada,
+    superficieCosechada,
     fechaSiembra,
-    fechaCocecha,
+    fechaCosecha,
+    porcentajeRiego,
     fertilizacionP2O5,
     fertilizacionK2O,
     fertilizacionN,
@@ -133,4 +141,10 @@ export function createBaseComponenteProductivoSegurosSecano(
     fechaModificado,
     fechaEnviado
   };
+}
+
+export enum ComponenteContratoSeguroZP {
+  TRADICIONAL = 'Tradicional',
+  INDICE = 'Índice',
+  NO = 'No'
 }

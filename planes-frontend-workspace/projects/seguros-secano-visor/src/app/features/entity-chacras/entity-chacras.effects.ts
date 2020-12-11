@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 import {
   ChacraSegurosSecano,
   ChacrasSegurosSecanoService
-} from 'seguros-secano-lib';
+  } from 'seguros-secano-lib';
 import * as entityChacrasActions from './entity-chacras.actions';
 import { createEmptyComponenteProductivoSegurosSecano } from 'seguros-secano-lib';
 import { EntityComponentesAddRequestAction } from '../entity-componentes/entity-componentes.actions';
@@ -76,7 +76,8 @@ export class EntityChacrasEffects {
             return addResults.length === 1 && addResults[0].success
               ? new entityChacrasActions.EntityChacrasAddSuccessAction({
                   item: addResults[0].chacra,
-                  dibujosId: payload.dibujosId
+                  dibujosId: payload.dibujosId,
+                  componente: payload.componente
                 })
               : new entityChacrasActions.EntityChacrasAddFailureAction({
                   error: 'Error al crear la chacra.'
@@ -104,7 +105,7 @@ export class EntityChacrasEffects {
         deleteDibujos({ ids: action.payload.dibujosId }),
         new EntityComponentesAddRequestAction({
           item: {
-            ...createEmptyComponenteProductivoSegurosSecano(),
+            ...action.payload.componente,
             chacraId: action.payload.item.chacraId
             // todo: obtener y agregar los campos por default de unidad
           }

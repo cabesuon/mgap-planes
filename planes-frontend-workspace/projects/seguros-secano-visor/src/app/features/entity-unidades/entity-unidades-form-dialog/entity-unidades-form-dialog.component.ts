@@ -5,21 +5,19 @@ import { Store } from '@ngrx/store';
 
 import { FormActionType } from 'planes-core-lib';
 
-import { UnidadManejoSegurosSecano } from 'seguros-secano-lib';
+import { UnidadManejoSegurosSecano, UnidadesManejosSegurosSecanoFormInput } from 'seguros-secano-lib';
 
 import { AppState } from '../../../core/core.state';
 import { LoggingService } from '../../../core/logging/logging.service';
 
 import {
   EntityUnidadesManejosAddRequestAction,
-  EntityUnidadesManejosChangeRequestAction
+  EntityUnidadesManejosChangeRequestAction  
 } from '../entity-unidades.actions';
 
 import { DibujoCore } from 'planes-core-lib';
 
-export interface EntityUnidadesFormDialogData {
-  unidad: UnidadManejoSegurosSecano;
-  action: FormActionType;
+export interface EntityUnidadesFormDialogData extends UnidadesManejosSegurosSecanoFormInput {  
 }
 
 @Component({
@@ -53,8 +51,8 @@ export class EntityUnidadesFormDialogComponent implements OnInit {
     this.formValid = status === 'VALID';
   }
 
-  formValueChanges(componente: UnidadManejoSegurosSecano) {
-    this.formValue = componente;
+  formValueChanges(unidad: UnidadManejoSegurosSecano) {
+    this.formValue = unidad;
   }
 
   onCancel() {

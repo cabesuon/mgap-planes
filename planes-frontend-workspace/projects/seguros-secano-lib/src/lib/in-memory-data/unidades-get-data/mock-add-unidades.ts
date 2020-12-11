@@ -11,10 +11,12 @@ export class MockAddUnidades implements GetData {
     for (const u of unidades) {
       u.unidadId = db.nextId();
       db.d.unidades.push(u);
+      console.log("Mockaddunidad");
+      console.log(u);
       response.push({
         success: true,
         error: null,
-        unidad: u
+        unidades: u
       });
     }
 

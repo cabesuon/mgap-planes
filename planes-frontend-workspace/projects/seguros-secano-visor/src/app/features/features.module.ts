@@ -28,6 +28,7 @@ import { EntityUnidadesManejosEffects } from './entity-unidades/entity-unidades.
 // dialogs
 import { EntityChacrasFormDialogComponent } from './entity-chacras/entity-chacras-form-dialog/entity-chacras-form-dialog.component';
 import { EntityUnidadesFormDialogComponent } from './entity-unidades/entity-unidades-form-dialog/entity-unidades-form-dialog.component';
+import { EntityComponentesFormDialogComponent } from './entity-componentes/entity-componentes-form-dialog/entity-componentes-form-dialog.component';
 // vistas
 import { VistaPrincipalComponent } from './vista-principal/vista-principal/vista-principal.component';
 import { VistaLoginComponent } from './vista-login/vista-login/vista-login.component';
@@ -73,11 +74,13 @@ import { VistaAdministrativoComponent } from './vista-administrativo/vista-admin
     VistaAdministrativoComponent,
     // dialogs
     EntityChacrasFormDialogComponent,
-    EntityUnidadesFormDialogComponent
+    EntityUnidadesFormDialogComponent,
+    EntityComponentesFormDialogComponent
   ],
   entryComponents: [
     EntityChacrasFormDialogComponent,
-    EntityUnidadesFormDialogComponent
+    EntityUnidadesFormDialogComponent,
+    EntityComponentesFormDialogComponent
   ]
 })
 export class FeaturesModule {}

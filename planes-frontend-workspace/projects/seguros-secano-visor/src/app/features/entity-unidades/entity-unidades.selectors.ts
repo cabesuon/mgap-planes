@@ -27,6 +27,18 @@ export const selectAllEntityUnidadesManejos: (
   selectEntityUnidadesManejosState
 ).selectAll;
 
+export const selectUnidadById = (id: string) =>
+  createSelector(
+    selectAllEntityUnidadesManejos,
+    (allUnidades: UnidadManejoSegurosSecano[]) => {
+      if (allUnidades) {
+        return allUnidades.find(u => u.unidadId === id);
+      } else {
+        return null;
+      }
+    }
+  );
+
 export const selectUnidadesManejosByEmpresaId = (id: string) =>
   createSelector(
     selectAllEntityUnidadesManejos,

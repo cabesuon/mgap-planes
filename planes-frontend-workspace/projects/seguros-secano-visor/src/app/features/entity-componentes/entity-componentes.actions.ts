@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
 import { ComponenteProductivoSegurosSecano } from './entity-componentes.state';
+import { UnidadManejoSegurosSecano } from 'projects/seguros-secano-lib/src/public-api';
 
 export enum EntityComponentesActionTypes {
   ENTITYCOMPONENTES_LOAD_REQUEST = '[ENTITYCOMPONENTES] Load Request',

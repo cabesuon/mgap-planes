@@ -34,7 +34,7 @@ export class UnidadesManejosSegurosSecanoDetailComponent implements OnInit {
   fields: DetailField[] = null;
   detailParams: DetailParams = null;
 
-  constructor() {}
+  constructor() {} 
 
   ngOnInit(): void {}
 }

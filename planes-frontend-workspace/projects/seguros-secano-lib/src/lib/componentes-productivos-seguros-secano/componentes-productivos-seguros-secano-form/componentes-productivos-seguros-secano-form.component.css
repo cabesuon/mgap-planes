@@ -1,0 +1,9 @@
+.chacraasegurada-radio-group {
+    display: flex;
+    flex-direction: row;
+    margin: 15px 0;
+  }
+
+.chacraasegurada-radio-button{ 
+    margin-right: 15px;
+}
