@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+  <!-- Padron -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Padrón"
+      formControlName="padronId">
+    </mat-form-field>
+  </div>
+
+  <!-- Departamento -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Departamento</mat-label>
+      <mat-select formControlName="departamento">
+        <mat-option *ngFor="let d of departamentos" [value]="d">
+          {{d.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>

@@ -13,7 +13,6 @@ import { SharedModule } from './shared/shared.module';
 import { environment } from '../environments/environment';
 
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-// import { PlanesCoreLibModule } from 'planes-core-lib';
 
 import { FeaturesModule } from './features/features.module';
 
@@ -27,7 +26,6 @@ import { PlanesSecanoLibModule, InMemoryDataService } from 'planes-secano-lib';
 
     LoggerModule.forRoot(environment.logging),
 
-    // PlanesCoreLibModule,
     PlanesSecanoLibModule,
 
     CoreModule,

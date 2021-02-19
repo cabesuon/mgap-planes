@@ -8,22 +8,22 @@ export const selectAuth = createSelector(
   (state: AuthState) => state
 );
 
-export const selectToken = createSelector(
+export const selectAuthToken = createSelector(
   selectAuthState,
   (state: AuthState) => state.token
 );
 
-export const selectPersonaId = createSelector(
+export const selectAuthPersonaId = createSelector(
   selectAuthState,
   (state: AuthState) => state.personaId
 );
 
-export const selectIsLoading = createSelector(
+export const selectAuthIsLoading = createSelector(
   selectAuthState,
   (state: AuthState) => state.isLoading
 );
 
-export const selectError = createSelector(
+export const selectAuthError = createSelector(
   selectAuthState,
   (state: AuthState) => state.error
 );

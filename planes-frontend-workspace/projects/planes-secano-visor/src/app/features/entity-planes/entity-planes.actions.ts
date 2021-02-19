@@ -1,6 +1,8 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 
+import { PlanSecanoUrlType } from 'planes-secano-lib';
+
 import { PlanSecano } from './entity-planes.state';
 
 export enum EntityPlanesActionTypes {
@@ -15,7 +17,13 @@ export enum EntityPlanesActionTypes {
   ENTITYPLANES_CHANGE_SUCCESS = '[ENTITYPLANES] Change Success',
   ENTITYPLANES_DELETE_REQUEST = '[ENTITYPLANES] Delete Request',
   ENTITYPLANES_DELETE_FAILURE = '[ENTITYPLANES] Delete Failure',
-  ENTITYPLANES_DELETE_SUCCESS = '[ENTITYPLANES] Delete Success'
+  ENTITYPLANES_DELETE_SUCCESS = '[ENTITYPLANES] Delete Success',
+  ENTITYPLANES_COPY_REQUEST = '[ENTITYPLANES] Copy Request',
+  ENTITYPLANES_COPY_FAILURE = '[ENTITYPLANES] Copy Failure',
+  ENTITYPLANES_COPY_SUCCESS = '[ENTITYPLANES] Copy Success',
+  ENTITYPLANES_GETURL_REQUEST = '[ENTITYPLANES] Get Url Request',
+  ENTITYPLANES_GETURL_FAILURE = '[ENTITYPLANES] Get Url Failure',
+  ENTITYPLANES_GETURL_SUCCESS = '[ENTITYPLANES] Get Url Success'
 }
 
 // load
@@ -82,7 +90,43 @@ export class EntityPlanesDeleteFailureAction implements Action {
 
 export class EntityPlanesDeleteSuccessAction implements Action {
   readonly type = EntityPlanesActionTypes.ENTITYPLANES_DELETE_SUCCESS;
+  constructor(public payload: { planId: string }) {}
+}
+
+// copy
+
+export class EntityPlanesCopyRequestAction implements Action {
+  readonly type = EntityPlanesActionTypes.ENTITYPLANES_COPY_REQUEST;
   constructor(public payload: { item: PlanSecano }) {}
+}
+
+export class EntityPlanesCopyFailureAction implements Action {
+  readonly type = EntityPlanesActionTypes.ENTITYPLANES_COPY_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export class EntityPlanesCopySuccessAction implements Action {
+  readonly type = EntityPlanesActionTypes.ENTITYPLANES_COPY_SUCCESS;
+  constructor(public payload: { item: PlanSecano }) {}
+}
+
+// get url
+
+export class EntityPlanesGetUrlRequestAction implements Action {
+  readonly type = EntityPlanesActionTypes.ENTITYPLANES_GETURL_REQUEST;
+  constructor(
+    public payload: { item: PlanSecano; urlType: PlanSecanoUrlType }
+  ) {}
+}
+
+export class EntityPlanesGetUrlFailureAction implements Action {
+  readonly type = EntityPlanesActionTypes.ENTITYPLANES_GETURL_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export class EntityPlanesGetUrlSuccessAction implements Action {
+  readonly type = EntityPlanesActionTypes.ENTITYPLANES_GETURL_SUCCESS;
+  constructor(public payload: { url: string }) {}
 }
 
 // actions
@@ -99,4 +143,10 @@ export type EntityPlanesActions =
   | EntityPlanesChangeSuccessAction
   | EntityPlanesDeleteRequestAction
   | EntityPlanesDeleteFailureAction
-  | EntityPlanesDeleteSuccessAction;
+  | EntityPlanesDeleteSuccessAction
+  | EntityPlanesCopyRequestAction
+  | EntityPlanesCopyFailureAction
+  | EntityPlanesCopySuccessAction
+  | EntityPlanesGetUrlRequestAction
+  | EntityPlanesGetUrlFailureAction
+  | EntityPlanesGetUrlSuccessAction;

@@ -1,0 +1,17 @@
+div {
+  padding: 10px;
+  font-size: 12px;
+}
+.error {
+  color: #ffffff;
+  background-color: #dc3545;
+}
+.warning {
+  background-color: #ffc107;
+}
+ul {
+  margin: 0;
+}
+li {
+  padding: 5px 10px;
+}

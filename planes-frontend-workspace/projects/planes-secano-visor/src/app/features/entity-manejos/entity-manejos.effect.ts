@@ -15,7 +15,7 @@ export class EntityManejosEffects {
     private manejosSecanoService: ManejosSecanoService,
     private actions$: Actions
   ) {
-    this.manejosSecanoService.url = environment.apiUrl;
+    this.manejosSecanoService.url = environment.apiSecanoUrl;
   }
 
   // load

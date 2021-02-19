@@ -15,7 +15,7 @@ export class EntityCultivosEffects {
     private cultivosSecanoService: CultivosSecanoService,
     private actions$: Actions
   ) {
-    this.cultivosSecanoService.url = environment.apiUrl;
+    this.cultivosSecanoService.url = environment.apiSecanoUrl;
   }
 
   // load

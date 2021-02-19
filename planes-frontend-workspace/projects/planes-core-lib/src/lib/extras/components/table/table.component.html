@@ -1,6 +1,6 @@
 <div class="mat-elevation-z8">
 
-  <mat-form-field class="p-2" *ngIf="params.filter">
+  <mat-form-field class="p-2" *ngIf="filter">
     <mat-label>Filtrar</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. 52468">
   </mat-form-field>
@@ -42,7 +42,9 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-  <mat-paginator *ngIf="params.pagination"
-  [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
-  </mat-paginator>
+  <div [hidden]="!pagination">
+    <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    </mat-paginator>
+  </div>
 </div>

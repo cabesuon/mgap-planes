@@ -23,3 +23,12 @@ export const initialState: EntityEmpresasState = entityEmpresasAdapter.getInitia
     error: null
   }
 );
+
+// util
+
+export function getEmpresaResponsableContacto(e: EmpresaCore) {
+  if (!e || !e.contactos || e.contactos.length === 0) {
+    return null;
+  }
+  return e.contactos[0];
+}

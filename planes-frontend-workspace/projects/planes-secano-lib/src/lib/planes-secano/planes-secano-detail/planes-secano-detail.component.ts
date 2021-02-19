@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DetailField, DetailParams } from 'planes-core-lib';
+import { DetailField, DetailParams, formatValue } from 'planes-core-lib';
+
 import {
   PlanesSecanoDetailParams,
   PLANESSECANODETAIL_DEFAULT_FIELDS
@@ -23,7 +24,7 @@ export class PlanesSecanoDetailComponent implements OnInit {
 
     const rows = this.fields.map(f => ({
       label: f.label,
-      value: value.plan[f.name]
+      value: formatValue(value.plan[f.name], f.format)
     }));
     this.detailParams = {
       rows

@@ -1,5 +1,8 @@
 import { dateToString } from 'planes-core-lib';
-import { PlanSecano, PlanSecanoEstado } from '../../planes-secano/planes-secano.model';
+import {
+  PlanSecano,
+  PlanSecanoEstado
+} from '../../planes-secano/planes-secano.model';
 import { GetData } from '../get-data';
 import { InMemoryDb } from '../in-memory-db';
 
@@ -14,7 +17,7 @@ export class MockAddPlanes implements GetData {
     for (const p of planes) {
       p.planId = db.nextId();
       p.planNro = p.planId;
-      p.planSecanoEstado = PlanSecanoEstado.EDICION;
+      p.planEstado = PlanSecanoEstado.EDICION;
       p.planFechaCreacion = today;
       db.d.planes.push(p);
 

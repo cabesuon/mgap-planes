@@ -17,21 +17,26 @@ import { ResponsableSecano } from '../responsables-secano/responsables-secano.mo
 export interface PlanesSecanoTableColumn extends TableColumn {
   literalFormat?: (v: any) => string;
   actionFormat?: (plan: PlanSecano) => TableValueAction;
+  useObj?: boolean;
 }
 
 export interface PlanesSecanoTableParams {
   columns?: PlanesSecanoTableColumn[];
   planes: PlanSecano[];
   sources: PlanesSecanoTableSources;
+  filter?: boolean;
+  pagination?: boolean;
 }
 
 export enum PlanesSecanoTableAction {
   GOTOVISTAMAPA = 'GotoVistaMapa',
   GOTOVISTADMINISTRATIVA = 'GotoVistaAdministrativa',
+  MODIFICAR = 'Modificar',
   PRESENTAR = 'Presentar',
+  PAGAR = 'Pagar',
   DESCARTAR = 'Descartar',
   CANCELAR = 'Cancelar',
-  Copiar = 'Copiar'
+  COPIAR = 'Copiar'
 }
 
 export interface PlanesSecanoTableActionValue {
@@ -51,18 +56,20 @@ export function resolvePlanesSecanoTableCellValue(
   column: PlanesSecanoTableColumn,
   sources: PlanesSecanoTableSources
 ): string | string[] {
+  if (column.useObj) {
+    return formatValue(plan, column.literalFormat);
+  }
   const names = column.name.split('.');
   if (names.length > 1) {
     let os: any[] = [];
-
+    let o: any = null;
     switch (names[0]) {
-      case 'propietarios':
-      case 'arrendatarios':
-        if (plan[names[0]] && plan[names[0]].length > 0) {
-          // empresasId: string[] -> empresas: EmpresaCore[]
-          os = sources.empresas.filter(e =>
-            plan[names[0]].some((o: string) => o === e.empresaId)
-          );
+      case 'propietarioId':
+      case 'tenedorCualquierTituloId':
+        // empresasId: string[] -> empresas: EmpresaCore[]
+        o = sources.empresas.find(e => plan[names[0]] === e.empresaId);
+        if (o) {
+          os = [o];
           if (names.length > 2 && names[1] === 'contactos') {
             // empresas: EmpresaCore[] -> contactos: ContactoCore[]
             os = os
@@ -79,7 +86,7 @@ export function resolvePlanesSecanoTableCellValue(
         break;
       case 'ingenieroAgronomoId':
         // ingenieroAgronomoId: string -> ingenieroAgronomo: IngenieroAgronomoCore
-        const o = sources.ingenierosAgronomos.find(
+        o = sources.ingenierosAgronomos.find(
           a => plan[names[0]] === a.ingenieroAgronomoId
         );
         if (o) {
@@ -190,7 +197,8 @@ export const PLANESSECANOTABLE_COLUMNS_DEFAULT: PlanesSecanoTableColumn[] = [
     label: 'Estado',
     sort: true,
     filter: true,
-    literalFormat: formatPlanEstado
+    literalFormat: formatPlanEstado,
+    useObj: true
   },
   {
     type: TableValueType.LITERAL,
@@ -209,16 +217,16 @@ export const PLANESSECANOTABLE_COLUMNS_DEFAULT: PlanesSecanoTableColumn[] = [
     literalFormat: formatDate
   },
   {
-    type: TableValueType.LIST,
-    name: 'propietarios.empresaRazonSocial',
-    label: 'Propietarios',
+    type: TableValueType.LITERAL,
+    name: 'propietarioId.empresaRazonSocial',
+    label: 'Propietario',
     sort: true,
     filter: true
   },
   {
-    type: TableValueType.LIST,
-    name: 'arrendatarios.empresaRazonSocial',
-    label: 'Arrendatarios',
+    type: TableValueType.LITERAL,
+    name: 'tenedorCualquierTituloId.empresaRazonSocial',
+    label: 'Arrendatario',
     sort: true,
     filter: true
   },

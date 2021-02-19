@@ -15,7 +15,7 @@ export class EntityPersonasEffects {
     private personasCoreService: PersonasCoreService,
     private actions$: Actions
   ) {
-    this.personasCoreService.url = environment.apiUrl;
+    this.personasCoreService.url = environment.apiNucleoUrl;
   }
 
   // load

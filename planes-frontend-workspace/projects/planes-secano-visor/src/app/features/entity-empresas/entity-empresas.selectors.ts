@@ -27,7 +27,7 @@ export const selectAllEntityEmpresas: (
   selectEntityEmpresasState
 ).selectAll;
 
-export const selectPersonaById = (id: string) =>
+export const selectEmpresaById = (id: string) =>
   createSelector(
     selectAllEntityEmpresas,
     (allEmpresas: EmpresaCore[]) => {
@@ -35,6 +35,18 @@ export const selectPersonaById = (id: string) =>
         return allEmpresas.find(e => e.empresaId === id);
       } else {
         return null;
+      }
+    }
+  );
+
+export const selectEmpresasById = (ids: string[]) =>
+  createSelector(
+    selectAllEntityEmpresas,
+    (allEmpresas: EmpresaCore[]) => {
+      if (allEmpresas) {
+        return allEmpresas.filter(e => ids.indexOf(e.empresaId) >= 0);
+      } else {
+        return [];
       }
     }
   );

@@ -23,6 +23,24 @@ export interface RotacionesSecanoQueryResults {
   rotaciones: RotacionSecano[];
 }
 
+export interface RotacionSecanoAddResult {
+  success: boolean;
+  error: { code: number; description: string };
+  rotacion: RotacionSecano;
+}
+
+export interface RotacionSecanoUpdateResult {
+  success: boolean;
+  error: { code: number; description: string };
+  rotacion: RotacionSecano;
+}
+
+export interface RotacionSecanoDeleteResult {
+  success: boolean;
+  error: { code: number; description: string };
+  rotacionId: string;
+}
+
 export function createBaseRotacionSecano(
   rotacionId: string,
   rotacionPlanId: string,
@@ -35,5 +53,15 @@ export function createBaseRotacionSecano(
     rotacionNombre: `Rotacion ${rotacionId}`,
     rotacionAnio,
     rotacionEsSiembraDirecta
+  };
+}
+
+export function createEmptyRotacionSecano(): RotacionSecano {
+  return {
+    rotacionId: null,
+    rotacionPlanId: null,
+    rotacionNombre: null,
+    rotacionAnio: null,
+    rotacionEsSiembraDirecta: null
   };
 }

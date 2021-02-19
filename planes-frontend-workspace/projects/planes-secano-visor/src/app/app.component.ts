@@ -5,14 +5,16 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { filter, mergeAll } from 'rxjs/operators';
 
 import { environment as env } from '../environments/environment';
 
 import {
   AppState,
   LocalStorageService,
-  selectPersonaId,
+  selectAuthPersonaId,
+  selectAuthIsLoading,
   authLogout,
   routeAnimations
 } from './core/core.module';
@@ -24,18 +26,19 @@ import { EntityZonasExclusionLoadRequestAction } from './features/entity-zonas-e
 import { EntityPersonasLoadRequestAction } from './features/entity-personas/entity-personas.actions';
 import { EntityIngenierosAgronomosLoadRequestAction } from './features/entity-ingenieros-agronomos/entity-ingenieros-agronomos.actions';
 import { EntityEmpresasLoadRequestAction } from './features/entity-empresas/entity-empresas.actions';
-import { EntityResponsablesLoadRequestAction } from './features/entity-responsables/entity-responsables.actions';
 
 import { EntityRotacionesLoadRequestAction } from './features/entity-rotaciones/entity-rotaciones.actions';
 import { EntityComponentesLoadRequestAction } from './features/entity-componentes/entity-componentes.actions';
 import { EntityCultivosLoadRequestAction } from './features/entity-cultivos/entity-cultivos.actions';
 import { EntityManejosLoadRequestAction } from './features/entity-manejos/entity-manejos.actions';
-import { EntityRelacionesPerdidaSueloLoadRequestAction } from './features/entity-relaciones-perida-suelo/entity-relaciones-perida-suelo.actions';
+import { EntityRelacionesPerdidaSueloLoadRequestAction } from './features/entity-relaciones-perdida-suelo/entity-relaciones-perida-suelo.actions';
 import { EntityRendimientosLoadRequestAction } from './features/entity-rendimientos/entity-rendimientos.actions';
 import { EntityChatLoadRequestAction } from './features/entity-chat/entity-chat.actions';
+import { EntitySuelosLoadRequestAction } from './features/entity-suelos/entity-suelos.actions';
 
 import { PersonaCore } from 'planes-core-lib';
 import { selectPersonaById } from './features/entity-personas/entity-personas.selectors';
+import { selectFeaturesIsLoading } from './features/features.selectors';
 
 @Component({
   selector: 'app-root',
@@ -51,7 +54,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   version = env.versions.app;
   useMockServer = env.useMockServer ? 'TRUE' : 'FALSE';
   year = new Date().getFullYear();
-  logo = 'assets/logo-mgap.png'; // require('../');
+  logo = 'assets/logo.png'; // require('../');
   navigation = [
     { link: '/features/principal', label: 'Principal' },
     { link: '/features/mapa', label: 'Mapa' },
@@ -61,6 +64,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   personaId: string = null;
   persona: PersonaCore = null;
+
+  isLoading: boolean;
 
   constructor(
     private store: Store<AppState>,
@@ -72,11 +77,11 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.store
       .pipe(
-        select(selectPersonaId),
+        select(selectAuthPersonaId),
         filter(personaId => !!personaId)
       )
-      .subscribe(personaId => {
-        this.personaId = personaId.toString();
+      .subscribe((personaId: string) => {
+        this.personaId = personaId;
 
         if (this.personaId) {
           this.loadUserData();
@@ -87,6 +92,13 @@ export class AppComponent implements OnInit, AfterViewInit {
             });
         }
       });
+
+    of(
+      this.store.select(selectAuthIsLoading),
+      this.store.select(selectFeaturesIsLoading)
+    )
+      .pipe(mergeAll())
+      .subscribe((isLoading: boolean) => (this.isLoading = isLoading));
   }
 
   ngAfterViewInit(): void {}
@@ -101,7 +113,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new EntityPersonasLoadRequestAction());
     this.store.dispatch(new EntityIngenierosAgronomosLoadRequestAction());
     this.store.dispatch(new EntityEmpresasLoadRequestAction());
-    this.store.dispatch(new EntityResponsablesLoadRequestAction());
 
     this.store.dispatch(new EntityPlanesLoadRequestAction());
     this.store.dispatch(new EntityChacrasLoadRequestAction());
@@ -115,5 +126,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new EntityRendimientosLoadRequestAction());
     this.store.dispatch(new EntityRelacionesPerdidaSueloLoadRequestAction());
     this.store.dispatch(new EntityChatLoadRequestAction());
+    this.store.dispatch(new EntitySuelosLoadRequestAction());
   }
 }

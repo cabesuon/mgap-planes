@@ -25,10 +25,10 @@ import {
 import { AuthEffects } from './auth/auth.effects';
 import {
   selectAuth,
-  selectToken,
-  selectPersonaId,
-  selectError,
-  selectIsLoading
+  selectAuthToken,
+  selectAuthPersonaId,
+  selectAuthError,
+  selectAuthIsLoading
 } from './auth/auth.selectors';
 import {
   authLoginRequest,
@@ -52,10 +52,10 @@ import { FileService } from './file/file.service';
 
 export {
   selectAuth,
-  selectToken,
-  selectPersonaId,
-  selectError,
-  selectIsLoading,
+  selectAuthToken,
+  selectAuthPersonaId,
+  selectAuthError,
+  selectAuthIsLoading,
   authLoginRequest,
   authLoginSuccess,
   authLoginFailure,

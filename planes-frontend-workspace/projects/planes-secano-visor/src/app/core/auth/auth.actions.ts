@@ -6,7 +6,7 @@ export const authLoginRequest = createAction(
 );
 export const authLoginSuccess = createAction(
   '[Auth] Login Success',
-  props<{ personaId: number; token: string }>()
+  props<{ personaId: string; token: string }>()
 );
 export const authLoginFailure = createAction(
   '[Auth] Login Failure',

@@ -8,7 +8,10 @@ import { combineLatest } from 'rxjs';
 import {
   TableValueType,
   TableActionEvent,
-  FormActionType
+  FormActionType,
+  ConfirmDialogData,
+  ConfirmDialogResultType,
+  ConfirmDialogComponent
 } from 'planes-core-lib';
 
 import {
@@ -17,7 +20,8 @@ import {
   PLANESSECANOTABLE_COLUMNS_DEFAULT,
   PlanesSecanoTableParams,
   PlanesSecanoTableAction,
-  PlanSecanoEstado
+  PlanSecanoEstado,
+  PlanSecanoUrlType
 } from 'planes-secano-lib';
 
 import { NotificationService } from '../../../core/notifications/notification.service';
@@ -25,6 +29,8 @@ import { NotificationService } from '../../../core/notifications/notification.se
 import { LoggingService } from '../../../core/logging/logging.service';
 
 import { AppState } from '../../../core/core.state';
+
+import { selectAuthPersonaId } from '../../../core/auth/auth.selectors';
 
 import { selectAllEntityPlanes } from '../../entity-planes/entity-planes.selectors';
 import { selectAllEntityPersonas } from '../../entity-personas/entity-personas.selectors';
@@ -36,6 +42,14 @@ import {
   EntityPlanesFormDialogComponent
 } from '../../entity-planes/entity-planes-form-dialog/entity-planes-form-dialog.component';
 
+import {
+  EntityPlanesChangeRequestAction,
+  EntityPlanesDeleteRequestAction,
+  EntityPlanesCopyRequestAction,
+  EntityPlanesGetUrlRequestAction
+} from '../../entity-planes/entity-planes.actions';
+import { IngenieroAgronomoCore } from 'projects/planes-core-lib/src/public-api';
+
 const DIALOG_WIDTH = '300px';
 const DIALOG_MAX_HEIGHT = '500px';
 
@@ -46,6 +60,37 @@ const DIALOG_MAX_HEIGHT = '500px';
 })
 export class VistaPrincipalComponent implements OnInit {
   planesTableColumns = [
+    {
+      type: TableValueType.ACTION,
+      name: 'ModificarAction',
+      label: '',
+      sort: false,
+      filter: false,
+      actionFormat: (p: PlanSecano) => {
+        if (p.planEstado === PlanSecanoEstado.EDICION) {
+          return {
+            value: PlanesSecanoTableAction.MODIFICAR,
+            text: 'Modificar Plan',
+            icon: 'edit'
+          };
+        }
+        return null;
+      }
+    },
+    {
+      type: TableValueType.ACTION,
+      name: 'CopiarAction',
+      label: '',
+      sort: false,
+      filter: false,
+      actionFormat: (p: PlanSecano) => {
+        return {
+          value: PlanesSecanoTableAction.COPIAR,
+          text: 'Copiar Plan',
+          icon: 'clone'
+        };
+      }
+    },
     ...PLANESSECANOTABLE_COLUMNS_DEFAULT,
     {
       type: TableValueType.ACTION,
@@ -54,14 +99,21 @@ export class VistaPrincipalComponent implements OnInit {
       sort: false,
       filter: false,
       actionFormat: (p: PlanSecano) => {
-        switch (p.planSecanoEstado) {
+        switch (p.planEstado) {
           case PlanSecanoEstado.EDICION:
             return {
               value: PlanesSecanoTableAction.PRESENTAR,
               text: 'Presentar Plan',
               icon: 'file-signature'
             };
+          case PlanSecanoEstado.PENDIENTEPAGO:
+            return {
+              value: PlanesSecanoTableAction.PAGAR,
+              text: 'Pagar',
+              icon: 'dollar-sign'
+            };
           case PlanSecanoEstado.PRESENTADO:
+          default:
             return null;
         }
       }
@@ -73,7 +125,7 @@ export class VistaPrincipalComponent implements OnInit {
       sort: false,
       filter: false,
       actionFormat: (p: PlanSecano) => {
-        switch (p.planSecanoEstado) {
+        switch (p.planEstado) {
           case PlanSecanoEstado.EDICION:
             return {
               value: PlanesSecanoTableAction.DESCARTAR,
@@ -81,10 +133,17 @@ export class VistaPrincipalComponent implements OnInit {
               icon: 'trash'
             };
           case PlanSecanoEstado.PRESENTADO:
+          case PlanSecanoEstado.PENDIENTEPAGO:
             return {
               value: PlanesSecanoTableAction.CANCELAR,
               text: 'Cancelar Plan',
               icon: 'ban'
+            };
+          default:
+            return {
+              value: 'Shellshock',
+              text: 'Shellshock',
+              icon: 'bomb'
             };
         }
       }
@@ -99,8 +158,12 @@ export class VistaPrincipalComponent implements OnInit {
       empresas: [],
       responsables: []
     },
-    planes: []
+    planes: [],
+    filter: true,
+    pagination: true
   };
+
+  ingenieroAgronomo: IngenieroAgronomoCore = null;
 
   constructor(
     private store: Store<AppState>,
@@ -113,33 +176,48 @@ export class VistaPrincipalComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest(
+      this.store.pipe(select(selectAuthPersonaId)),
       this.store.pipe(select(selectAllEntityPlanes)),
       this.store.pipe(select(selectAllEntityPersonas)),
       this.store.pipe(select(selectAllEntityIngenierosAgronomos)),
       this.store.pipe(select(selectAllEntityEmpresas)),
-      (planes, personas, ingenierosAgronomos, empresas) => ({
+      (personaId, planes, personas, ingenierosAgronomos, empresas) => ({
+        personaId,
         planes,
         personas,
         ingenierosAgronomos,
         empresas
       })
-    ).subscribe(
-      sources =>
-        (this.planesTableParams = {
-          columns: this.planesTableColumns,
-          sources: {
-            personas: sources.personas,
-            ingenierosAgronomos: sources.ingenierosAgronomos,
-            empresas: sources.empresas,
-            responsables: []
-          },
-          planes: sources.planes
-        })
-    );
+    ).subscribe(sources => {
+      this.ingenieroAgronomo = sources.ingenierosAgronomos.find(
+        ia => ia.contacto.personaId === sources.personaId
+      );
+      this.planesTableParams = {
+        columns: this.ingenieroAgronomo
+          ? this.planesTableColumns
+          : PLANESSECANOTABLE_COLUMNS_DEFAULT,
+        sources: {
+          personas: sources.personas,
+          ingenierosAgronomos: sources.ingenierosAgronomos,
+          empresas: sources.empresas,
+          responsables: []
+        },
+        planes: sources.planes,
+        filter: true,
+        pagination: true
+      };
+    });
   }
 
   planesTableActioned(actionValue: TableActionEvent) {
+    let action = null;
     switch (actionValue.value) {
+      case PlanesSecanoTableAction.MODIFICAR:
+        this.updatePlan(actionValue.obj);
+        break;
+      case PlanesSecanoTableAction.COPIAR:
+        this.copyPlan(actionValue.obj);
+        break;
       case PlanesSecanoTableAction.GOTOVISTAMAPA:
         this.router.navigate([
           '/features/mapa',
@@ -153,18 +231,48 @@ export class VistaPrincipalComponent implements OnInit {
         ]);
         break;
       case PlanesSecanoTableAction.PRESENTAR:
-        this.notificationService.info(
-          `[No Implementado] Presentar ${actionValue.obj.planId}`
+        action = new EntityPlanesChangeRequestAction({
+          item: {
+            ...actionValue.obj,
+            planEstado: PlanSecanoEstado.PRESENTADO
+          }
+        });
+        this.openConfirmDialog(
+          'Presentar Plan',
+          `Confirma la presentación del plan ${actionValue.obj.planNombre}.`,
+          action
         );
         break;
       case PlanesSecanoTableAction.CANCELAR:
-        this.notificationService.info(
-          `[No Implementado] Cancelar ${actionValue.obj.planId}`
+        action = new EntityPlanesDeleteRequestAction({
+          item: {
+            ...actionValue.obj
+          }
+        });
+        this.openConfirmDialog(
+          'Cancelar Plan',
+          `Confirma la cancelación del plan ${actionValue.obj.planNombre}.`,
+          action
         );
         break;
       case PlanesSecanoTableAction.DESCARTAR:
-        this.notificationService.info(
-          `[No Implementado] Descartar ${actionValue.obj.planId}`
+        action = new EntityPlanesDeleteRequestAction({
+          item: {
+            ...actionValue.obj
+          }
+        });
+        this.openConfirmDialog(
+          'Eliminar Plan',
+          `Confirma la eliminación del plan ${actionValue.obj.planNombre}.`,
+          action
+        );
+        break;
+      case PlanesSecanoTableAction.PAGAR:
+        this.store.dispatch(
+          new EntityPlanesGetUrlRequestAction({
+            item: actionValue.obj,
+            urlType: PlanSecanoUrlType.PASARELA_PAGOS
+          })
         );
         break;
       default:
@@ -176,22 +284,56 @@ export class VistaPrincipalComponent implements OnInit {
   }
 
   newPlan() {
-    this.openDialogPlan(FormActionType.Add);
+    this.openPlanDialog(FormActionType.Add, {
+      ...createEmptyPlanSecano(),
+      ingenieroAgronomoId: this.ingenieroAgronomo.ingenieroAgronomoId
+    });
+  }
+
+  updatePlan(plan: PlanSecano) {
+    this.openPlanDialog(FormActionType.Update, plan);
+  }
+
+  copyPlan(plan: PlanSecano) {
+    this.store.dispatch(new EntityPlanesCopyRequestAction({ item: plan }));
+  }
+
+  newTemplateRotacion() {
+    this.notificationService.default('Nuevo Template Rotación.');
   }
 
   // dialogs
 
-  openDialogPlan(action: FormActionType) {
+  openPlanDialog(action: FormActionType, plan: PlanSecano) {
     const inData: EntityPlanesFormDialogData = {
-      plan: createEmptyPlanSecano(),
-      action: action
-      // empresas: this.planesTableParams.sources.empresas,
-      // ingenieroAgronomoId: '1'
+      plan,
+      action: action,
+      empresas: this.planesTableParams.sources.empresas
     };
     this.dialog.open(EntityPlanesFormDialogComponent, {
       width: DIALOG_WIDTH,
       maxHeight: DIALOG_MAX_HEIGHT,
       data: inData
+    });
+  }
+
+  openConfirmDialog(title: string, question: string, action: any) {
+    const inData: ConfirmDialogData = {
+      title,
+      question,
+      result: ConfirmDialogResultType.Cancel
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: DIALOG_WIDTH,
+      maxHeight: DIALOG_MAX_HEIGHT,
+      data: inData
+    });
+    dialogRef.afterClosed().subscribe(outData => {
+      if (outData && outData.result === ConfirmDialogResultType.Ok) {
+        if (action) {
+          this.store.dispatch(action);
+        }
+      }
     });
   }
 }

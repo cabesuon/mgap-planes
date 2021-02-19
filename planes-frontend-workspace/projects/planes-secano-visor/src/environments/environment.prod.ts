@@ -11,8 +11,11 @@ export const environment = {
   versions: {
     app: packageJson.version
   },
-  apiUrl: 'http://gliese.renare.gub.uy/nucleo/rest',
-  useMockServer: true,
+  apiNucleoUrl: 'http://gliese.renare.gub.uy/nucleo/rest',
+  apiSecanoUrl: 'http://gliese.renare.gub.uy/secano_desarrollo/rest',
+  sueloMetaUrl:
+    'http://web.renare.gub.uy/arcgis/rest/services/TEMATICOS/Coneat_K/MapServer/0',
+  useMockServer: false,
   logging: {
     serverLoggingUrl: null,
     level: NgxLoggerLevel.DEBUG,

@@ -15,7 +15,16 @@ export enum EntityChacrasActionTypes {
   ENTITYCHACRAS_CHANGE_SUCCESS = '[ENTITYCHACRAS] Change Success',
   ENTITYCHACRAS_DELETE_REQUEST = '[ENTITYCHACRAS] Delete Request',
   ENTITYCHACRAS_DELETE_FAILURE = '[ENTITYCHACRAS] Delete Failure',
-  ENTITYCHACRAS_DELETE_SUCCESS = '[ENTITYCHACRAS] Delete Success'
+  ENTITYCHACRAS_DELETE_SUCCESS = '[ENTITYCHACRAS] Delete Success',
+  ENTITYCHACRAS_GETPADRONES_REQUEST = '[ENTITYCHACRAS] Get Padrones Request',
+  ENTITYCHACRAS_GETPADRONES_FAILURE = '[ENTITYCHACRAS] Get Padrones Failure',
+  ENTITYCHACRAS_GETPADRONES_SUCCESS = '[ENTITYCHACRAS] Get Padrones Success',
+  ENTITYCHACRAS_GETSUELOS_REQUEST = '[ENTITYCHACRAS] Get Suelos Request',
+  ENTITYCHACRAS_GETSUELOS_FAILURE = '[ENTITYCHACRAS] Get Suelos Failure',
+  ENTITYCHACRAS_GETSUELOS_SUCCESS = '[ENTITYCHACRAS] Get Suelos Success',
+  ENTITYCHACRAS_GETLS_REQUEST = '[ENTITYCHACRAS] Get LS Request',
+  ENTITYCHACRAS_GETLS_FAILURE = '[ENTITYCHACRAS] Get LS Failure',
+  ENTITYCHACRAS_GETLS_SUCCESS = '[ENTITYCHACRAS] Get LS Success'
 }
 
 // load
@@ -84,7 +93,58 @@ export class EntityChacrasDeleteFailureAction implements Action {
 
 export class EntityChacrasDeleteSuccessAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_DELETE_SUCCESS;
+  constructor(public payload: { chacraId: string }) {}
+}
+
+// get padrones
+
+export class EntityChacrasGetPadronesRequestAction implements Action {
+  readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_GETPADRONES_REQUEST;
   constructor(public payload: { item: ChacraSecano }) {}
+}
+
+export class EntityChacrasGetPadronesFailureAction implements Action {
+  readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_GETPADRONES_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export class EntityChacrasGetPadronesSuccessAction implements Action {
+  readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_GETPADRONES_SUCCESS;
+  constructor(public payload: { item: Update<ChacraSecano> }) {}
+}
+
+// get suelos
+
+export class EntityChacrasGetSuelosRequestAction implements Action {
+  readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_GETSUELOS_REQUEST;
+  constructor(public payload: { item: ChacraSecano }) {}
+}
+
+export class EntityChacrasGetSuelosFailureAction implements Action {
+  readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_GETSUELOS_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export class EntityChacrasGetSuelosSuccessAction implements Action {
+  readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_GETSUELOS_SUCCESS;
+  constructor(public payload: { item: Update<ChacraSecano> }) {}
+}
+
+// get LS
+
+export class EntityChacrasGetLSRequestAction implements Action {
+  readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_GETLS_REQUEST;
+  constructor(public payload: { item: ChacraSecano }) {}
+}
+
+export class EntityChacrasGetLSFailureAction implements Action {
+  readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_GETLS_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export class EntityChacrasGetLSSuccessAction implements Action {
+  readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_GETLS_SUCCESS;
+  constructor(public payload: { item: Update<ChacraSecano> }) {}
 }
 
 // actions
@@ -101,4 +161,13 @@ export type EntityChacrasActions =
   | EntityChacrasChangeSuccessAction
   | EntityChacrasDeleteRequestAction
   | EntityChacrasDeleteFailureAction
-  | EntityChacrasDeleteSuccessAction;
+  | EntityChacrasDeleteSuccessAction
+  | EntityChacrasGetPadronesRequestAction
+  | EntityChacrasGetPadronesFailureAction
+  | EntityChacrasGetPadronesSuccessAction
+  | EntityChacrasGetSuelosRequestAction
+  | EntityChacrasGetSuelosFailureAction
+  | EntityChacrasGetSuelosSuccessAction
+  | EntityChacrasGetLSRequestAction
+  | EntityChacrasGetLSFailureAction
+  | EntityChacrasGetLSSuccessAction;

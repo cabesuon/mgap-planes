@@ -3,10 +3,14 @@ import { EntityAdapter, createEntityAdapter, EntityState } from '@ngrx/entity';
 import { ComponenteSecano } from 'planes-secano-lib';
 export { ComponenteSecano } from 'planes-secano-lib';
 
+export function componenteSelectId(componente: ComponenteSecano): string {
+  return `r:${componente.rotacionId} c:${componente.componenteId}`;
+}
+
 export const entityComponentesAdapter: EntityAdapter<
   ComponenteSecano
 > = createEntityAdapter<ComponenteSecano>({
-  selectId: model => model.componenteId,
+  selectId: model => componenteSelectId(model),
   sortComparer: (a: ComponenteSecano, b: ComponenteSecano): number =>
     b.componenteId.toString().localeCompare(a.componenteId.toString())
 });

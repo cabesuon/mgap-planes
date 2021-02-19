@@ -8,15 +8,12 @@ export class MockQueryZonasExclusion implements GetData {
     const planesId = db
       .getPlanesSecanoByPersonaId(personaId)
       .map(p => p.planId);
-    const chacrasId = db.d.chacras
-      .filter(c => planesId.indexOf(c.planId) > -1)
-      .map(c => c.chacraId);
     const response = {
       queryResults: {
         success: true,
         error: null,
         zonasExclusion: db.d.zonasExclusion.filter(
-          z => chacrasId.indexOf(z.chacraId) > -1
+          z => planesId.indexOf(z.planId) > -1
         )
       }
     };

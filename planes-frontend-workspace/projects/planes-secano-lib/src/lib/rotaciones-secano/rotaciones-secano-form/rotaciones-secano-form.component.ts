@@ -1,15 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 
-import { PlanSecano } from '../../planes-secano/planes-secano.model';
 import { RotacionSecano } from '../../rotaciones-secano/rotaciones-secano.model';
 
 import { FormActionType } from 'planes-core-lib';
 
-export interface PlanesCoreFormInput {
+export interface RotacionesCoreFormInput {
   action: FormActionType;
   rotacion: RotacionSecano;
-  plan: PlanSecano;
 }
 
 @Component({
@@ -18,14 +16,14 @@ export interface PlanesCoreFormInput {
   styleUrls: ['./rotaciones-secano-form.component.css']
 })
 export class RotacionesSecanoFormComponent implements OnInit {
-  @Input() formInput: PlanesCoreFormInput = null;
+  @Input() formInput: RotacionesCoreFormInput = null;
   @Output() formStatusChanges = new EventEmitter<string>();
   @Output() formValueChanges = new EventEmitter<RotacionSecano>();
 
   form = this.fb.group({
     rotacionNombre: [null, [Validators.required]],
     rotacionAnio: [null, [Validators.required]],
-    rotacionEsSiembraDirecta: [null]
+    rotacionEsSiembraDirecta: [false, [Validators.required]]
   });
 
   constructor(private fb: FormBuilder) {}
@@ -41,7 +39,7 @@ export class RotacionesSecanoFormComponent implements OnInit {
     }
     this.form.valueChanges.subscribe(_ =>
       this.formValueChanges.emit({
-        ...this.formInput.plan,
+        ...this.formInput.rotacion,
         ...this.form.value
       })
     );

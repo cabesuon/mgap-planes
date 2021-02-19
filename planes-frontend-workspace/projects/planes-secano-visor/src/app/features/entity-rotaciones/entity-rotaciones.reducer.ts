@@ -88,14 +88,11 @@ export function entityRotacionesReducer(
       };
     }
     case EntityRotacionesActionTypes.ENTITYROTACIONES_DELETE_SUCCESS: {
-      return entityRotacionesAdapter.removeOne(
-        action.payload.item.rotacionPlanId,
-        {
-          ...state,
-          isLoading: false,
-          error: null
-        }
-      );
+      return entityRotacionesAdapter.removeOne(action.payload.rotacionId, {
+        ...state,
+        isLoading: false,
+        error: null
+      });
     }
     case EntityRotacionesActionTypes.ENTITYROTACIONES_DELETE_FAILURE: {
       return {

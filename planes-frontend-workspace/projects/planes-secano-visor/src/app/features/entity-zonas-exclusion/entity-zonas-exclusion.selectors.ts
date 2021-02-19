@@ -27,12 +27,12 @@ export const selectAllEntityZonasExclusion: (
   selectEntityZonasExclusionState
 ).selectAll;
 
-export const selectZonasExclusionByChacrasId = (ids: string[]) =>
+export const selectZonasExclusionByPlanId = (planId: string) =>
   createSelector(
     selectAllEntityZonasExclusion,
     (allZonasExclusion: ZonaExclusionCore[]) => {
       if (allZonasExclusion) {
-        return allZonasExclusion.filter(z => ids.indexOf(z.chacraId) > -1);
+        return allZonasExclusion.filter(z => z.planId === planId);
       } else {
         return [];
       }

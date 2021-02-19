@@ -9,7 +9,7 @@ export const entityPersonasAdapter: EntityAdapter<
 > = createEntityAdapter<PersonaCore>({
   selectId: model => model.personaId,
   sortComparer: (a: PersonaCore, b: PersonaCore): number =>
-    b.personaId.toString().localeCompare(a.personaId.toString())
+    b.personaId.localeCompare(a.personaId)
 });
 
 export interface EntityPersonasState extends EntityState<PersonaCore> {

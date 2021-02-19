@@ -12,8 +12,18 @@ import {
 import { InMemoryDb } from './in-memory-db';
 import { createInMemoryDataDefault } from './in-memory-db-data';
 
-import { MockQueryPlanes, MockAddPlanes } from './planes-get-data';
-import { MockQueryChacras, MockAddChacras } from './chacras-get-data';
+import {
+  MockQueryPlanes,
+  MockAddPlanes,
+  MockUpdatePlanes,
+  MockDeletePlanes
+} from './planes-get-data';
+import {
+  MockQueryChacras,
+  MockAddChacras,
+  MockUpdateChacras,
+  MockDeleteChacras
+} from './chacras-get-data';
 import {
   MockQueryZonasExclusion,
   MockAddZonasExclusion
@@ -40,13 +50,21 @@ import {
   MockQueryComponentes
 } from './componentes-get-data';
 
+import { MockQueryChat, MockAddChat } from './chat-get-data';
+
 const getMethodGetDataRepo = {};
 
 const postMethodGetDataRepo = {
   queryPlanes: new MockQueryPlanes(),
   addPlanes: new MockAddPlanes(),
+  updatePlanes: new MockUpdatePlanes(),
+  deletePlanes: new MockDeletePlanes(),
+
   queryChacras: new MockQueryChacras(),
   addChacras: new MockAddChacras(),
+  updateChacras: new MockUpdateChacras(),
+  deleteChacras: new MockDeleteChacras(),
+
   queryZonasExclusion: new MockQueryZonasExclusion(),
   addZonasExclusion: new MockAddZonasExclusion(),
 
@@ -61,12 +79,14 @@ const postMethodGetDataRepo = {
 
   queryRotaciones: new MockQueryRotaciones(),
   addQueryRotaciones: new MockAddRotaciones(),
-  queryRotacionesComponentes: new MockQueryComponentes(),
+  queryRotacionComponentes: new MockQueryComponentes(),
   addQueryRotacionesComponentes: new MockAddComponentes(),
   queryCultivos: new MockQueryCultivos(),
   queryManejos: new MockQueryManejos(),
   queryRendimientos: new MockQueryRendimientos(),
-  queryRelacionPerdidaSuelos: new MockQueryRelacionPerdidaSuelos()
+  queryRelacionPerdidaSuelos: new MockQueryRelacionPerdidaSuelos(),
+
+  queryMensajes: new MockQueryChat()
 };
 
 @Injectable({
@@ -97,6 +117,7 @@ export class InMemoryDataService implements InMemoryDbService {
   private handleRequest(reqInfo: RequestInfo, dataRepo: any) {
     return reqInfo.utils.createResponse$(() => {
       const dataEncapsulation = reqInfo.utils.getConfig().dataEncapsulation;
+      console.log(`[handleRequest] ${reqInfo.collectionName}`);
       const data = dataRepo[reqInfo.collectionName].getData(reqInfo, this.db);
       const options: ResponseOptions = data
         ? {

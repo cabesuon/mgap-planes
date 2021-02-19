@@ -1,18 +1,18 @@
-<h1 class="text-uppercase mb-2" mat-dialog-title>
+<h1 class="mat-h1" mat-dialog-title>
   {{ title }}
 </h1>
 <div mat-dialog-content>
-  <lib-chacras-core-form [formInput]="data"
+  <lib-chacras-secano-form [formInput]="data"
     (formValueChanges)="formValueChanges($event)"
     (formStatusChanges)="formStatusChanges($event)"
-  ></lib-chacras-core-form>
+  ></lib-chacras-secano-form>
 </div>
-<div mat-dialog-actions>
-  <button mat-raised-button (click)="onCancel()">
+<div mat-dialog-actions class="row">
+  <button mat-raised-button class="col btn-cancel" (click)="onCancel()">
     {{ cancelText }}
   </button>
-  <button mat-raised-button (click)="onSubmit()"
-    [disabled]="!formValid" class="ml-2">
+  <button mat-raised-button class="col btn-submit" (click)="onSubmit()"
+    [disabled]="!formValid">
     {{ submitText }}
   </button>
 </div>

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { PlanesCoreLibModule } from 'planes-core-lib';
+import { ConfirmDialogComponent, PlanesCoreLibModule } from 'planes-core-lib';
 import { PlanesSecanoLibModule } from 'planes-secano-lib';
 
 import { SharedModule } from '../shared/shared.module';
@@ -28,18 +28,26 @@ import { EntityComponentesEffects } from './entity-componentes/entity-component.
 import { EntityCultivosEffects } from './entity-cultivos/entity-cultivos.effects';
 import { EntityManejosEffects } from './entity-manejos/entity-manejos.effect';
 import { EntityRendimientosEffects } from './entity-rendimientos/entity-rendimientos.effect';
-import { EntityRelacionesPerdidaSueloSecanoEffects } from './entity-relaciones-perida-suelo/entity-relaciones-perdida-suelo.effects';
+import { EntityRelacionesPerdidaSueloSecanoEffects } from './entity-relaciones-perdida-suelo/entity-relaciones-perdida-suelo.effects';
 
 import { EntityChatEffects } from './entity-chat/entity-chat.effects';
+import { EntitySuelosEffects } from './entity-suelos/entity-suelos.effects';
 
 // dialogs
 import { EntityPlanesFormDialogComponent } from './entity-planes/entity-planes-form-dialog/entity-planes-form-dialog.component';
 import { EntityChacrasFormDialogComponent } from './entity-chacras/entity-chacras-form-dialog/entity-chacras-form-dialog.component';
+import { EntityZonasExclusionFormDialogComponent } from './entity-zonas-exclusion/entity-zonas-exclusion-form-dialog/entity-zonas-exclusion-form-dialog.component';
+import { EntityRotacionesFormDialogComponent } from './entity-rotaciones/entity-rotaciones-form-dialog/entity-rotaciones-form-dialog.component';
+import { EntityComponentesFormDialogComponent } from './entity-componentes/entity-componentes-form-dialog/entity-componentes-form-dialog.component';
 // vistas
 import { VistaPrincipalComponent } from './vista-principal/vista-principal/vista-principal.component';
 import { VistaLoginComponent } from './vista-login/vista-login/vista-login.component';
 import { VistaMapaComponent } from './vista-mapa/vista-mapa/vista-mapa.component';
 import { VistaAdministrativoComponent } from './vista-administrativo/vista-administrativo/vista-administrativo.component';
+import { PlanRotacionComponentesComponent } from './vista-administrativo/plan-rotacion-componentes/plan-rotacion-componentes.component';
+import { PlanDetallesComponent } from './vista-administrativo/plan-detalles/plan-detalles.component';
+import { PlanChacrasComponent } from './vista-administrativo/plan-chacras/plan-chacras.component';
+import { PlanChatComponent } from './vista-administrativo/plan-chat/plan-chat.component';
 import { VistaChatComponent } from './vista-chat/vista-chat/vista-chat.component';
 
 @NgModule({
@@ -75,7 +83,8 @@ import { VistaChatComponent } from './vista-chat/vista-chat/vista-chat.component
       EntityCultivosEffects,
       EntityRendimientosEffects,
 
-      EntityChatEffects
+      EntityChatEffects,
+      EntitySuelosEffects
     ])
   ],
   declarations: [
@@ -87,11 +96,22 @@ import { VistaChatComponent } from './vista-chat/vista-chat/vista-chat.component
     VistaChatComponent,
     // dialogs
     EntityPlanesFormDialogComponent,
-    EntityChacrasFormDialogComponent
+    EntityChacrasFormDialogComponent,
+    EntityZonasExclusionFormDialogComponent,
+    EntityRotacionesFormDialogComponent,
+    EntityComponentesFormDialogComponent,
+    PlanRotacionComponentesComponent,
+    PlanDetallesComponent,
+    PlanChacrasComponent,
+    PlanChatComponent
   ],
   entryComponents: [
     EntityPlanesFormDialogComponent,
-    EntityChacrasFormDialogComponent
+    EntityChacrasFormDialogComponent,
+    EntityZonasExclusionFormDialogComponent,
+    ConfirmDialogComponent,
+    EntityRotacionesFormDialogComponent,
+    EntityComponentesFormDialogComponent
   ]
 })
 export class FeaturesModule {}

@@ -3,11 +3,6 @@ export enum FormActionType {
   Update = 'Update'
 }
 
-export enum FormConfirmationType {
-  Ok = 'Ok',
-  Cancel = 'Cancel'
-}
-
 export function formValid(statuses: string[]): boolean {
   for (const status of statuses) {
     if (status !== 'VALID') {

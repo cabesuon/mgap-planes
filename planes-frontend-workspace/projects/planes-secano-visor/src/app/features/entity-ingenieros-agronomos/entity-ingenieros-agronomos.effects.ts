@@ -15,7 +15,7 @@ export class EntityIngenierosAgronomosEffects {
     private IngenierosAgronomosCoreService: IngenierosAgronomosCoreService,
     private actions$: Actions
   ) {
-    this.IngenierosAgronomosCoreService.url = environment.apiUrl;
+    this.IngenierosAgronomosCoreService.url = environment.apiNucleoUrl;
   }
 
   // load

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DetailField, DetailParams } from 'planes-core-lib';
+
 import { PeriodosSecanoDetailParams } from '../../periodos-secano/periodos-secano-detail.model';
 import {
   COMPONENTESSECANODETAIL_DEFAULT_FIELDS,
@@ -14,6 +15,9 @@ import {
 export class ComponentesSecanoDetailComponent implements OnInit {
   _params: ComponentesSecanoDetailParams = null;
   @Input()
+  get params(): ComponentesSecanoDetailParams {
+    return this._params;
+  }
   set params(value: ComponentesSecanoDetailParams) {
     this._params = value;
     if (!value) {
@@ -22,24 +26,14 @@ export class ComponentesSecanoDetailComponent implements OnInit {
 
     this.fields = value.fields || COMPONENTESSECANODETAIL_DEFAULT_FIELDS;
 
-    const rows = this.fields.map(f => ({
-      label: f.label,
-      value: value.componente[f.name]
-    }));
-    this.detailParams = {
-      rows
+    this.periodosDetailParams = {
+      periodos: value.componente.periodos
     };
-
-    this.periodosDetailParams = value.componente.periodos.map(periodo => ({
-      periodo
-    }));
   }
 
   fields: DetailField[] = null;
 
-  detailParams: DetailParams = null;
-
-  periodosDetailParams: PeriodosSecanoDetailParams[] = [];
+  periodosDetailParams: PeriodosSecanoDetailParams = null;
 
   constructor() {}
 

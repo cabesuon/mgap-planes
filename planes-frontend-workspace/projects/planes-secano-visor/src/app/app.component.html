@@ -32,7 +32,7 @@
 
         <span class="spacer"></span>
 
-        <span class="d-none d-md-inline" *ngIf="persona">
+        <span class="d-none d-md-inline" *ngIf="personaId && persona">
           <button mat-button class="nav-button" *ngFor="let item of navigation"
             [routerLink]="[item.link]"
             routerLinkActive="active">
@@ -40,14 +40,14 @@
           </button>
         </span>
 
-        <button *ngIf="persona"
-          mat-button
+        <button *ngIf="personaId && persona"
+          mat-stroked-button
           [matMenuTriggerFor]="toolbarUserMenu"
-          class="btn-user" color="accent">
+          class="btn-user" color="primary">
           <span class="btn-user-text">{{persona.personaNombre}}</span>
           <fa-icon icon="user-circle"></fa-icon>
         </button>
-        <mat-menu #toolbarUserMenu="matMenu">
+        <mat-menu #toolbarUserMenu="matMenu" class="m-2">
           <button mat-menu-item (click)="onProfileClick()">
             <mat-icon><fa-icon icon="user-circle"></fa-icon></mat-icon>
             <span>Perfil</span>
@@ -63,7 +63,11 @@
 
     <div class="content"
     [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig.data && o.activatedRoute.routeConfig.data.title">
-      <router-outlet #o="outlet"></router-outlet>
+      <router-outlet #o="outlet">
+        <div *ngIf="isLoading" class="loading-indicator">
+          <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+        </div>
+      </router-outlet>
     </div>
 
     <div class="footer">

@@ -15,7 +15,7 @@ export class EntityRendimientosEffects {
     private rendimientosSecanoService: RendimientosSecanoService,
     private actions$: Actions
   ) {
-    this.rendimientosSecanoService.url = environment.apiUrl;
+    this.rendimientosSecanoService.url = environment.apiSecanoUrl;
   }
 
   // load

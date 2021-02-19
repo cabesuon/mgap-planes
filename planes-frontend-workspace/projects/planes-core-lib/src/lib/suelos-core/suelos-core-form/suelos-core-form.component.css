@@ -1,0 +1,15 @@
+fa-icon {
+  font-size: 18px;
+}
+
+.mat-form-field {
+  font-size: 12px;
+}
+
+button {
+  height: 40px;
+  font-size: 12px;
+  margin-bottom: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}

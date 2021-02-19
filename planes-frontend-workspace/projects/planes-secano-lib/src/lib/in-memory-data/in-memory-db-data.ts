@@ -19,6 +19,7 @@ import {
 
 import {
   PlanSecano,
+  PlanSecanoEstado,
   createBasePlanSecano
 } from '../planes-secano/planes-secano.model';
 import {
@@ -346,75 +347,93 @@ export function createInMemoryDataDefault(): InMemoryDbData {
   const planes: PlanSecano[] = [
     createBasePlanSecano(
       '1',
-      1,
+      PlanSecanoEstado.EDICION,
       '1',
-      ['1'],
-      [],
+      '1',
+      null,
       '01/01/2020',
       null,
       null,
       '3',
-      null
+      null,
+      false,
+      false,
+      false
     ),
     createBasePlanSecano(
       '2',
-      1,
+      PlanSecanoEstado.EDICION,
       '2',
-      ['2'],
-      [],
+      '2',
+      null,
       '01/01/2018',
       null,
       null,
       '4',
-      null
+      null,
+      false,
+      false,
+      false
     ),
     createBasePlanSecano(
       '3',
-      1,
+      PlanSecanoEstado.EDICION,
       '1',
-      ['2'],
-      ['1'],
+      '2',
+      '1',
       '01/01/2020',
       null,
       null,
       '4',
-      '5'
+      '5',
+      false,
+      false,
+      false
     ),
     createBasePlanSecano(
       '4',
-      1,
+      PlanSecanoEstado.EDICION,
       '2',
-      ['1'],
-      ['2'],
+      '1',
+      '2',
       '01/01/2018',
       null,
       null,
       '5',
-      '6'
+      '6',
+      false,
+      false,
+      false
     ),
     createBasePlanSecano(
       '5',
-      2,
+      PlanSecanoEstado.PRESENTADO,
       '1',
-      ['1'],
-      [],
+      '1',
+      null,
       '01/01/2018',
       '01/02/2018',
       null,
       '3',
-      null
+      null,
+      false,
+      true,
+      false
     ),
     createBasePlanSecano(
       '6',
-      2,
+      PlanSecanoEstado.PRESENTADO,
       '2',
-      ['2'],
-      [],
+      '2',
+      null,
       '01/01/2018',
       '01/02/2018',
       null,
       '6',
-      null
+      null,
+      false,
+      false,
+      true
     )
   ];
 
@@ -422,9 +441,10 @@ export function createInMemoryDataDefault(): InMemoryDbData {
   for (let i = 1; i <= 9; i++) {
     padrones.push({
       padronId: `${i}`,
-      padronCodigoDepartamento: '1',
-      padrondDepartamento: 'Artigas',
-      padronAreaHa: i * 100
+      departamentoId: '1',
+      departamentoNombre: 'Artigas',
+      padronArea: i * 100,
+      padronFueSeleccionado: i % 2 === 0
     });
   }
 

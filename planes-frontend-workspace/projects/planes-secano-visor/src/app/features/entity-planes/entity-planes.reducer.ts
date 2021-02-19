@@ -88,13 +88,57 @@ export function entityPlanesReducer(
       };
     }
     case EntityPlanesActionTypes.ENTITYPLANES_DELETE_SUCCESS: {
-      return entityPlanesAdapter.removeOne(action.payload.item.planId, {
+      return entityPlanesAdapter.removeOne(action.payload.planId, {
         ...state,
         isLoading: false,
         error: null
       });
     }
     case EntityPlanesActionTypes.ENTITYPLANES_DELETE_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
+    // copy
+    case EntityPlanesActionTypes.ENTITYPLANES_COPY_REQUEST: {
+      return {
+        ...state,
+        isLoading: true,
+        error: null
+      };
+    }
+    case EntityPlanesActionTypes.ENTITYPLANES_COPY_SUCCESS: {
+      return entityPlanesAdapter.addOne(action.payload.item, {
+        ...state,
+        isLoading: false,
+        error: null
+      });
+    }
+    case EntityPlanesActionTypes.ENTITYPLANES_COPY_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
+    // get url
+    case EntityPlanesActionTypes.ENTITYPLANES_GETURL_REQUEST: {
+      return {
+        ...state,
+        isLoading: true,
+        error: null
+      };
+    }
+    case EntityPlanesActionTypes.ENTITYPLANES_GETURL_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        error: null
+      };
+    }
+    case EntityPlanesActionTypes.ENTITYPLANES_GETURL_FAILURE: {
       return {
         ...state,
         isLoading: false,

@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import {
   ChacraSecano,
   ChacrasSecanoQueryResults,
+  ChacrasSecanoPadronesQueryResults,
+  ChacrasSecanoSuelosQueryResults,
+  ChacrasSecanoLSQueryResults,
   ChacraSecanoAddResult,
   ChacraSecanoUpdateResult,
   ChacraSecanoDeleteResult
@@ -53,7 +56,40 @@ export class ChacrasSecanoService {
     return this.http.post<{ deleteResults: ChacraSecanoDeleteResult[] }>(
       `${this.url}/deleteChacras`,
       {
-        chacrasIds: [c.chacraId]
+        ids: [c.chacraId]
+      }
+    );
+  }
+
+  getPadronesChacraSecano(
+    c: ChacraSecano
+  ): Observable<{ queryResults: ChacrasSecanoPadronesQueryResults }> {
+    return this.http.post<{ queryResults: ChacrasSecanoPadronesQueryResults }>(
+      `${this.url}/getPadrones`,
+      {
+        chacraId: c.chacraId
+      }
+    );
+  }
+
+  getSuelosChacraSecano(
+    c: ChacraSecano
+  ): Observable<{ queryResults: ChacrasSecanoSuelosQueryResults }> {
+    return this.http.post<{ queryResults: ChacrasSecanoSuelosQueryResults }>(
+      `${this.url}/getSuelos`,
+      {
+        chacraId: c.chacraId
+      }
+    );
+  }
+
+  getLSChacraSecano(
+    c: ChacraSecano
+  ): Observable<{ queryResults: ChacrasSecanoLSQueryResults }> {
+    return this.http.post<{ queryResults: ChacrasSecanoLSQueryResults }>(
+      `${this.url}/getFactorLS`,
+      {
+        chacraId: c.chacraId
       }
     );
   }

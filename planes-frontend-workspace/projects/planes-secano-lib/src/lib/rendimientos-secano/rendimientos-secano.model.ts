@@ -1,5 +1,6 @@
 export interface RendimientoSecano {
   rendimientoId: string;
+  rendimientoNombre: string;
 }
 
 export interface RendimientosSecanoQueryResults {
@@ -12,6 +13,7 @@ export function createBaseRendimientoSecano(
   rendimientoId: string
 ): RendimientoSecano {
   return {
-    rendimientoId
+    rendimientoId,
+    rendimientoNombre: `Nombre ${rendimientoId}`
   };
 }

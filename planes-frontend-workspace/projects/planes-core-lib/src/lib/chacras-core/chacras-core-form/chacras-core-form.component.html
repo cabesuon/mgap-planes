@@ -9,6 +9,11 @@
   </div>
 
   <!-- ChacraGeometria -->
+  <div class="row" *ngIf="isUpdate">
+    <mat-checkbox formControlName="actualizarGeometria">
+      Actualizar Geometría Chacra
+    </mat-checkbox>
+  </div>
   <div class="row">
     <mat-form-field class="col" appearance="fill">
       <mat-label>Geometria Chacra</mat-label>
@@ -21,9 +26,20 @@
   </div>
 
   <!-- ChacraFactorLSGeometriaAsignado -->
+  <p>Pendiente</p>
+  <div class="row" *ngIf="formInput.chacra.chacraFactorLSGeometriaAsignado !== formInput.chacra.chacraFactorLSGeometriaLimitante">
+    <mat-checkbox formControlName="utilizarAutomatica">
+      Utilizar Automática
+    </mat-checkbox>
+  </div>
+  <div class="row">
+    <mat-checkbox formControlName="pendienteIngresoManual">
+      Ingreso Manual
+    </mat-checkbox>
+  </div>
   <div class="row">
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Geometria Pendiente Manual</mat-label>
+      <mat-label>Geometria</mat-label>
       <mat-select formControlName="chacraFactorLSGeometriaAsignado">
         <mat-option *ngFor="let d of _polylines" [value]="d.dibujoGeometria">
           {{d.dibujoId}}
@@ -31,23 +47,108 @@
       </mat-select>
     </mat-form-field>
   </div>
-
-  <!-- ChacraSueloLimitanteId -->
   <div class="row">
     <mat-form-field class="col" appearance="fill">
       <input matInput
-      placeholder="Suelo"
-      formControlName="chacraSueloLimitanteId">
+      placeholder="Porcentaje"
+      formControlName="chacraPendienteAsignado">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <input matInput
+      placeholder="Largo"
+      formControlName="chacraLargoAsignado">
     </mat-form-field>
   </div>
 
-  <!-- ChacraDicose -->
-  <div class="row">
-    <mat-form-field class="col" appearance="fill">
-      <input matInput
-      placeholder="DICOSE"
-      formControlName="chacraDicose">
-    </mat-form-field>
+  <!-- Padrones -->
+  <div *ngIf="isUpdate">
+    <p>Padrones</p>
+    <div class="row">
+        <mat-form-field class="col" appearance="fill">
+          <mat-label>Padrones</mat-label>
+          <mat-select formControlName="padrones" multiple>
+            <mat-option *ngFor="let p of formInput.chacra.padrones" [value]="p">
+              {{p.departamentoNombre + ' ' + p.padronId + ' (' + p.padronArea + ' ha)'}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-checkbox formControlName="padronIngresoManual">
+        Ingreso Manual
+      </mat-checkbox>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <input matInput
+        placeholder="Padrón"
+        formControlName="padronId">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Departamento</mat-label>
+        <mat-select formControlName="departamento">
+          <mat-option *ngFor="let d of departamentos" [value]="d">
+            {{d.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <button mat-button (click)="addPadron()"
+    [disabled]="!addPadronEnabled">
+      Agregar Padrón
+    </button>
+  </div>
+
+  <!-- Suelo -->
+  <div *ngIf="isUpdate">
+    <p>Suelos</p>
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Seleccionado</mat-label>
+        <mat-select formControlName="chacraSueloAsignadoId">
+          <mat-option *ngFor="let s of formInput.chacra.suelos" [value]="s.sueloId">
+            {{s.sueloId + ' ' + s.sueloDesc}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-checkbox formControlName="sueloIngresoManual">
+        Ingreso Manual
+      </mat-checkbox>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Suelo</mat-label>
+        <mat-select formControlName="suelo">
+          <mat-option *ngFor="let s of formInput.suelos" [value]="s">
+            {{s.sueloDesc}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <button mat-button (click)="fileInput.click()"
+      [disabled]="!addSueloFilesEnabled">
+      <span class="ml-2">Importar Informe Suelo</span>
+      <input #fileInput formControlName="files"
+      type="file" hidden accept=".pdf"
+      (change)="importSueloFiles($event)"/>
+    </button>
+
+    <button mat-button (click)="addSuelo()"
+      [disabled]="!addSueloEnabled">
+      Agregar Suelo
+    </button>
+
   </div>
 
 </form>

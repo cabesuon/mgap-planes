@@ -9,6 +9,7 @@ export interface MapProperties {
 export interface MapViewProperties {
   center: [number, number];
   zoom: number;
+  popup?: any;
 }
 
 export interface FeatureLayerProperties {
@@ -23,6 +24,14 @@ export interface FeatureLayerProperties {
     symbol: Object;
   };
   popupTemplate: { title: string; outFields?: string[]; content?: Object[] };
+}
+
+// this is only a minimal subset
+export interface ImageryLayerProperties {
+  title: string;
+  opacity: number;
+  url: string;
+  visible: boolean;
 }
 
 // this is only a minimal subset
@@ -67,40 +76,70 @@ export const CHACRAS_FEATURELAYERPROPERTIES: FeatureLayerProperties = {
   geometryType: 'polygon',
   spatialReference: { wkid: 4326 },
   fields: [
-    {
-      name: 'planId',
-      alias: 'Plan Id',
-      type: 'string'
-    },
-    {
-      name: 'chacraId',
-      alias: 'Chacra Id',
-      type: 'string'
-    },
-    {
-      name: 'chacraNro',
-      alias: 'Chacra Nro',
-      type: 'string'
-    },
-    {
-      name: 'chacraNombre',
-      alias: 'Chacra Nombre',
-      type: 'string'
-    },
-    {
-      name: 'chacraSueloLimitanteId',
-      alias: 'Suelo Id',
-      type: 'string'
-    },
-    {
-      name: 'chacraDicose',
-      alias: 'DICOSE',
-      type: 'string'
-    },
+    { name: 'planId', alias: 'Plan Id', type: 'string' },
+    { name: 'chacraId', alias: 'Chacra Id', type: 'string' },
+    { name: 'chacraNro', alias: 'Chacra Nro', type: 'string' },
+    { name: 'chacraNombre', alias: 'Chacra Nombre', type: 'string' },
+    { name: 'chacraLocalidad', alias: 'Localidad', type: 'string' },
+    { name: 'chacraArea', alias: 'Area', type: 'double' },
+    { name: 'chacraDicose', alias: 'DICOSE', type: 'string' },
+
     {
       name: 'chacraFactorLSEsManual',
       alias: 'Pendiente Manual',
       type: 'string'
+    },
+    { name: 'chacraFactorLSAsignado', alias: 'LS elegido', type: 'double' },
+    { name: 'chacraFactorLSLimitante', alias: 'LS limitante', type: 'double' },
+
+    { name: 'chacraSueloAsignadoFactorK', alias: 'K elegido', type: 'double' },
+    {
+      name: 'chacraSueloLimitanteFactorK',
+      alias: 'K limitante',
+      type: 'double'
+    },
+    {
+      name: 'chacraSueloAsignadoId',
+      alias: 'Id suelo elegido',
+      type: 'string'
+    },
+    {
+      name: 'chacraSueloLimitanteId',
+      alias: 'Id suelo limitante',
+      type: 'string'
+    },
+    {
+      name: 'chacraSueloAsignadoDsc',
+      alias: 'Desc. suelo elegido',
+      type: 'string'
+    },
+    {
+      name: 'chacraSueloLimitanteDsc',
+      alias: 'Desc. suelo limitante',
+      type: 'string'
+    },
+    {
+      name: 'chacraSueloAsignadoTolerancia',
+      alias: 'Tolerancia suelo elegido',
+      type: 'double'
+    },
+    {
+      name: 'chacraSueloLimitanteTolerancia',
+      alias: 'Tolerancia suelo limitante',
+      type: 'string'
+    },
+
+    { name: 'chacraLargoAsignado', alias: 'Largo elegido', type: 'double' },
+    { name: 'chacraLargoLimitante', alias: 'Largo limitante', type: 'double' },
+    {
+      name: 'chacraPendienteAsignado',
+      alias: 'Pendiente elegido',
+      type: 'double'
+    },
+    {
+      name: 'chacraPendienteLimitante',
+      alias: 'Pendiente limitante',
+      type: 'double'
     }
   ],
   renderer: {

@@ -1,12 +1,23 @@
-<lib-detail [params]="detailParams"></lib-detail>
-<lib-cultivos-secano-detail [params]="_params.cultivoDetailParams">
-</lib-cultivos-secano-detail>
-<lib-manejos-secano-detail [params]="_params.manejoDetailParams">
-</lib-manejos-secano-detail>
-<lib-rendimientos-secano-detail [params]="_params.rendimientoDetailParams">
-</lib-rendimientos-secano-detail>
-<!-- Periodos queda fuera -->
-<!-- <lib-periodos-secano-detail
-*ngFor="let periodoDetailParam of periodosDetailParams"
-[params]="periodoDetailParam">
-</lib-periodos-secano-detail> -->
+<ng-container *ngIf="!!params">
+  <lib-cultivos-secano-detail [params]="params.cultivoDetailParams">
+  </lib-cultivos-secano-detail>
+  <lib-manejos-secano-detail [params]="params.manejoDetailParams">
+  </lib-manejos-secano-detail>
+  <lib-rendimientos-secano-detail [params]="params.rendimientoDetailParams">
+  </lib-rendimientos-secano-detail>
+</ng-container>
+
+<div class="table-container">
+  <table>
+    <tr>
+      <th *ngFor="let f of fields">{{f.label}}</th>
+    </tr>
+    <tr>
+      <td *ngFor="let f of fields">
+        {{f.format ? f.format(params.componente[f.name]) : params.componente[f.name] || 'n/a'}}
+      </td>
+    </tr>
+  </table>
+</div>
+
+<lib-periodos-secano-detail [params]="periodosDetailParams"></lib-periodos-secano-detail>

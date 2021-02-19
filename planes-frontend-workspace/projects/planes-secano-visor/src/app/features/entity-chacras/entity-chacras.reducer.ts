@@ -88,13 +88,79 @@ export function entityChacrasReducer(
       };
     }
     case EntityChacrasActionTypes.ENTITYCHACRAS_DELETE_SUCCESS: {
-      return entityChacrasAdapter.removeOne(action.payload.item.chacraId, {
+      return entityChacrasAdapter.removeOne(action.payload.chacraId, {
         ...state,
         isLoading: false,
         error: null
       });
     }
     case EntityChacrasActionTypes.ENTITYCHACRAS_DELETE_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
+    // get padrones
+    case EntityChacrasActionTypes.ENTITYCHACRAS_GETPADRONES_REQUEST: {
+      return {
+        ...state,
+        isLoading: false, // dont want to stop app
+        error: null
+      };
+    }
+    case EntityChacrasActionTypes.ENTITYCHACRAS_GETPADRONES_SUCCESS: {
+      return entityChacrasAdapter.updateOne(action.payload.item, {
+        ...state,
+        isLoading: false,
+        error: null
+      });
+    }
+    case EntityChacrasActionTypes.ENTITYCHACRAS_GETPADRONES_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
+    // get suelos
+    case EntityChacrasActionTypes.ENTITYCHACRAS_GETSUELOS_REQUEST: {
+      return {
+        ...state,
+        isLoading: false, // dont want to stop app
+        error: null
+      };
+    }
+    case EntityChacrasActionTypes.ENTITYCHACRAS_GETSUELOS_SUCCESS: {
+      return entityChacrasAdapter.updateOne(action.payload.item, {
+        ...state,
+        isLoading: false,
+        error: null
+      });
+    }
+    case EntityChacrasActionTypes.ENTITYCHACRAS_GETSUELOS_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
+    // get LS
+    case EntityChacrasActionTypes.ENTITYCHACRAS_GETLS_REQUEST: {
+      return {
+        ...state,
+        isLoading: false, // dont want to stop app
+        error: null
+      };
+    }
+    case EntityChacrasActionTypes.ENTITYCHACRAS_GETLS_SUCCESS: {
+      return entityChacrasAdapter.updateOne(action.payload.item, {
+        ...state,
+        isLoading: false,
+        error: null
+      });
+    }
+    case EntityChacrasActionTypes.ENTITYCHACRAS_GETLS_FAILURE: {
       return {
         ...state,
         isLoading: false,

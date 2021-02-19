@@ -3,11 +3,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 
-import { FormActionType } from 'planes-core-lib';
+import { FormActionType, EmpresaCore } from 'planes-core-lib';
 
 import { PlanSecano } from 'planes-secano-lib';
 
 import { AppState } from '../../../core/core.state';
+
+import { getEmpresaResponsableContacto } from '../../entity-empresas/entity-empresas.state';
 
 import {
   EntityPlanesAddRequestAction,
@@ -17,6 +19,7 @@ import {
 export interface EntityPlanesFormDialogData {
   plan: PlanSecano;
   action: FormActionType;
+  empresas: EmpresaCore[];
 }
 
 @Component({
@@ -60,6 +63,23 @@ export class EntityPlanesFormDialogComponent implements OnInit {
   onSubmit() {
     if (this.formValid) {
       const item = { ...this.formValue };
+      const propietarioResponsable = getEmpresaResponsableContacto(
+        this.data.empresas.find(e => e.empresaId === item.propietarioId)
+      );
+      if (propietarioResponsable) {
+        item.propietarioResponsableId = propietarioResponsable.personaId;
+      }
+      if (item.tenedorCualquierTituloId) {
+        const arrendatarioResponsable = getEmpresaResponsableContacto(
+          this.data.empresas.find(
+            e => e.empresaId === item.tenedorCualquierTituloId
+          )
+        );
+        if (arrendatarioResponsable) {
+          item.tctResponsableId = arrendatarioResponsable.personaId;
+        }
+      }
+
       if (this.data.action === FormActionType.Add) {
         this.store.dispatch(new EntityPlanesAddRequestAction({ item }));
       } else {

@@ -13,11 +13,11 @@ import { GetTokensResult } from './auth.models';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(token: string): Observable<{ personaId: number }> {
-    console.log(`[login] ${environment.apiUrl}`);
+  login(token: string): Observable<{ personaId: string }> {
+    console.log(`[login] ${environment.apiSecanoUrl}`);
     return this.http
       .post<{ queryResults: GetTokensResult }>(
-        `${environment.apiUrl}/queryTokens`,
+        `${environment.apiSecanoUrl}/queryTokens`,
         {
           tokens: [token]
         }
@@ -26,7 +26,9 @@ export class AuthService {
         map(response => {
           console.log(response);
           if (response.queryResults.success) {
-            return { personaId: response.queryResults.personasId[0] };
+            return {
+              personaId: response.queryResults.personasId[0].toString()
+            };
           }
           return null;
         })

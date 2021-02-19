@@ -33,6 +33,8 @@ export class TableComponent implements OnInit {
   columns: TableColumn[] = [];
   displayedColumns: string[] = [];
   dataSource: MatTableDataSource<TableRow> = new MatTableDataSource([]);
+  filter = true;
+  pagination = true;
 
   // input
   private _params: TableParams = null;
@@ -61,6 +63,8 @@ export class TableComponent implements OnInit {
       .filter(c => c.name !== '__source__')
       .map(c => c.name);
     this.dataSource.data = this.params.values;
+    this.filter = this.params.filter || false;
+    this.pagination = this.params.pagination || false;
   }
 
   actionClick(obj: TableValueSource, value: string) {

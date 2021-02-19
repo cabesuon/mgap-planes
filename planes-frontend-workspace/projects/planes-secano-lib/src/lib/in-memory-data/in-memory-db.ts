@@ -54,7 +54,11 @@ export class InMemoryDb {
       plan =>
         (agronomo &&
           plan.ingenieroAgronomoId === agronomo.ingenieroAgronomoId) ||
-        empresas.some(e => plan.propietarios.some(p => p === e.empresaId))
+        empresas.some(
+          e =>
+            plan.propietarioId === e.empresaId ||
+            plan.tenedorCualquierTituloId === e.empresaId
+        )
     );
   }
 
@@ -86,5 +90,21 @@ export class InMemoryDb {
     return this.d.personas.filter(p =>
       personasId.some(id => id === p.personaId)
     );
+  }
+
+  removePlan(planId: string) {
+    const index = this.d.planes.findIndex(p => p.planId === planId);
+    if (index > -1) {
+      this.d.planes.splice(index, 1);
+      console.log(`[removePlan] ${index}`);
+    }
+  }
+
+  removeChacra(chacraId: string) {
+    const index = this.d.chacras.findIndex(c => c.chacraId === chacraId);
+    if (index > -1) {
+      this.d.chacras.splice(index, 1);
+      console.log(`[removeChacra] ${index}`);
+    }
   }
 }

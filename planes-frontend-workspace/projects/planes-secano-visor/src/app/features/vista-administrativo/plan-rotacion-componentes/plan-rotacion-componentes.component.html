@@ -1,0 +1,97 @@
+<div class="container-fluid">
+  <!-- <div class="row">
+    <div class="col">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <fa-icon icon="exclamation-circle"></fa-icon>
+              <span class="ml-2">Errores y Advertencias</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <lib-warn-error-secano [params]="warnErrorSecanoParams"></lib-warn-error-secano>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col-4">
+      <mat-card class="mb-1">
+        <lib-rotaciones-secano-detail [params]="rotacionDetailParams">
+        </lib-rotaciones-secano-detail>
+        <mat-card-actions align="end">
+          <button *ngIf="!rotacionDetailParams"
+          mat-stroked-button (click)="addRotacion()"
+          >
+            <fa-icon icon="file"></fa-icon>
+            <span class="ml-2">Crear Rotación</span>
+          </button>
+          <ng-container *ngIf="rotacionDetailParams"
+          >
+            <button
+            mat-stroked-button (click)="updateRotacion()"
+            >
+              <fa-icon icon="edit"></fa-icon>
+              <span class="ml-2">Actualizar Rotación</span>
+            </button>
+            <button color="error"
+            mat-stroked-button (click)="deleteRotacion()"
+            >
+              <fa-icon icon="trash"></fa-icon>
+              <span class="ml-2">Eliminar Rotación</span>
+            </button>
+          </ng-container>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class="col-8">
+      <div class="row mb-2">
+        <button mat-stroked-button *ngIf="rotacionDetailParams"
+        (click)="addComponente()"
+        >
+          <fa-icon icon="plus-circle"></fa-icon>
+          <span class="ml-2">Agregar Componente</span>
+        </button>
+      </div>
+      <div class="row">
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let componenteDetailParams of componentesDetailParams">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{rotacionDetailParams.rotacion.rotacionAnio + componenteDetailParams.componente.componenteAnio}} | {{componenteDetailParams.componente.periodoCultivoNombre}}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{componenteDetailParams.componente.componenteNombre}}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <lib-componentes-secano-detail [params]="componenteDetailParams">
+            </lib-componentes-secano-detail>
+            <mat-action-row>
+              <button mat-stroked-button [matMenuTriggerFor]="menu">
+                <fa-icon icon="edit"></fa-icon>
+                <span class="ml-2">Actualizar Componente</span>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item
+                (click)="updateComponente(componenteDetailParams.componente, 'Cultivo')">
+                  Cultivo / Manejo / Producción
+                </button>
+                <button mat-menu-item
+                (click)="updateComponente(componenteDetailParams.componente, 'Periodos')">
+                  Periodos
+                </button>
+              </mat-menu>
+
+              <button mat-stroked-button color="error"
+              (click)="deleteComponente(componenteDetailParams.componente)"
+              >
+                <fa-icon icon="trash"></fa-icon>
+                <span class="ml-2">Eliminar Componente</span>
+              </button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</div>

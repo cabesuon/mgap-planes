@@ -16,7 +16,7 @@ export class EntityChatEffects {
     private chatSecanoService: ChatSecanoService,
     private actions$: Actions
   ) {
-    this.chatSecanoService.url = environment.apiUrl;
+    this.chatSecanoService.url = environment.apiSecanoUrl;
   }
 
   // load

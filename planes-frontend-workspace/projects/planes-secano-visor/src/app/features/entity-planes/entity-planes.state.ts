@@ -9,7 +9,7 @@ export const entityPlanesAdapter: EntityAdapter<
 > = createEntityAdapter<PlanSecano>({
   selectId: model => model.planId,
   sortComparer: (a: PlanSecano, b: PlanSecano): number =>
-    b.planId.toString().localeCompare(a.planId.toString())
+    b.planId.localeCompare(a.planId)
 });
 
 export interface EntityPlanesState extends EntityState<PlanSecano> {

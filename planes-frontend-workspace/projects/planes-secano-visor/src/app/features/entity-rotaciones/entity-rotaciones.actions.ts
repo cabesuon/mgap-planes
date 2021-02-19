@@ -38,11 +38,7 @@ export class EntityRotacionesLoadSuccessAction implements Action {
 
 export class EntityRotacionesAddRequestAction implements Action {
   readonly type = EntityRotacionesActionTypes.ENTITYROTACIONES_ADD_REQUEST;
-  constructor(
-    public payload: {
-      item: RotacionSecano /* dibujosId: number[] TODO: Completar*/;
-    }
-  ) {}
+  constructor(public payload: { item: RotacionSecano }) {}
 }
 
 export class EntityRotacionesAddFailureAction implements Action {
@@ -52,22 +48,14 @@ export class EntityRotacionesAddFailureAction implements Action {
 
 export class EntityRotacionesAddSuccessAction implements Action {
   readonly type = EntityRotacionesActionTypes.ENTITYROTACIONES_ADD_SUCCESS;
-  constructor(
-    public payload: {
-      item: RotacionSecano /* dibujosId: number[] TODO: Completar*/;
-    }
-  ) {}
+  constructor(public payload: { item: RotacionSecano }) {}
 }
 
 // change
 
 export class EntityRotacionesChangeRequestAction implements Action {
   readonly type = EntityRotacionesActionTypes.ENTITYROTACIONES_CHANGE_REQUEST;
-  constructor(
-    public payload: {
-      item: RotacionSecano /* dibujosId: number[] TODO: Completar*/;
-    }
-  ) {}
+  constructor(public payload: { item: RotacionSecano }) {}
 }
 
 export class EntityRotacionesChangeFailureAction implements Action {
@@ -77,11 +65,7 @@ export class EntityRotacionesChangeFailureAction implements Action {
 
 export class EntityRotacionesChangeSuccessAction implements Action {
   readonly type = EntityRotacionesActionTypes.ENTITYROTACIONES_CHANGE_SUCCESS;
-  constructor(
-    public payload: {
-      item: Update<RotacionSecano> /* dibujosId: number[] TODO: Completar*/;
-    }
-  ) {}
+  constructor(public payload: { item: Update<RotacionSecano> }) {}
 }
 
 // delete
@@ -98,7 +82,7 @@ export class EntityRotacionesDeleteFailureAction implements Action {
 
 export class EntityRotacionesDeleteSuccessAction implements Action {
   readonly type = EntityRotacionesActionTypes.ENTITYROTACIONES_DELETE_SUCCESS;
-  constructor(public payload: { item: RotacionSecano }) {}
+  constructor(public payload: { rotacionId: string }) {}
 }
 
 // actions

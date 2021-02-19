@@ -5,7 +5,8 @@ import {
 import {
   entityComponentesAdapter,
   initialState,
-  EntityComponentesState
+  EntityComponentesState,
+  componenteSelectId
 } from './entity-componentes.state';
 
 export function entityComponentesReducer(
@@ -89,7 +90,7 @@ export function entityComponentesReducer(
     }
     case EntityComponentesActionTypes.ENTITYCOMPONENTES_DELETE_SUCCESS: {
       return entityComponentesAdapter.removeOne(
-        action.payload.item.componenteId,
+        componenteSelectId(action.payload.componente),
         {
           ...state,
           isLoading: false,

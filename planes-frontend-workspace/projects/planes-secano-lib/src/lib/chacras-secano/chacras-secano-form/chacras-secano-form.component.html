@@ -1,1 +1,37 @@
-<p>chacras-secano-form works!</p>
+<lib-chacras-core-form [formInput]="formInput"
+(formValueChanges)="coreFormValueChanges($event)"
+(formStatusChanges)="coreFormStatusChanges($event)"
+></lib-chacras-core-form>
+<form [formGroup]="form">
+  <!-- Mecanicas -->
+  <div *ngIf="isUpdate">
+    <p>Prácticas Mecánica de Apoyo</p>
+    <div class="row">
+      <mat-checkbox formControlName="aplicaPractica">
+        Se aplican prácticas
+      </mat-checkbox>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Práctica</mat-label>
+        <mat-select formControlName="mecanicaDeApoyoId">
+          <mat-option *ngFor="let m of mecanicas" [value]="m.mecanicaId">
+            {{m.mecanicaNombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>{{'% cubierto por pastura'}}</mat-label>
+        <input matInput
+        formControlName="chacraMecanicaApoyoCobertura"
+        type="number" min="0" max="100" value=""
+        >
+      </mat-form-field>
+    </div>
+
+  </div>
+</form>

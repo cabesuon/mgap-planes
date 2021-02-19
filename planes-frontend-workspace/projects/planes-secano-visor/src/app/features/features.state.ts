@@ -19,8 +19,8 @@ import { entityComponentesReducer } from './entity-componentes/entity-componente
 import { EntityComponentesState } from './entity-componentes/entity-componentes.state';
 import { entityManejosReducer } from './entity-manejos/entity-manejos.reducer';
 import { EntityManejosState } from './entity-manejos/entity-manejos.state';
-import { entityRelacionesPerdidaSueloReducer } from './entity-relaciones-perida-suelo/entity-relaciones-perida-suelo.reducer';
-import { EntityRelacionesPerdidaSueloSecanoState } from './entity-relaciones-perida-suelo/entity-relaciones-perdida-suelo.state';
+import { entityRelacionesPerdidaSueloReducer } from './entity-relaciones-perdida-suelo/entity-relaciones-perida-suelo.reducer';
+import { EntityRelacionesPerdidaSueloSecanoState } from './entity-relaciones-perdida-suelo/entity-relaciones-perdida-suelo.state';
 import { entityResponsablesReducer } from './entity-responsables/entity-responsables.reducer';
 import { EntityResponsablesState } from './entity-responsables/entity-responsables.state';
 import { entityRotacionesReducer } from './entity-rotaciones/entity-rotaciones.reducer';
@@ -31,6 +31,8 @@ import { entityRendimientosReducer } from './entity-rendimientos/entity-rendimie
 import { EntityRendimientosState } from './entity-rendimientos/entity-rendimientos.state';
 import { entityChatReducer } from './entity-chat/entity-chat.reducer';
 import { EntityChatSecanoState } from './entity-chat/entity-chat.state';
+import { entitySuelosReducer } from './entity-suelos/entity-suelos.reducer';
+import { EntitySuelosState } from './entity-suelos/entity-suelos.state';
 
 export const FEATURE_NAME = 'features';
 export const selectFeatures = createFeatureSelector<State, FeaturesState>(
@@ -54,7 +56,8 @@ export const reducers: ActionReducerMap<FeaturesState> = {
   entityManejos: entityManejosReducer,
   entityRendimientos: entityRendimientosReducer,
   entityRelacionesPerdidaSuelo: entityRelacionesPerdidaSueloReducer,
-  entityChat: entityChatReducer
+  entityChat: entityChatReducer,
+  entitySuelos: entitySuelosReducer
 };
 
 export interface FeaturesState {
@@ -75,6 +78,7 @@ export interface FeaturesState {
   entityRendimientos: EntityRendimientosState;
   entityRelacionesPerdidaSuelo: EntityRelacionesPerdidaSueloSecanoState;
   entityChat: EntityChatSecanoState;
+  entitySuelos: EntitySuelosState;
 }
 
 export interface State extends AppState {

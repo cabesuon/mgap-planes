@@ -1,6 +1,6 @@
 export interface ZonaExclusionCore {
   zonaExclusionId: string;
-  chacraId: string;
+  planId: string;
   zonaExclusionGeometria: string;
 }
 
@@ -10,10 +10,10 @@ export function nombreZonaExclusionCore(
   return zonaExclusionCore.zonaExclusionId;
 }
 
-export function createZonaExclusionCore(): ZonaExclusionCore {
+export function createEmptyZonaExclusionCore(): ZonaExclusionCore {
   return {
     zonaExclusionId: null,
-    chacraId: null,
+    planId: null,
     zonaExclusionGeometria: null
   };
 }
@@ -21,7 +21,7 @@ export function createZonaExclusionCore(): ZonaExclusionCore {
 export function createBaseZonaExclusionCore(): ZonaExclusionCore {
   return {
     zonaExclusionId: null,
-    chacraId: null,
+    planId: null,
     zonaExclusionGeometria: null
   };
 }

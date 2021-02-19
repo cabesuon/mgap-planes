@@ -24,3 +24,77 @@ p {
     border-bottom: 3px solid;
   }
 }
+
+/*
+
+  s
+
+*/
+
+.esri-coordinate-conversion__tools {
+  display: none !important;
+}
+
+.esri-coordinate-conversion {
+  width: 260px !important;
+}
+
+.secano-popup-template {
+  font-size: 12px;
+}
+
+.secano-popup-template div {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.secano-popup-template table {
+  color: #323232;
+  border: none;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.secano-popup-template tr:nth-child(odd) {
+  background-color: rgba(76, 76, 76, 0.1);
+}
+
+.secano-popup-template tr:nth-child(even) {
+  background-color: rgba(76, 76, 76, 0.02);
+}
+
+.secano-popup-template tr a {
+  color: #6e6e6e;
+}
+
+.secano-popup-template tr a:hover,
+.secano-popup-template tr a:focus {
+  color: #2e2e2e;
+}
+
+.secano-popup-template tr td,
+.secano-popup-template tr th {
+  padding: 0.5em 0.7em;
+  word-break: break-word;
+  vertical-align: top;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.secano-popup-template h2 {
+  font-size: 13px;
+}
+
+.secano-popup-template .error {
+  color: #ffffff;
+  background-color: #dc3545;
+}
+.secano-popup-template .warning {
+  background-color: #ffc107;
+}
+.secano-popup-template ul {
+  margin: 0;
+}
+.secano-popup-template li {
+  padding: 5px 10px;
+}

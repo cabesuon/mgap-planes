@@ -1,0 +1,25 @@
+<form [formGroup]="form">
+  <!-- Suelo -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Suelo</mat-label>
+      <mat-select formControlName="suelo">
+        <mat-option *ngFor="let s of formInput.suelos" [value]="s">
+          {{s.sueloDesc}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- files -->
+  <div class="row">
+    <button mat-raised-button (click)="fileInput.click()">
+      <fa-icon icon="file-import"></fa-icon>
+      <span class="ml-2">Importar Informe Suelo</span>
+      <input #fileInput type="file" hidden accept=".pdf"
+      (change)="importFiles($event)"/>
+    </button>
+  </div>
+
+</form>
+

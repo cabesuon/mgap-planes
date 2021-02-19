@@ -1,0 +1,18 @@
+<h1 class="mat-h1" mat-dialog-title>
+  {{ title }}
+</h1>
+<div mat-dialog-content>
+  <lib-componentes-secano-form [formInput]="data"
+    (formValueChanges)="formValueChanges($event)"
+    (formStatusChanges)="formStatusChanges($event)"
+  ></lib-componentes-secano-form>
+</div>
+<div mat-dialog-actions class="row">
+  <button mat-raised-button class="col btn-cancel" (click)="onCancel()">
+    {{ cancelText }}
+  </button>
+  <button mat-raised-button class="col btn-submit" (click)="onSubmit()"
+    [disabled]="!formValid">
+    {{ submitText }}
+  </button>
+</div>

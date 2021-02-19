@@ -23,6 +23,7 @@ mat-sidenav-container {
         margin-right: 5px;
       }
       margin-right: 5px;
+      background-color: white;
     }
 
     .branding {
@@ -40,8 +41,8 @@ mat-sidenav-container {
       img {
         position: relative;
         top: -2px;
-        width: 85px;
-        height: 48px;
+        width: 140px;
+        height: 60px;
       }
     }
 
@@ -82,6 +83,7 @@ mat-sidenav-container {
       flex: 0 0 auto;
       padding: 0 15px;
       text-align: center;
+      font-size: small;
 
       .row {
         padding: 10px 0;
@@ -180,4 +182,30 @@ mat-sidenav {
   .mat-nav-list {
     padding-top: 0;
   }
+}
+
+// https://stackoverflow.com/questions/41388091/angular-2-material-how-to-center-progress-spinner
+/* Absolute Center Spinner */
+.loading-indicator {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+/* Transparent Overlay */
+.loading-indicator:before {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
 }

@@ -33,6 +33,24 @@ export interface ComponentesSecanoQueryResults {
   componentes: ComponenteSecano[];
 }
 
+export interface ComponenteSecanoAddResult {
+  success: boolean;
+  error: { code: number; description: string };
+  componente: ComponenteSecano;
+}
+
+export interface ComponenteSecanoUpdateResult {
+  success: boolean;
+  error: { code: number; description: string };
+  componente: ComponenteSecano;
+}
+
+export interface ComponenteSecanoDeleteResult {
+  success: boolean;
+  error: { code: number; description: string };
+  componenteId: string;
+}
+
 export function createBaseComponenteSecano(
   componenteId: string,
   rotacionId: string,
@@ -71,4 +89,37 @@ export function createBaseComponenteSecano(
     componenteSembradoPorAvion: false,
     periodos
   };
+}
+
+export function createEmptyComponenteSecano(): ComponenteSecano {
+  return {
+    componenteId: null,
+    rotacionId: null,
+    componenteNombre: null,
+    componenteAnio: null,
+    componenteMesInicial: null,
+    componenteMesFinal: null,
+    componenteEstacion: null,
+    cultivoId: null,
+    componenteAnteriorSembradoAvion: false,
+    componenteAnteriorEsSoja: false,
+    periodoCultivoId: null,
+    periodoCultivoNombre: null,
+    manejoId: null,
+    manejoNombre: null,
+    rendimientoId: null,
+    sueloResiduosSiembra: null,
+    sueloPeriodo3: null,
+    sueloPeriodo4: null,
+    componenteMeses: null,
+    componenteFechaReplicado: null,
+    componenteEsPrimero: false,
+    componenteEsUltimo: false,
+    componenteSembradoPorAvion: false,
+    periodos: []
+  };
+}
+
+export function formatResiduo(v: number): string {
+  return isNaN(v) ? 'n/a' : v > 0 ? `${v}%` : 'No';
 }

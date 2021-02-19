@@ -4,8 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
 import {
   MatPaginatorModule,
   MatPaginatorIntl
@@ -47,14 +49,18 @@ import { ComponentesSecanoTableComponent } from './componentes-secano/componente
 import { RotacionesSecanoFormComponent } from './rotaciones-secano/rotaciones-secano-form/rotaciones-secano-form.component';
 import { RotacionesSecanoDetailComponent } from './rotaciones-secano/rotaciones-secano-detail/rotaciones-secano-detail.component';
 
-import { RelacionesPerdidaSueloSecanoDetailComponent } from './relaciones-perdida-suelo-secano/relaciones-perdida-suelo-secano-detail/relaciones-perdida-suelo-secano-detail.component';
 import { PeriodosSecanoDetailComponent } from './periodos-secano/periodos-secano-detail/periodos-secano-detail.component';
+import { PeriodosSecanoTableComponent } from './periodos-secano/periodos-secano-table/periodos-secano-table.component';
+
+import { RelacionesPerdidaSueloSecanoDetailComponent } from './relaciones-perdida-suelo-secano/relaciones-perdida-suelo-secano-detail/relaciones-perdida-suelo-secano-detail.component';
 import { ManejosSecanoDetailComponent } from './manejos-secano/manejos-secano-detail/manejos-secano-detail.component';
 import { CultivosSecanoDetailComponent } from './cultivos-secano/cultivos-secano-detail/cultivos-secano-detail.component';
 import { RendimientosSecanoDetailComponent } from './rendimientos-secano/rendimientos-secano-detail/rendimientos-secano-detail.component';
 
 import { ResponsablesSecanoDetailComponent } from './responsables-secano/responsables-secano-detail/responsables-secano-detail.component';
-// import { ChatSecanoComponent } from './chat-secano/chat-secano-detail/chat-secano.component';
+import { ChatSecanoDetailComponent } from './chat-secano/chat-secano-detail/chat-secano-detail.component';
+
+import { WarnErrorSecanoComponent } from './extras/components/warn-error-secano/warn-error-secano.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -66,28 +72,20 @@ import { ResponsablesSecanoDetailComponent } from './responsables-secano/respons
     PlanesSecanoTableComponent,
     PlanesSecanoFormComponent,
     PlanesSecanoDetailComponent,
-
     ComponentesSecanoDetailComponent,
     ComponentesSecanoFormComponent,
     ComponentesSecanoTableComponent,
-
     RotacionesSecanoFormComponent,
     RotacionesSecanoDetailComponent,
-
     RelacionesPerdidaSueloSecanoDetailComponent,
-
     PeriodosSecanoDetailComponent,
-
+    PeriodosSecanoTableComponent,
     ManejosSecanoDetailComponent,
-
     CultivosSecanoDetailComponent,
-
     RendimientosSecanoDetailComponent,
-
-    ResponsablesSecanoDetailComponent
-
-    // ,
-    // ChatSecanoComponent
+    ResponsablesSecanoDetailComponent,
+    ChatSecanoDetailComponent,
+    WarnErrorSecanoComponent
   ],
   imports: [
     CommonModule,
@@ -96,8 +94,10 @@ import { ResponsablesSecanoDetailComponent } from './responsables-secano/respons
 
     MatButtonModule,
     MatCheckboxModule,
+    MatDatepickerModule,
     MatIconModule,
     MatInputModule,
+    MatNativeDateModule,
     MatPaginatorModule,
     MatRadioModule,
     MatSelectModule,
@@ -113,35 +113,30 @@ import { ResponsablesSecanoDetailComponent } from './responsables-secano/respons
     ChacrasSecanoDetailComponent,
     ChacrasSecanoFormComponent,
     ChacrasSecanoTableComponent,
-
     PlanesSecanoTableComponent,
     PlanesSecanoFormComponent,
     PlanesSecanoDetailComponent,
-
     ComponentesSecanoDetailComponent,
     ComponentesSecanoFormComponent,
     ComponentesSecanoTableComponent,
-
     RotacionesSecanoFormComponent,
     RotacionesSecanoDetailComponent,
-
     RelacionesPerdidaSueloSecanoDetailComponent,
-
     PeriodosSecanoDetailComponent,
-
+    PeriodosSecanoTableComponent,
     ManejosSecanoDetailComponent,
-
     CultivosSecanoDetailComponent,
-
     RendimientosSecanoDetailComponent,
-
-    ResponsablesSecanoDetailComponent
+    ResponsablesSecanoDetailComponent,
+    WarnErrorSecanoComponent
   ],
   providers: [
     {
       provide: MatPaginatorIntl,
       useClass: MatPaginatorIntlCoreService
-    }
+    },
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class PlanesSecanoLibModule {

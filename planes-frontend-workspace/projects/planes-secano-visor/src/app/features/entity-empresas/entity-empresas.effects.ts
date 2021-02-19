@@ -15,7 +15,7 @@ export class EntityEmpresasEffects {
     private empresasCoreService: EmpresasCoreService,
     private actions$: Actions
   ) {
-    this.empresasCoreService.url = environment.apiUrl;
+    this.empresasCoreService.url = environment.apiNucleoUrl;
   }
 
   // load

@@ -16,5 +16,5 @@ export const PLANESSECANODETAIL_DEFAULT_FIELDS: DetailField[] = [
     label: 'Fecha de Presentacion',
     format: formatDate
   },
-  { name: 'planEstadoSecano', label: 'Estado', format: formatPlanEstado }
+  { name: 'planEstado', label: 'Estado', format: formatPlanEstado }
 ];

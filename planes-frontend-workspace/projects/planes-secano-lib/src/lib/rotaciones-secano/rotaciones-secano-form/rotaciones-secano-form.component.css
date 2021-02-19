@@ -10,3 +10,9 @@ button {
   height: 40px;
   font-size: 12px;
 }
+
+.mat-checkbox {
+  padding: 0 15px 16.5px 15px;
+  font-size: 12px;
+  margin-bottom: 5;
+}

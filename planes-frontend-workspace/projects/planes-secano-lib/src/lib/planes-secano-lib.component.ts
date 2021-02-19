@@ -18,6 +18,7 @@ export * from './cultivos-secano/cultivos-secano-detail/cultivos-secano-detail.c
 export * from './manejos-secano/manejos-secano-detail/manejos-secano-detail.component';
 
 export * from './periodos-secano/periodos-secano-detail/periodos-secano-detail.component';
+export * from './periodos-secano/periodos-secano-table/periodos-secano-table.component';
 
 export * from './relaciones-perdida-suelo-secano/relaciones-perdida-suelo-secano-detail/relaciones-perdida-suelo-secano-detail.component';
 
@@ -25,4 +26,6 @@ export * from './rendimientos-secano/rendimientos-secano-detail/rendimientos-sec
 
 export * from './responsables-secano/responsables-secano-detail/responsables-secano-detail.component';
 
-// export * from './chat-secano/chat-secano-detail/chat-secano.component';
+export * from './chat-secano/chat-secano-detail/chat-secano-detail.component';
+
+export * from './extras/components/warn-error-secano/warn-error-secano.component';

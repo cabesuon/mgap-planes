@@ -1,0 +1,13 @@
+<form [formGroup]="form">
+  <!-- zonaExclusionGeometria -->
+  <div class="row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Geometría</mat-label>
+      <mat-select formControlName="zonaExclusionGeometria">
+        <mat-option *ngFor="let p of formInput.polygons" [value]="p.dibujoGeometria">
+          {{p.dibujoId}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>

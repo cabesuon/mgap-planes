@@ -1,1 +1,123 @@
-<p>componentes-secano-form works!</p>
+<form [formGroup]="form">
+
+  <ng-container *ngIf="formInput.section === 'Cultivo'">
+    <!-- periodo cultivo -->
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Período</mat-label>
+          <mat-select formControlName="periodoCultivoId"
+          (selectionChange)="periodoCultivoChange()">
+            <mat-option *ngFor="let p of periodosCultivos" [value]="p.periodoCultivoId">
+              {{p.periodoCultivoNombre}}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- cultivo -->
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Cultivo</mat-label>
+          <mat-select formControlName="cultivoId"
+          (selectionChange)="cultivoChange()">
+            <mat-option *ngFor="let c of cultivos" [value]="c.cultivoId">
+              {{c.cultivoNombre}}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- manejo -->
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Manejo</mat-label>
+          <mat-select formControlName="manejoId"
+          (selectionChange)="manejoChange()">
+            <mat-option *ngFor="let m of manejos" [value]="m.manejoId">
+              {{m.manejoNombre}}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- nivel de produccion -->
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Nivel de producción</mat-label>
+          <mat-select formControlName="rendimientoId"
+          (selectionChange)="rendimientoChange()">
+            <mat-option *ngFor="let r of rendimientos" [value]="r.rendimientoId">
+              {{r.rendimientoNombre}}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- siembra directa -->
+    <div class="row">
+      <mat-checkbox formControlName="componenteSembradoPorAvion">
+        Siembra por avión
+      </mat-checkbox>
+    </div>
+
+    <!-- residuo siembra -->
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>% de suelo cubierto por Residuos del Cultivo anterior luego de la Siembra</mat-label>
+          <mat-select formControlName="sueloResiduosSiembra">
+            <mat-option *ngFor="let r of sueloResiduosSiembra" [value]="r">
+              {{r}}%
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- residuos periodo 3 -->
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>% de suelo cubierto por Parte Aérea en el Período 3</mat-label>
+          <mat-select formControlName="sueloPeriodo3">
+            <mat-option *ngFor="let r of sueloPeriodo3" [value]="r">
+              {{r}}%
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- residuos periodo 4 -->
+    <div class="row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>% de suelo cubierto por Residuos en el Período 4</mat-label>
+          <mat-select formControlName="sueloPeriodo4">
+            <mat-option *ngFor="let r of sueloPeriodo4" [value]="r">
+              {{r}}%
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+  </ng-container>
+
+  <!-- periodos -->
+  <div class="row" *ngIf="formInput.section === 'Periodos'">
+    <table>
+      <tr>
+        <th>Período</th><th>Mes inicial</th><th>Mes final</th>
+      </tr>
+      <tr *ngFor="let p of formInput.componente.periodos; index as i">
+        <th>{{p.periodoNumero}}</th>
+        <td>
+          <mat-form-field>
+            <input matInput type="number" formControlName="{{'p'+i+'i'}}">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+            <input matInput type="number" formControlName="{{'p'+i+'f'}}">
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</form>
+

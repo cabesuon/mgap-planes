@@ -6,27 +6,31 @@ export class InitDbPadrones implements GetData {
     const initialDbPadrones: PadronCore[] = [
       {
         padronId: '1',
-        padronCodigoDepartamento: '1',
-        padrondDepartamento: 'Artigas',
-        padronAreaHa: 1
+        departamentoId: '1',
+        departamentoNombre: 'Artigas',
+        padronArea: 1,
+        padronFueSeleccionado: true
       },
       {
         padronId: '2',
-        padronCodigoDepartamento: '1',
-        padrondDepartamento: 'Artigas',
-        padronAreaHa: 2
+        departamentoId: '1',
+        departamentoNombre: 'Artigas',
+        padronArea: 2,
+        padronFueSeleccionado: true
       },
       {
         padronId: '3',
-        padronCodigoDepartamento: '1',
-        padrondDepartamento: 'Artigas',
-        padronAreaHa: 3
+        departamentoId: '1',
+        departamentoNombre: 'Artigas',
+        padronArea: 3,
+        padronFueSeleccionado: false
       },
       {
         padronId: '4',
-        padronCodigoDepartamento: '1',
-        padrondDepartamento: 'Artigas',
-        padronAreaHa: 4
+        departamentoId: '1',
+        departamentoNombre: 'Artigas',
+        padronArea: 4,
+        padronFueSeleccionado: false
       }
     ];
     return initialDbPadrones;

@@ -7,7 +7,7 @@ export * from './cultivos-secano/cultivos-secano.service';
 export * from './manejos-secano/manejos-secano.service';
 export * from './relaciones-perdida-suelo-secano/relaciones-perdida-suelo-secano.service';
 export * from './rendimientos-secano/rendimientos-secano.service';
-// export * from './chat-secano/chat-secano.service';
+export * from './chat-secano/chat-secano.service';
 
 export * from './responsables-secano/responsables-secano.service';
 

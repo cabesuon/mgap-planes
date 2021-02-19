@@ -2,58 +2,96 @@
   <div class="row pr-3 pl-3 mt-2">
 
     <div class="col-2">
-      <div class="row mapa-toolbar-tool-row">
-        <!-- <mat-form-field appearance="fill" color="primary" class="mr-1">
+      <div class="row">
+        <mat-form-field appearance="fill" color="primary">
           <mat-label>Plan</mat-label>
-          <mat-select #plan>
-            <mat-option *ngFor="let p of (planes$ | async)" [value]="p.PlanId">
-              {{p.PlanNombre}}
+          <mat-select (selectionChange)="planesChange($event.value)">
+            <mat-option *ngFor="let p of planes" [value]="p"
+            [selected]="p.planId===planId">
+              {{p ? p.planNombre + ' ( Nro ' + p.planNro + ' )'  : ''}}
             </mat-option>
           </mat-select>
-        </mat-form-field> -->
-
-        <button mat-stroked-button (click)="toolClicked('AddChacra', null)" color="primary"
-        [disabled]="!planId || !(polygons$ | async) || (polygons$ | async).length === 0">
-          <fa-icon icon="plus-circle"></fa-icon>
-          <span class="ml-2">Nueva Chacra</span>
-        </button>
+        </mat-form-field>
       </div>
     </div>
 
-    <div class="col-8">
-      <div class="row mapa-toolbar-tool-row">
-        <mat-form-field appearance="fill" color="accent" class="mr-1">
+    <!-- chacras -->
+
+    <div class="col">
+      <div class="row">
+        <mat-form-field appearance="fill" color="primary" class="mr-1">
           <mat-label>Chacra</mat-label>
           <mat-select #chacra>
-            <mat-option *ngFor="let c of (chacras$ | async)" [value]="c.chacraId">
+            <mat-option *ngFor="let c of chacrasPlan" [value]="c.chacraId">
               {{c.chacraNombre}}
             </mat-option>
           </mat-select>
         </mat-form-field>
 
-        <button mat-stroked-button (click)="toolClicked('UpdateChacra', chacra.value)"
-        color="accent" class="mr-1" [disabled]="!chacra.value">
-          <fa-icon icon="edit"></fa-icon>
-          <span class="ml-2">Modificar Chacra</span>
+        <button mat-icon-button (click)="toolClicked('AddChacra', null)"
+        color="basic" class="mr-1" text="Nueva Chacra"
+        [disabled]="!t.btnAddChacra">
+          <fa-icon icon="plus-circle"></fa-icon>
         </button>
 
-        <button mat-stroked-button (click)="toolClicked('DeleteChacra', chacra.value)"
-        color="accent" [disabled]="!chacra.value">
+        <button mat-icon-button (click)="toolClicked('UpdateChacra', chacra.value)"
+        color="basic" class="mr-1" text="Modificar Chacra"
+        [disabled]="!chacra.value || !t.btnUpdateChacra">
+          <fa-icon icon="edit"></fa-icon>
+        </button>
+
+        <button mat-icon-button (click)="toolClicked('DeleteChacra', chacra.value)"
+        color="basic" text="Eliminar Chacra"
+        [disabled]="!chacra.value || !t.btnDeleteChacra">
           <fa-icon icon="trash"></fa-icon>
-          <span class="ml-2">Eliminar Chacra</span>
         </button>
       </div>
     </div>
 
-    <div class="col-2">
-      <div class="row mapa-toolbar-tool-row">
-        <button mat-stroked-button (click)="fileInput.click()" color="basic">
-          <fa-icon icon="file-import"></fa-icon>
-          <span class="ml-2">Importar Dibujos</span>
-          <input #fileInput type="file" style="display:none;" accept=".zip"
-          (change)="importDibujos($event)"/>
+    <!-- zonas -->
+
+    <div class="col">
+      <div class="row">
+        <mat-form-field appearance="fill" color="primary" class="mr-1">
+          <mat-label>Zona de Exclusión</mat-label>
+          <mat-select #zona>
+            <mat-option *ngFor="let z of zonasPlan" [value]="z.zonaExclusionId">
+              {{z.zonaExclusionId}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-icon-button (click)="toolClicked('AddZona', null)"
+        color="basic" class="mr-1" matTooltip="Nueva Zona de Exclusión"
+        [disabled]="!t.btnAddZona">
+          <fa-icon icon="plus-circle"></fa-icon>
         </button>
 
+        <button mat-icon-button (click)="toolClicked('UpdateZona', zona.value)"
+        color="primary" class="mr-1" matTooltip="Modificar Zona de Exclusión"
+        [disabled]="!zona.value || !t.btnUpdateZona">
+          <fa-icon icon="edit"></fa-icon>
+        </button>
+
+        <button mat-icon-button (click)="toolClicked('DeleteZona', zona.value)"
+        color="basic" matTooltip="Eliminar Zona de Exclusión"
+        [disabled]="!zona.value || !t.btnDeleteZona">
+          <fa-icon icon="trash"></fa-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- dibujos -->
+
+    <div class="col-2">
+      <div class="row">
+        <button mat-icon-button (click)="fileInput.click()" color="primary"
+        [disabled]="!t.btnImportDibujos" matTooltip="Importar Dibujos">
+          <fa-icon icon="file-import"></fa-icon>
+          Importar Geometrías
+          <input #fileInput type="file" hidden accept=".zip"
+          (change)="importDibujos($event)"/>
+        </button>
       </div>
     </div>
 
@@ -61,8 +99,11 @@
   <div class="row">
     <div class="col">
       <lib-map-core-control
-        [chacrasCore]="(chacras$ | async)"
-        [zonasExclusionCore]="(zonasExclusion$ | async)"
+        [imageryLayers]="imageryLayers"
+        [mapImageLayers]="mapImageLayers"
+        [chacrasCore]="chacrasPlan"
+        [chacrasFeatureLayerProperties]="chacrasFeatureLayerProperties"
+        [zonasExclusionCore]="zonasPlan"
         [dibujosCore]="dibujos"
         (dibujoCreatedEvent)="dibujoCreatedEvent($event)"
         (dibujosDeletedEvent)="dibujosDeletedEvent($event)"

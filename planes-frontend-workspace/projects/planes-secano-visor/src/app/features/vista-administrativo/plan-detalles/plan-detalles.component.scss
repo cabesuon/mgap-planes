@@ -1,0 +1,26 @@
+@import "../../../../styles-variables.scss";
+
+.container {
+  margin-top: 20px;
+}
+
+fa-icon {
+  font-size: 18px;
+}
+
+.mat-form-field {
+  font-size: 11px;
+}
+
+button {
+  height: 40px;
+  font-size: 12px;
+}
+
+.warn-error {
+  padding: 15px;
+}
+
+.warn-error .ng-fa-icon {
+  color: #dc3545;
+}

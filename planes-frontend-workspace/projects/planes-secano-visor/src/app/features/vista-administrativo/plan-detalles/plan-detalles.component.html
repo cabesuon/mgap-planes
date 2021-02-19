@@ -1,0 +1,77 @@
+<div class="container-fluid">
+  <div class="row warn-error" *ngIf="!!warnErrorSecanoParams">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <fa-icon icon="exclamation-circle"></fa-icon>
+            <span class="ml-2">Advertencias</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <lib-warn-error-secano [params]="warnErrorSecanoParams"></lib-warn-error-secano>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="row">
+    <div class="col">
+      <mat-card class="mb-1">
+        <mat-card-header>
+          <mat-card-title>Detalles Plan</mat-card-title>
+        </mat-card-header>
+        <lib-planes-secano-detail [params]="planDetailParams"></lib-planes-secano-detail>
+      </mat-card>
+      <mat-card class="mb-1">
+        <mat-card-header>
+          <mat-card-title>Técnico Responsable</mat-card-title>
+        </mat-card-header>
+        <lib-ingenieros-agronomos-core-detail [params]="ingenieroDetailParams">
+        </lib-ingenieros-agronomos-core-detail>
+      </mat-card>
+    </div>
+    <div class="col">
+      <ng-container *ngIf="propietarioDetailParams">
+        <mat-card class="mb-1">
+          <mat-card-header>
+            <mat-card-title>Empresa Propietaria</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <lib-empresas-core-detail [params]="propietarioDetailParams">
+            </lib-empresas-core-detail>
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+      <ng-container *ngIf="!!propietarioResponsableDetailParams">
+        <mat-card class="mb-1">
+          <mat-card-header>
+            <mat-card-title>Responsable Propietarios</mat-card-title>
+          </mat-card-header>
+          <lib-responsables-secano-detail [params]="propietarioResponsableDetailParams">
+          </lib-responsables-secano-detail>
+        </mat-card>
+      </ng-container>
+    </div>
+    <div class="col">
+      <ng-container *ngIf="arrendatarioDetailParams">
+        <mat-card class="mb-1">
+          <mat-card-header>
+            <mat-card-title>Empresa Arrendataria</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <lib-empresas-core-detail [params]="arrendatarioDetailParams">
+            </lib-empresas-core-detail>
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+      <ng-container *ngIf="!!arrendatarioResponsableDetailParams">
+        <mat-card class="mb-1">
+          <mat-card-header>
+            <mat-card-title>Responsable Arrendatarios</mat-card-title>
+          </mat-card-header>
+          <lib-responsables-secano-detail
+          [params]="arrendatarioResponsableDetailParams">
+          </lib-responsables-secano-detail>
+        </mat-card>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -42,7 +42,7 @@ export class EntityZonasExclusionLoadSuccessAction implements Action {
 export class EntityZonasExclusionAddRequestAction implements Action {
   readonly type =
     EntityZonasExclusionActionTypes.ENTITYZONASEXCLUSION_ADD_REQUEST;
-  constructor(public payload: { item: ZonaExclusionCore }) {}
+  constructor(public payload: { item: ZonaExclusionCore; dibujoId: number }) {}
 }
 
 export class EntityZonasExclusionAddFailureAction implements Action {
@@ -54,7 +54,7 @@ export class EntityZonasExclusionAddFailureAction implements Action {
 export class EntityZonasExclusionAddSuccessAction implements Action {
   readonly type =
     EntityZonasExclusionActionTypes.ENTITYZONASEXCLUSION_ADD_SUCCESS;
-  constructor(public payload: { item: ZonaExclusionCore }) {}
+  constructor(public payload: { item: ZonaExclusionCore; dibujoId: number }) {}
 }
 
 // change
@@ -62,7 +62,7 @@ export class EntityZonasExclusionAddSuccessAction implements Action {
 export class EntityZonasExclusionChangeRequestAction implements Action {
   readonly type =
     EntityZonasExclusionActionTypes.ENTITYZONASEXCLUSION_CHANGE_REQUEST;
-  constructor(public payload: { item: ZonaExclusionCore }) {}
+  constructor(public payload: { item: ZonaExclusionCore; dibujoId: number }) {}
 }
 
 export class EntityZonasExclusionChangeFailureAction implements Action {
@@ -74,7 +74,9 @@ export class EntityZonasExclusionChangeFailureAction implements Action {
 export class EntityZonasExclusionChangeSuccessAction implements Action {
   readonly type =
     EntityZonasExclusionActionTypes.ENTITYZONASEXCLUSION_CHANGE_SUCCESS;
-  constructor(public payload: { item: Update<ZonaExclusionCore> }) {}
+  constructor(
+    public payload: { item: Update<ZonaExclusionCore>; dibujoId: number }
+  ) {}
 }
 
 // delete

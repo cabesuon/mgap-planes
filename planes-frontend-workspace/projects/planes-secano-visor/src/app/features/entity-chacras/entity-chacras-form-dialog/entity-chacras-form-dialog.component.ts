@@ -3,11 +3,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 
-import {
-  ChacraCore,
-  FormActionType,
-  ChacrasCoreFormInput
-} from 'planes-core-lib';
+import { FormActionType, DibujoCore } from 'planes-core-lib';
+
+import { ChacraSecano, ChacrasSecanoFormInput } from 'planes-secano-lib';
 
 import { AppState } from '../../../core/core.state';
 import { LoggingService } from '../../../core/logging/logging.service';
@@ -16,9 +14,8 @@ import {
   EntityChacrasAddRequestAction,
   EntityChacrasChangeRequestAction
 } from '../entity-chacras.actions';
-import { DibujoCore } from 'projects/planes-core-lib/src/public-api';
 
-export interface EntityChacrasFormDialogData extends ChacrasCoreFormInput {}
+export interface EntityChacrasFormDialogData extends ChacrasSecanoFormInput {}
 
 @Component({
   selector: 'lib-entity-chacras-form-dialog',
@@ -31,7 +28,7 @@ export class EntityChacrasFormDialogComponent implements OnInit {
   cancelText = 'Cancelar';
 
   formValid: boolean;
-  formValue: ChacraCore;
+  formValue: ChacraSecano;
 
   constructor(
     private store: Store<AppState>,
@@ -42,7 +39,7 @@ export class EntityChacrasFormDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.action === FormActionType.Update) {
-      this.title = 'Actualizar Plan';
+      this.title = 'Actualizar Chacra';
       this.submitText = 'Actualizar';
     }
   }
@@ -51,7 +48,7 @@ export class EntityChacrasFormDialogComponent implements OnInit {
     this.formValid = status === 'VALID';
   }
 
-  formValueChanges(chacra: ChacraCore) {
+  formValueChanges(chacra: ChacraSecano) {
     this.formValue = chacra;
   }
 
@@ -63,19 +60,26 @@ export class EntityChacrasFormDialogComponent implements OnInit {
     if (this.formValid) {
       const item = { ...this.formValue };
       let dibujos: DibujoCore[] = [];
-      if (this.formValue.chacraGeometria) {
+      if (
+        item.chacraGeometria &&
+        this.data.chacra.chacraGeometria !== item.chacraGeometria
+      ) {
         dibujos.push(
           this.data.dibujos.find(
-            d => d.dibujoGeometria === this.formValue.chacraGeometria
+            d => d.dibujoGeometria === item.chacraGeometria
           )
         );
       }
-      if (this.formValue.chacraFactorLSGeometriaAsignado) {
+      if (
+        item.chacraFactorLSGeometriaAsignado &&
+        this.data.chacra.chacraFactorLSGeometriaAsignado !==
+          item.chacraFactorLSGeometriaAsignado &&
+        this.data.chacra.chacraFactorLSGeometriaLimitante !==
+          item.chacraFactorLSGeometriaAsignado
+      ) {
         dibujos.push(
           this.data.dibujos.find(
-            d =>
-              d.dibujoGeometria ===
-              this.formValue.chacraFactorLSGeometriaAsignado
+            d => d.dibujoGeometria === item.chacraFactorLSGeometriaAsignado
           )
         );
       }

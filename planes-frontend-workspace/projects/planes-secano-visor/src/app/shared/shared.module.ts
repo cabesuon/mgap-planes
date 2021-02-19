@@ -58,7 +58,16 @@ import {
   faFileExport,
   faEye,
   faEyeSlash,
-  faBan
+  faBan,
+  faBomb,
+  faDollarSign,
+  faClone,
+  faCopy,
+  faFile,
+  faCaretRight,
+  faSeedling,
+  faCalendar,
+  faExclamationCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
@@ -149,7 +158,16 @@ export class SharedModule {
       faFileExport,
       faEye,
       faEyeSlash,
-      faBan
+      faBan,
+      faBomb,
+      faDollarSign,
+      faClone,
+      faCopy,
+      faFile,
+      faCaretRight,
+      faSeedling,
+      faCalendar,
+      faExclamationCircle
     );
   }
 }

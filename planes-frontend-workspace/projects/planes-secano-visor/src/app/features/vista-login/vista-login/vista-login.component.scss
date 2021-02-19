@@ -1,6 +1,4 @@
 .main-heading {
-  text-transform: uppercase;
-  margin: 0 0 20px 0;
   text-align: center;
 }
 mat-card {
@@ -21,4 +19,21 @@ fa-icon {
 button {
   height: 40px;
   font-size: 12px;
+}
+
+h1 {
+  font-size: 28px;
+  color: gray;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+h2 {
+  font-size: 18px;
+  color: gray;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+h3 {
+  font-size: 12px;
+  color: gray;
 }

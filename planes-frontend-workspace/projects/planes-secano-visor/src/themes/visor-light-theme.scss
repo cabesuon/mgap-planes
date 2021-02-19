@@ -1,5 +1,14 @@
-$visor-light-primary: mat-palette($mat-grey, 800, 50);
-$visor-light-accent: mat-palette($mat-green, 400);
+$mat-mgap: (
+  50: #e1e8f4,
+  500: #04488e,
+  contrast: (
+    50: #000000,
+    500: #ffffff
+  )
+);
+
+$visor-light-primary: mat-palette($mat-mgap, 500, 50);
+$visor-light-accent: mat-palette($mat-gray, 900);
 $visor-light-warn: mat-palette($mat-red, 500);
 
 $visor-light-theme: mat-light-theme(

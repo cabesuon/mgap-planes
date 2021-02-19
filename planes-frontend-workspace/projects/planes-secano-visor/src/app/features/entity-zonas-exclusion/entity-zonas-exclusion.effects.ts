@@ -7,6 +7,8 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 
+import { deleteDibujos } from '../entity-dibujos/entity-dibujos.actions';
+
 import { ZonaExclusionCore, ZonasExclusionCoreService } from 'planes-core-lib';
 import * as entityZonasExclusionActions from './entity-zonas-exclusion.actions';
 
@@ -16,7 +18,7 @@ export class EntityZonasExclusionEffects {
     private zonasExclusionCoreService: ZonasExclusionCoreService,
     private actions$: Actions
   ) {
-    this.zonasExclusionCoreService.url = environment.apiUrl;
+    this.zonasExclusionCoreService.url = environment.apiNucleoUrl;
   }
 
   // load
@@ -69,35 +71,61 @@ export class EntityZonasExclusionEffects {
     map(
       (
         action: entityZonasExclusionActions.EntityZonasExclusionAddRequestAction
-      ) => action.payload.item
+      ) => action.payload
     ),
-    switchMap(item => {
-      return this.zonasExclusionCoreService.addZonasExclusionCore(item).pipe(
-        map(results => results.addResults),
-        map(addResults =>
-          addResults.length === 1 && addResults[0].success
-            ? new entityZonasExclusionActions.EntityZonasExclusionAddSuccessAction(
+    switchMap(payload => {
+      return this.zonasExclusionCoreService
+        .addZonasExclusionCore(payload.item)
+        .pipe(
+          map(results => results.addResults),
+          map(addResults => {
+            if (addResults.length != 1) {
+              return new entityZonasExclusionActions.EntityZonasExclusionAddFailureAction(
                 {
-                  item: addResults[0].zonasExclusion
+                  error: 'Error al crear la chacra.'
                 }
-              )
-            : new entityZonasExclusionActions.EntityZonasExclusionAddFailureAction(
+              );
+            }
+            if (addResults[0].success) {
+              return new entityZonasExclusionActions.EntityZonasExclusionAddSuccessAction(
                 {
-                  error: 'Error al crear la zona de exclusion.'
+                  item: addResults[0].zonasExclusion,
+                  dibujoId: payload.dibujoId
                 }
-              )
-        ),
-        catchError(error =>
-          observableOf(
-            new entityZonasExclusionActions.EntityZonasExclusionAddFailureAction(
+              );
+            }
+            return new entityZonasExclusionActions.EntityZonasExclusionAddFailureAction(
               {
-                error: 'planes-core-visor-zonas-exclusion-add-error'
+                error: addResults[0].error.description
               }
+            );
+          }),
+          catchError(error =>
+            observableOf(
+              new entityZonasExclusionActions.EntityZonasExclusionAddFailureAction(
+                {
+                  error: 'planes-core-visor-zonas-exclusion-add-error'
+                }
+              )
             )
           )
-        )
-      );
+        );
     })
+  );
+
+  @Effect()
+  EntityZonaExclusionAddSuccessEffect$: Observable<any> = this.actions$.pipe(
+    ofType<entityZonasExclusionActions.EntityZonasExclusionAddSuccessAction>(
+      entityZonasExclusionActions.EntityZonasExclusionActionTypes
+        .ENTITYZONASEXCLUSION_ADD_SUCCESS
+    ),
+    map(
+      (
+        action: entityZonasExclusionActions.EntityZonasExclusionAddSuccessAction
+      ) => {
+        return deleteDibujos({ ids: [action.payload.dibujoId] });
+      }
+    )
   );
 
   // change
@@ -112,42 +140,60 @@ export class EntityZonasExclusionEffects {
     map(
       (
         action: entityZonasExclusionActions.EntityZonasExclusionChangeRequestAction
-      ) => action.payload.item
+      ) => action.payload
     ),
-    switchMap(item =>
-      this.zonasExclusionCoreService.changeZonasExclusionCore(item).pipe(
-        map(results => results.updateResults),
-        map(updateResults => {
-          if (updateResults.length === 1 && updateResults[0].success) {
-            const uc: Update<ZonaExclusionCore> = {
-              id: updateResults[0].zonasExclusion.zonaExclusionId,
-              changes: {
-                ...updateResults[0].zonasExclusion
-              }
-            };
-            return new entityZonasExclusionActions.EntityZonasExclusionChangeSuccessAction(
+    switchMap(payload =>
+      this.zonasExclusionCoreService
+        .changeZonasExclusionCore(payload.item)
+        .pipe(
+          map(results => results.updateResults),
+          map(updateResults => {
+            if (updateResults.length === 1 && updateResults[0].success) {
+              const uc: Update<ZonaExclusionCore> = {
+                id: updateResults[0].zonasExclusion.zonaExclusionId,
+                changes: {
+                  ...updateResults[0].zonasExclusion
+                }
+              };
+              return new entityZonasExclusionActions.EntityZonasExclusionChangeSuccessAction(
+                {
+                  item: uc,
+                  dibujoId: payload.dibujoId
+                }
+              );
+            }
+            return new entityZonasExclusionActions.EntityZonasExclusionChangeFailureAction(
               {
-                item: uc
+                error: updateResults[0].error.description
               }
             );
-          }
-          return new entityZonasExclusionActions.EntityZonasExclusionChangeFailureAction(
-            {
-              error: 'Error al actualizar la zona de exclusión.'
-            }
-          );
-        }),
-        catchError(error =>
-          observableOf(
-            new entityZonasExclusionActions.EntityZonasExclusionChangeFailureAction(
-              {
-                error:
-                  'Error al actualizar la zona de exclusión (fallo en conexion a servidor).'
-              }
+          }),
+          catchError(error =>
+            observableOf(
+              new entityZonasExclusionActions.EntityZonasExclusionChangeFailureAction(
+                {
+                  error:
+                    'Error al actualizar la zona de exclusión (fallo en conexion a servidor).'
+                }
+              )
             )
           )
         )
-      )
+    )
+  );
+
+  @Effect()
+  EntityZonaExclusionChangeSuccessEffect$: Observable<any> = this.actions$.pipe(
+    ofType<entityZonasExclusionActions.EntityZonasExclusionChangeSuccessAction>(
+      entityZonasExclusionActions.EntityZonasExclusionActionTypes
+        .ENTITYZONASEXCLUSION_CHANGE_SUCCESS
+    ),
+    map(
+      (
+        action: entityZonasExclusionActions.EntityZonasExclusionChangeSuccessAction
+      ) => {
+        return deleteDibujos({ ids: [action.payload.dibujoId] });
+      }
     )
   );
 

@@ -1,1 +1,8 @@
-<lib-detail [params]="detailParams"></lib-detail>
+<table *ngIf="periodos.length > 0">
+  <tr>
+    <th *ngFor="let f of fields">{{f.label}}</th>
+  </tr>
+  <tr *ngFor="let p of periodos">
+    <td *ngFor="let f of fields">{{f.format ? f.format(p[f.name]) : p[f.name] || 'n/a'}}</td>
+  </tr>
+</table>

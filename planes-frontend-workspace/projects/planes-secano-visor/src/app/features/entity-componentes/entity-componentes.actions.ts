@@ -40,7 +40,7 @@ export class EntityComponentesAddRequestAction implements Action {
   readonly type = EntityComponentesActionTypes.ENTITYCOMPONENTES_ADD_REQUEST;
   constructor(
     public payload: {
-      item: ComponenteSecano /* dibujosId: number[] TODO: Completar*/;
+      item: ComponenteSecano;
     }
   ) {}
 }
@@ -54,7 +54,7 @@ export class EntityComponentesAddSuccessAction implements Action {
   readonly type = EntityComponentesActionTypes.ENTITYCOMPONENTES_ADD_SUCCESS;
   constructor(
     public payload: {
-      item: ComponenteSecano /* dibujosId: number[] TODO: Completar*/;
+      item: ComponenteSecano;
     }
   ) {}
 }
@@ -65,7 +65,7 @@ export class EntityComponentesChangeRequestAction implements Action {
   readonly type = EntityComponentesActionTypes.ENTITYCOMPONENTES_CHANGE_REQUEST;
   constructor(
     public payload: {
-      item: ComponenteSecano /* dibujosId: number[] TODO: Completar*/;
+      item: ComponenteSecano;
     }
   ) {}
 }
@@ -79,7 +79,7 @@ export class EntityComponentesChangeSuccessAction implements Action {
   readonly type = EntityComponentesActionTypes.ENTITYCOMPONENTES_CHANGE_SUCCESS;
   constructor(
     public payload: {
-      item: Update<ComponenteSecano> /* dibujosId: number[] TODO: Completar*/;
+      item: Update<ComponenteSecano>;
     }
   ) {}
 }
@@ -88,7 +88,7 @@ export class EntityComponentesChangeSuccessAction implements Action {
 
 export class EntityComponentesDeleteRequestAction implements Action {
   readonly type = EntityComponentesActionTypes.ENTITYCOMPONENTES_DELETE_REQUEST;
-  constructor(public payload: { item: ComponenteSecano }) {}
+  constructor(public payload: { componente: ComponenteSecano }) {}
 }
 
 export class EntityComponentesDeleteFailureAction implements Action {
@@ -98,7 +98,7 @@ export class EntityComponentesDeleteFailureAction implements Action {
 
 export class EntityComponentesDeleteSuccessAction implements Action {
   readonly type = EntityComponentesActionTypes.ENTITYCOMPONENTES_DELETE_SUCCESS;
-  constructor(public payload: { item: ComponenteSecano }) {}
+  constructor(public payload: { componente: ComponenteSecano }) {}
 }
 
 // actions

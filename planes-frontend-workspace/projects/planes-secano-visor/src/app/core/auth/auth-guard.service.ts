@@ -9,7 +9,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { selectToken } from './auth.selectors';
+import { selectAuthToken } from './auth.selectors';
 import { AppState } from '../core.state';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class AuthGuardService implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.store.pipe(
-      select(selectToken),
+      select(selectAuthToken),
       map(token => {
         if (token) {
           return true;

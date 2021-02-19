@@ -20,6 +20,8 @@ export interface PlanesCoreTableParams {
   columns?: PlanesCoreTableColumn[];
   planes: PlanCore[];
   sources: PlanesCoreTableSources;
+  filter?: boolean;
+  pagination?: boolean;
 }
 
 export enum PlanesCoreTableAction {

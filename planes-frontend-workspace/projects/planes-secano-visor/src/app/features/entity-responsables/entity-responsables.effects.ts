@@ -16,7 +16,7 @@ export class EntityResponsablesEffects {
     private responsablesSecanoService: ResponsablesSecanoService,
     private actions$: Actions
   ) {
-    this.responsablesSecanoService.url = environment.apiUrl;
+    this.responsablesSecanoService.url = environment.apiSecanoUrl;
   }
 
   // load
