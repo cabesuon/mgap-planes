@@ -43,9 +43,7 @@ export function entityUnidadesManejosReducer(
         error: null
       };
     }
-    case EntityUnidadesManejosActionTypes.ENTITYUNIDADESMANEJOS_ADD_SUCCESS: {
-      console.log("EntityUnidadesManejosActionTypes");
-      console.log(action.payload);
+    case EntityUnidadesManejosActionTypes.ENTITYUNIDADESMANEJOS_ADD_SUCCESS: {      
       return entityUnidadesManejosAdapter.addOne(action.payload.item, {
         ...state,
         isLoading: false,

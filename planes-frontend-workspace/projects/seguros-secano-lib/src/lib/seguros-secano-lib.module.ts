@@ -29,7 +29,8 @@ import {
   faCheck,
   faSave,
   faEdit,
-  faBomb
+  faBomb,
+  faInfo
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -114,7 +115,8 @@ export class SegurosSecanoLibModule {
       faCheck,
       faSave,
       faEdit,
-      faBomb
+      faBomb,
+      faInfo
     );
   }
 }

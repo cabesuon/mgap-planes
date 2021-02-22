@@ -24,7 +24,7 @@ export class ComponentesProductivosSegurosSecanoService {
   }> {
     return this.http.post<{
       queryResults: ComponentesProductivosSegurosSecanoQueryResults;
-    }>(`${this.url}/queryComponentes`, {
+    }>(`${this.url}/queryComponentesProductivos`, {
       token: this.token
     });
   }
@@ -36,19 +36,19 @@ export class ComponentesProductivosSegurosSecanoService {
   }> {
     return this.http.post<{
       addResults: ComponentesProductivosSegurosSecanoAddResult[];
-    }>(`${this.url}/addComponentes`, {
+    }>(`${this.url}/addComponentesProductivos`, {
       componentes: [{ ...c }]
     });
   }
 
   changeComponentesProductivosSegurosSecano(
-    c: ComponenteProductivoSegurosSecano
+    c: ComponenteProductivoSegurosSecano[]
   ): Observable<{
     updateResults: ComponentesProductivosSegurosSecanoUpdateResult[];
   }> {
     return this.http.post<{
       updateResults: ComponentesProductivosSegurosSecanoUpdateResult[];
-    }>(`${this.url}/updateComponentesProductivosSegurosSecano`, {
+    }>(`${this.url}/updateComponentesProductivos`, {
       componentes: [{ ...c }]
     });
   }
@@ -60,7 +60,7 @@ export class ComponentesProductivosSegurosSecanoService {
   }> {
     return this.http.post<{
       deleteResults: ComponentesProductivosSegurosSecanoDeleteResult[];
-    }>(`${this.url}/deleteComponentesProductivosSegurosSecano`, {
+    }>(`${this.url}/deleteComponentesProductivos`, {
       componentesIds: [c.componenteId]
     });
   }

@@ -62,7 +62,7 @@ export class EntityComponentesChangeRequestAction implements Action {
   readonly type = EntityComponentesActionTypes.ENTITYCOMPONENTES_CHANGE_REQUEST;
   constructor(
     public payload: {
-      item: ComponenteProductivoSegurosSecano /* dibujosId: number[] TODO: Completar*/;
+      item: ComponenteProductivoSegurosSecano[] /* dibujosId: number[] TODO: Completar*/;
     }
   ) {}
 }
@@ -78,7 +78,7 @@ export class EntityComponentesChangeSuccessAction implements Action {
     public payload: {
       item: Update<
         ComponenteProductivoSegurosSecano
-      > /* dibujosId: number[] TODO: Completar*/;
+      >[] /* dibujosId: number[] TODO: Completar*/;
     }
   ) {}
 }

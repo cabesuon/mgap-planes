@@ -19,6 +19,7 @@
     "build:seguros-secano-visor": "ng build seguros-secano-visor",
     "build:dev:seguros-secano-visor": "ng build seguros-secano-visor --baseHref=/seguros-secano-visor/",
     "start:seguros-secano-visor": "ng serve seguros-secano-visor",
+    "start:test:seguros-secano-visor": "ng serve seguros-secano-visor --configuration=test",
     "test:planes-core-lib": "ng test planes-core-lib",
     "test:planes-core-visor": "ng test planes-core-visor",
     "lint:planes-core-lib": "ng lint planes-core-lib",

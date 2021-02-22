@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Store, select } from '@ngrx/store';
+import { Store, select, ActionsSubject } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
+import { ofType } from '@ngrx/effects';
 
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+
+import { EntityComponentesActionTypes } from '../../entity-componentes/entity-componentes.actions';
 
 import {
   FormActionType,
@@ -18,7 +21,9 @@ import {
 import {
   ChacraSegurosSecano,
   createEmptyChacraSegurosSecano,
-  UnidadManejoSegurosSecano
+  UnidadManejoSegurosSecano,
+  ComponenteContratoSeguroZP,
+  ComponenteProductivoSegurosSecano
 } from 'seguros-secano-lib';
 
 import { MapCoreService } from 'projects/planes-core-lib/src/lib/map-core/map-core.service';
@@ -27,6 +32,11 @@ import { AppState } from '../../../core/core.state';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { LoggingService } from '../../../core/logging/logging.service';
 import { FileService } from '../../../core/file/file.service';
+
+import { 
+  EntityComponentesFormDialogData, 
+  EntityComponentesFormDialogComponent 
+} from '../../entity-componentes/entity-componentes-form-dialog/entity-componentes-form-dialog.component';
 
 import {
   selectAllEntityEmpresas,
@@ -39,7 +49,8 @@ import {
 
 import {
   selectAllEntityChacras,
-  selectChacrasByEmpresaId
+  selectChacrasByEmpresaId,
+  selectChacrasByUnidadId
 } from '../../entity-chacras/entity-chacras.selectors';
 import {
   EntityChacrasFormDialogData,
@@ -58,6 +69,14 @@ import {
   updateDibujos
 } from '../../entity-dibujos/entity-dibujos.actions';
 
+import { CultivoSegurosSecano } from '../../entity-cultivos/entity-cultivos.state';
+import { CicloSegurosSecano } from '../../entity-ciclos/entity-ciclos.state';
+import { AseguradoraSegurosSecano } from '../../entity-aseguradoras/entity-aseguradoras.state';
+
+import { selectAllEntityCultivos } from '../../entity-cultivos/entity-cultivos.selectors';
+import { selectAllEntityCiclos } from '../../entity-ciclos/entity-ciclos.selectors';
+import { selectAllEntityAseguradoras } from '../../entity-aseguradoras/entity-aseguradoras.selectors';
+
 const DIALOG_WIDTH = '300px';
 const DIALOG_MAX_HEIGHT = '500px';
 
@@ -66,16 +85,23 @@ const DIALOG_MAX_HEIGHT = '500px';
   templateUrl: './vista-mapa.component.html',
   styleUrls: ['./vista-mapa.component.scss']
 })
-export class VistaMapaComponent implements OnInit {
+export class VistaMapaComponent implements OnInit, OnDestroy {
   empresaId: string = null;
   empresas$: Observable<EmpresaCore[]>;
 
   unidades: UnidadManejoSegurosSecano[] = [];
+  cultivos: CultivoSegurosSecano[] = [];
+  ciclos: CicloSegurosSecano[] = [];
+  aseguradoras: AseguradoraSegurosSecano[] = [];
+  contratoSeguroZP: ComponenteContratoSeguroZP;
 
+  unidadesCombobox$ = []; 
   chacras$: Observable<ChacraSegurosSecano[]>;
 
   polygons$: Observable<DibujoCore[]>;
   dibujos: DibujoCore[];
+
+  subsc: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -84,18 +110,26 @@ export class VistaMapaComponent implements OnInit {
     private loggingService: LoggingService,
     private fileService: FileService,
     private mapCoreService: MapCoreService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private actionsSubj: ActionsSubject
+  ) {    
+    //this.subsc = new Subscription();    
+    this.subsc = this.actionsSubj.pipe(
+      ofType(EntityComponentesActionTypes.ENTITYCOMPONENTES_ADD_SUCCESS)
+    ).subscribe((data: any ) => {          
+        this.openDialogComponente(FormActionType.Update, data.payload.item);
+     });
+  }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.empresaId = this.route.snapshot.paramMap.get('EmpresaId');
-
-    this.empresas$ = this.empresaId
+    
+    this.empresas$ = /*this.empresaId
       ? this.store.pipe(
           select(selectEmpresaById(this.empresaId)),
           map(p => [p])
         )
-      : this.store.pipe(select(selectAllEntityEmpresas));
+      : */ this.store.pipe(select(selectAllEntityEmpresas));
 
     this.chacras$ = this.empresaId
       ? this.store.pipe(select(selectChacrasByEmpresaId(this.empresaId)))
@@ -109,9 +143,41 @@ export class VistaMapaComponent implements OnInit {
       .pipe(select(selectAllEntityDibujos))
       .subscribe(dibujos => (this.dibujos = dibujos));
 
+    if (this.empresaId){
+      this.store
+        .pipe(select(selectUnidadesManejosByEmpresaId(this.empresaId)))
+        .subscribe(unidades => {
+          this.unidades = unidades;
+          this.unidadesCombobox$ = [{unidadId:-1, unidadNombre:'Todos'}, ...unidades];        
+        });
+    }
+
     this.store
-      .pipe(select(selectUnidadesManejosByEmpresaId(this.empresaId)))
-      .subscribe(unidades => (this.unidades = unidades));
+      .pipe(select(selectAllEntityAseguradoras))
+      .subscribe(aseguradoras => (this.aseguradoras = aseguradoras));
+
+    this.store
+      .pipe(select(selectAllEntityCiclos))
+      .subscribe(ciclos => (this.ciclos = ciclos));    
+
+    this.store
+      .pipe(select(selectAllEntityCultivos))
+      .subscribe(cultivos => (this.cultivos = cultivos));    
+
+    if (!this.empresaId){
+      // si no tengo empresa selecciono la primera
+      this.store.pipe(select(selectAllEntityEmpresas)).subscribe( empresas => {                  
+        if (empresas.length>0){
+          this.onChangeEmpresa(empresas[0].empresaId)
+        }
+      })      
+    } else {
+      this.onChangeEmpresa(this.empresaId)
+    }
+  }
+
+  ngOnDestroy() {
+    this.subsc.unsubscribe();
   }
 
   toolClicked(tool: string, chacraId: number) {
@@ -132,6 +198,41 @@ export class VistaMapaComponent implements OnInit {
     }
   }
 
+  onChangeUnidad(unidadId){    
+    if (unidadId === -1){
+      this.chacras$ = this.empresaId
+      ? this.store.pipe(select(selectChacrasByEmpresaId(this.empresaId)))
+      : this.store.pipe(select(selectAllEntityChacras));
+    } else {
+      this.chacras$ = this.store.pipe(select(selectChacrasByUnidadId(unidadId)));            
+    }
+
+  }
+
+  onChangeEmpresa(empresaId){
+    this.empresaId = empresaId;
+    this.chacras$ = this.empresaId
+      ? this.store.pipe(select(selectChacrasByEmpresaId(this.empresaId)))
+      : this.store.pipe(select(selectAllEntityChacras));
+
+    this.polygons$ = this.store.pipe(
+      select(selectAllEntityDibujosByTipo(DibujoCoreType.POLYGON))
+    );
+
+    this.store
+      .pipe(select(selectAllEntityDibujos))
+      .subscribe(dibujos => (this.dibujos = dibujos));
+
+    if (this.empresaId){
+      this.store
+        .pipe(select(selectUnidadesManejosByEmpresaId(this.empresaId)))
+        .subscribe(unidades => {
+          this.unidades = unidades;
+          this.unidadesCombobox$ = [{unidadId:-1, unidadNombre:'Todos'}, ...unidades];        
+        });
+    }
+  }
+
   // dialogs
 
   openDialogChacra(action: FormActionType) {
@@ -147,7 +248,23 @@ export class VistaMapaComponent implements OnInit {
       width: DIALOG_WIDTH,
       maxHeight: DIALOG_MAX_HEIGHT,
       data: inData
-    });
+    });    
+  }  
+
+  openDialogComponente(action: FormActionType, componente) {
+    const inData: EntityComponentesFormDialogData = {
+      action: action,
+      componente: componente,
+      ciclos: this.ciclos,
+      cultivos: this.cultivos,
+      aseguradoras: this.aseguradoras,
+      contratoSeguroZP: this.contratoSeguroZP
+    };
+    this.dialog.open(EntityComponentesFormDialogComponent, {
+      width: DIALOG_WIDTH,
+      maxHeight: DIALOG_MAX_HEIGHT,
+      data: inData
+    }); 
   }
 
   // dibujos
@@ -156,8 +273,7 @@ export class VistaMapaComponent implements OnInit {
     this.store.dispatch(addDibujo({ dibujo }));
   }
 
-  dibujosDeletedEvent(ids: number[]) {
-    console.log(ids);
+  dibujosDeletedEvent(ids: number[]) {    
     this.store.dispatch(deleteDibujos({ ids }));
   }
 

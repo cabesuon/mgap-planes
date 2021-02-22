@@ -119,18 +119,18 @@ export const CHACRAS_FEATURELAYERPROPERTIES: FeatureLayerProperties = {
       {
         type: 'fields',
         fieldInfos: [
-          {
+          /*{
             fieldName: 'planId',
             label: 'Plan Id'
           },
           {
             fieldName: 'chacraId',
             label: 'Chacra Id'
-          },
+          },*/
           {
             fieldName: 'chacraNro',
             label: 'Chacra Nro'
-          },
+          }/*,
           {
             fieldName: 'chacraSueloLimitanteId',
             label: 'Suelo Id'
@@ -142,7 +142,7 @@ export const CHACRAS_FEATURELAYERPROPERTIES: FeatureLayerProperties = {
           {
             fieldName: 'chacraFactorLSEsManual',
             label: 'Pendiente Manual'
-          }
+          }*/
         ]
       }
     ]
@@ -289,4 +289,5 @@ export const CIRCLE_SYMBOLS = {
 
 // widgets
 
-export const SKETCH_AVAILABLE_CREATE_TOOLS = ['polyline', 'polygon', 'circle'];
+export const SKETCH_AVAILABLE_CREATE_TOOLS = ['polygon', 'circle'];
+//['polyline', 'polygon', 'circle'];

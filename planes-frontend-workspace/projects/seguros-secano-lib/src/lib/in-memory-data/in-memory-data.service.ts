@@ -20,21 +20,29 @@ import { MockQueryCultivos } from './cultivos-get-data';
 import { MockQueryCiclos } from './ciclos-get-data';
 import { MockQueryAseguradoras } from './aseguradoras-get-data';
 
-import { MockQueryUnidades, MockAddUnidades } from './unidades-get-data';
+import { 
+  MockQueryUnidades,
+  MockAddUnidades, 
+  MockUpdateUnidades } from './unidades-get-data';
 import {
   MockAddComponentes,
-  MockQueryComponentes
+  MockQueryComponentes,
+  MockUpdateComponentes
 } from './componentes-get-data';
 
 const getMethodGetDataRepo = {};
 
 const postMethodGetDataRepo = {
-  queryUnidades: new MockQueryUnidades(),
-  addUnidades: new MockAddUnidades(),
+  queryUnidadesManejo: new MockQueryUnidades(),
+  addUnidadesManejo: new MockAddUnidades(),
+  updateUnidadesManejo: new MockUpdateUnidades(),
+
   queryChacras: new MockQueryChacras(),
   addChacras: new MockAddChacras(),
-  queryComponentes: new MockQueryComponentes(),
-  addComponentes: new MockAddComponentes(),
+  
+  queryComponentesProductivos: new MockQueryComponentes(),
+  addComponentesProductivos: new MockAddComponentes(),
+  updateComponentesProductivos: new MockUpdateComponentes(),
 
   queryPersonas: new MockQueryPersonas(),
   queryTokens: new MockQueryTokens(),
@@ -42,7 +50,8 @@ const postMethodGetDataRepo = {
   queryAseguradoras: new MockQueryAseguradoras(),
   queryCultivos: new MockQueryCultivos(),
   queryCiclos: new MockQueryCiclos()
-};
+};  
+
 
 @Injectable({
   providedIn: 'root'

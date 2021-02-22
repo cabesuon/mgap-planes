@@ -47,7 +47,7 @@ export interface ComponentesProductivosSegurosSecanoAddResult {
 export interface ComponentesProductivosSegurosSecanoUpdateResult {
   success: boolean;
   error: { code: number; description: string };
-  componente: ComponenteProductivoSegurosSecano;
+  componente: ComponenteProductivoSegurosSecano[];
 }
 
 export interface ComponentesProductivosSegurosSecanoDeleteResult {

@@ -113,12 +113,8 @@ export class VistaPrincipalComponent implements OnInit {
         };
       } else {
         this.rdata[c.empresaId].chacrasArr.push(c);
-        let enviado = "";
-        console.log("todos lso componentes");
-        console.log(this.componentes);
-        const componente = this.componentes.find(compo => compo.chacraId === c.chacraId);
-        console.log("componentes");
-        console.log(componente);
+        let enviado = "";        
+        const componente = this.componentes.find(compo => compo.chacraId === c.chacraId);        
         if (componente && componente.fechaEnviado){
           enviado = "Enviado";
         } else {
@@ -129,8 +125,7 @@ export class VistaPrincipalComponent implements OnInit {
           componentes: componente,
           componentesArr: [],
           enviado: enviado 
-        };
-        console.log(this.rdata[c.empresaId].chacras[c.chacraId]);
+        };        
       }
     }
   }

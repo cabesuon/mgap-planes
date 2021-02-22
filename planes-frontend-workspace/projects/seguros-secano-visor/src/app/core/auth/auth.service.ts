@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { of } from "rxjs";
+import { delay } from "rxjs/operators";
+
 import { environment } from '../../../environments/environment';
 
 import { GetTokensResult } from './auth.models';
@@ -14,8 +17,9 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(token: string): Observable<{ personaId: number }> {
-    console.log(`[login] ${environment.apiUrl}`);
-    return this.http
+    console.log(`[login] ${environment.apiUrl}`);    
+    return of({ personaId: 1 }).pipe(delay(5000))
+    /*return this.http
       .post<{ queryResults: GetTokensResult }>(
         `${environment.apiUrl}/queryTokens`,
         {
@@ -30,6 +34,6 @@ export class AuthService {
           }
           return null;
         })
-      );
+      );*/
   }
 }

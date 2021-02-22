@@ -8,17 +8,18 @@ export class MockUpdateComponentes implements GetData {
       payload.req.body.componentes;
 
     const response = [];
-    /*for (const c of componentes) {
-      c.componenteId = db.d.componentes..nextId();
-      db.d.componentes.push(c);
+    for (const c of componentes) {      
+      let i = db.d.componentes.indexOf(db.getComponenteById(c.componenteId));      
+      db.d.componentes[i] = c;
+
       response.push({
         success: true,
         error: null,
         componente: c
       });
-    }*/
+    }
     return {
-      addResults: response
+      updateResults: response
     };
   }
 }

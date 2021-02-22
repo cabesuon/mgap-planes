@@ -110,14 +110,19 @@ export class EntityComponentesEffects {
         map(results => results.updateResults),
         map(updateResults => {
           if (updateResults.length === 1 && updateResults[0].success) {
-            const uc: Update<ComponenteProductivoSegurosSecano> = {
-              id: updateResults[0].componente.componenteId,
-              changes: {
-                ...updateResults[0].componente
-              }
-            };
+            let listComponentes = [];                        
+            for(var propt in updateResults[0].componente){
+              const c = updateResults[0].componente[propt]                          
+              const uc: Update<ComponenteProductivoSegurosSecano> = {
+                id: c.componenteId,
+                changes: {
+                  ...c
+                }
+              };
+              listComponentes.push(uc);
+            };            
             return new entityComponentesActions.EntityComponentesChangeSuccessAction({
-              item: uc
+              item: listComponentes
             });
           }
           return new entityComponentesActions.EntityComponentesChangeFailureAction({

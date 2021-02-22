@@ -48,7 +48,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   navigation = [
     { link: '/features/principal', label: 'Principal' },
     { link: '/features/mapa', label: 'Mapa' },
-    { link: '/features/administrativo', label: 'Administrativo' }
+    { link: '/features/administrativo', label: 'Administrativo' },
+    { link: '/reune', label: 'REUNE' }        
   ];
   navigationSideMenu = [...this.navigation];
 

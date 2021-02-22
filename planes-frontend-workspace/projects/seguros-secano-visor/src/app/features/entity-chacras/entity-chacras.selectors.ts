@@ -39,6 +39,18 @@ export const selectChacrasByEmpresaId = (id: string) =>
     }
   );
 
+export const selectChacrasByUnidadId = (id: string) =>
+  createSelector(
+    selectAllEntityChacras,
+    (allChacras: ChacraSegurosSecano[]) => {
+      if (allChacras) {
+        return allChacras.filter(c => c.unidadId === id);
+      } else {
+        return [];
+      }
+    }
+  );
+
 export const selectChacraById = (id: string) =>
   createSelector(
     selectAllEntityChacras,

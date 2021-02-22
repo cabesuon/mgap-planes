@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 
-import { FormActionType } from 'planes-core-lib';
+import { FormActionType } from 'planes-core-lib'; 
 
 import { ComponenteProductivoSegurosSecano, ComponentesProductivosSegurosSecanoFormInput } from 'seguros-secano-lib';
 
@@ -46,7 +46,7 @@ export class EntityComponentesFormDialogComponent implements OnInit {
       this.title = 'Actualizar Componente Productivo';
       this.submitText = 'Actualizar';
     }
-  }
+  } 
 
   formStatusChanges(status: string) {
     this.formValid = status === 'VALID';
@@ -61,25 +61,25 @@ export class EntityComponentesFormDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.formValid) {
-      const item = { ...this.formValue };
-      if (this.data.action === FormActionType.Add) {
-        this.store.dispatch(new EntityComponentesAddRequestAction({ item }));
-      } else {
-        this.store.dispatch(new EntityComponentesChangeRequestAction({ item }));
-      }
-      this.data.componente = item;
-      this.dialogRef.close(this.data);  
+    const item = { ...this.formValue };
+    if (this.data.action === FormActionType.Add) {
+      this.store.dispatch(new EntityComponentesAddRequestAction({ item }));
+    } else {
+      this.store.dispatch(new EntityComponentesChangeRequestAction({ item: [item] }));
     }
+    this.data.componente = item;
+    this.dialogRef.close(this.data);      
   }
 
   onSend() {
     if (this.formValid) {
+      let dHoy = new Date();      
+      this.formValue.fechaEnviado = dHoy;
       const item = { ...this.formValue };
       if (this.data.action === FormActionType.Add) {
         this.store.dispatch(new EntityComponentesAddRequestAction({ item }));
-      } else {
-        this.store.dispatch(new EntityComponentesChangeRequestAction({ item }));
+      } else { 
+        this.store.dispatch(new EntityComponentesChangeRequestAction({ item: [item] }));
       }
       this.data.componente = item;
       this.dialogRef.close(this.data);

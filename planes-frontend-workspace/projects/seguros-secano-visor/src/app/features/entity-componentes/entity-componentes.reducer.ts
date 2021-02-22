@@ -66,7 +66,7 @@ export function entityComponentesReducer(
       };
     }
     case EntityComponentesActionTypes.ENTITYCOMPONENTES_CHANGE_SUCCESS: {
-      return entityComponentesAdapter.updateOne(action.payload.item, {
+      return entityComponentesAdapter.updateMany(action.payload.item, {
         ...state,
         isLoading: false,
         error: null

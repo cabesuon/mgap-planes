@@ -11,6 +11,7 @@ export interface UnidadManejoSegurosSecano {
 
   aseguradoraId: string;
   polizaId: string;
+  contratoSeguroZPId: string;
 
   superficieSembrada: number;
   superficieCosechada: number;
@@ -66,6 +67,7 @@ export function createEmptyUnidadManejoSegurosSecano(): UnidadManejoSegurosSecan
     cultivoAntecesorId: null,
     aseguradoraId: null,
     polizaId: null,
+    contratoSeguroZPId: null,
     superficieSembrada: null,
     superficieCosechada: null,
     fechaSiembra: null,
@@ -92,7 +94,8 @@ export function createBaseUnidadManejoSegurosSecano(
   cicloId: string,
   cultivoAntecesorId: string,
   aseguradoraId: string,
-  polizaId: string
+  polizaId: string,
+  contratoSeguroZPId: string
 ) {
   return {
     ...createEmptyUnidadManejoSegurosSecano(),
@@ -102,6 +105,7 @@ export function createBaseUnidadManejoSegurosSecano(
     cicloId,
     cultivoAntecesorId,
     aseguradoraId,
-    polizaId
+    polizaId,
+    contratoSeguroZPId
   };
 }

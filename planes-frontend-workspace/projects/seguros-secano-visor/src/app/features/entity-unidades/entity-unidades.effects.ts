@@ -106,7 +106,7 @@ export class EntityUnidadesManejosEffects {
     switchMap(item =>
       this.unidadesManejosService.changeUnidadesManejosSecano(item).pipe(
         map(results => results.updateResults),
-        map(updateResults => {
+        map(updateResults => {          
           if (updateResults.length === 1 && updateResults[0].success) {
             const uc: Update<UnidadManejoSegurosSecano> = {
               id: updateResults[0].unidades.unidadId,

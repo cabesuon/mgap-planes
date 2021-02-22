@@ -15,6 +15,14 @@
     <div class="col-8">
       <div class="row mapa-toolbar-tool-row">
         <mat-form-field appearance="fill" color="accent" class="mr-1">
+          <mat-label>Unidad de manejo</mat-label>
+          <mat-select #unidad (selectionChange)="onChangeUnidad($event.value)">
+            <mat-option *ngFor="let u of unidadesCombobox$" [value]="u.unidadId">
+              {{u.unidadNombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" color="accent" class="mr-1">
           <mat-label>Chacra</mat-label>
           <mat-select #chacra>
             <mat-option *ngFor="let c of (chacras$ | async)" [value]="c.chacraId">
@@ -37,8 +45,16 @@
       </div>
     </div>
 
-    <div class="col-2">
+    <div class="col-2" *ngIf="empresaId && (empresas$| async) as empresas">
       <div class="row mapa-toolbar-tool-row">
+        <mat-form-field appearance="fill" color="accent" class="mr-1">
+          <mat-label>Empresa</mat-label>
+          <mat-select [value]="empresaId" (selectionChange)="onChangeEmpresa($event.value)">
+            <mat-option *ngFor="let e of empresas" [value]="e.empresaId">
+              {{e.empresaRazonSocial}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <!-- <button mat-stroked-button (click)="fileInput.click()" color="basic">
           <fa-icon icon="file-import"></fa-icon>
           <span class="ml-2">Importar Dibujos</span>

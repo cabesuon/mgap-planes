@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="row pr-3 pl-3 mt-2">
+  <div class="row pr-3 pl-3 mt-2">        
     <div class="col">
       <div class="row mapa-toolbar-tool-row">
         <ng-container *ngIf="!!empresa">
@@ -19,6 +19,19 @@
             </button>            
           </div>
         </ng-container>
+      </div>
+    </div>
+
+    <div class="col-2" *ngIf="empresa && empresas">
+      <div class="row mapa-toolbar-tool-row">
+        <mat-form-field appearance="fill" color="accent" class="mr-1">
+          <mat-label>Empresa</mat-label>
+          <mat-select [value]="empresa" (selectionChange)="empresaChange($event.value)">
+            <mat-option *ngFor="let e of empresas" [value]="e">
+              {{e.empresaRazonSocial}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>        
       </div>
     </div>
 
@@ -64,6 +77,11 @@
         <div class="row" *ngFor="let ua of uuaaArr">
           <div class="row">
             <h3 class="mat-h3 mt-2">{{ua.unidad.unidadNombre}}</h3>
+            <button mat-icon-button
+              (click)="onEditUM(ua.unidad)"
+              matTooltip="Editar unidad de manejo">
+                <mat-icon><fa-icon icon="edit"></fa-icon></mat-icon>
+              </button>
           </div>
           <div class="row table-container">
             <lib-componentes-productivos-seguros-secano-table

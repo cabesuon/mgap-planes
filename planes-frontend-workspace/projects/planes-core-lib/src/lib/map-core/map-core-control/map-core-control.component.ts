@@ -289,7 +289,11 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     const self = this; // <- dumb
     // legend
     const legend = new this.esri.widgets.Legend({
-      view: this.view
+      view: this.view,
+      // 2021019 se agrega para que solo muestre info de chacras
+      layerInfos: [{
+        layer: this.chacrasFeatureLayer
+      }]
     });
     const legendExpand = new this.esri.widgets.Expand({
       expandIconClass: 'esri-icon-layer-list',

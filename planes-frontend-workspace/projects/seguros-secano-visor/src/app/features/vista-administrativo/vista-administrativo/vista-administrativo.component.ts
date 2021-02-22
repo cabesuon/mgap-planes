@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { Store, select } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { Store, select, ActionsSubject } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
+import { combineLatest, Subscription  } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import {
@@ -22,6 +23,7 @@ import {
   createEmptyUnidadManejoSegurosSecano,      
   createEmptyComponenteProductivoSegurosSecano,  
   ComponentesProductivosSegurosSecanoTableParams,
+  ComponenteContratoSeguroZP
 } from 'seguros-secano-lib';
 
 import { AppState } from '../../../core/core.state';
@@ -52,6 +54,9 @@ import { selectAllEntityEmpresas } from '../../entity-empresas/entity-empresas.s
 import { selectAllEntityPersonas } from '../../entity-personas/entity-personas.selectors';
 import { selectAllEntityAseguradoras } from '../../entity-aseguradoras/entity-aseguradoras.selectors';
 
+import { EntityUnidadesManejosActionTypes } from '../../entity-unidades/entity-unidades.actions';
+import { VistaUnidadComponentesFormDialogComponent } from '../../vista-unidad-componentes/vista-unidad-componentes-form-dialog/vista-unidad-componentes-form-dialog/vista-unidad-componentes-form-dialog.component'
+
 const DIALOG_WIDTH = '300px';
 const DIALOG_MAX_HEIGHT = '500px';
 
@@ -67,7 +72,7 @@ interface UnidadTreeNode {
   templateUrl: './vista-administrativo.component.html',
   styleUrls: ['./vista-administrativo.component.scss']
 })
-export class VistaAdministrativoComponent implements OnInit {
+export class VistaAdministrativoComponent implements OnInit, OnDestroy {
   empresaId: string = null;
   empresaName: string = null;
   empresaNumber: string = null;
@@ -83,7 +88,8 @@ export class VistaAdministrativoComponent implements OnInit {
 
   empresaDetailParams: EmpresasCoreDetailParams;
   componentesTableParams: ComponentesProductivosSegurosSecanoTableParams[];
-
+  contratoSeguroZP: ComponenteContratoSeguroZP;
+  
   generalRow = true;
   generalRowVisible = true;
 
@@ -92,17 +98,25 @@ export class VistaAdministrativoComponent implements OnInit {
   componenteChacrasSM = [];
   chacrasSinUm = null; 
 
+  subsc: Subscription;
+
   constructor(
     private store: Store<AppState>,
     private route: ActivatedRoute,
     private router: Router,
     private notification: NotificationService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private actionsSubj: ActionsSubject
+  ) {
+    this.subsc = this.actionsSubj.pipe(
+      ofType(EntityUnidadesManejosActionTypes.ENTITYUNIDADESMANEJOS_CHANGE_SUCCESS)
+    ).subscribe((data: any ) => {        
+        this.openDialogUnidadComponente(FormActionType.Update, data.payload.item);
+     });
+  }
 
   ngOnInit(): void {
-    this.empresaId = this.route.snapshot.paramMap.get('EmpresaId');
-
+    this.empresaId = this.route.snapshot.paramMap.get('EmpresaId');    
     combineLatest(
       this.store.pipe(
         select(selectAllEntityEmpresas),
@@ -158,9 +172,17 @@ export class VistaAdministrativoComponent implements OnInit {
           this.empresaChange(
             this.empresas.find(e => e.empresaId === this.empresaId)
           );
+        } else {
+          this.empresaChange(
+            this.empresas[0]
+          );
         }
       }
-    );
+    );    
+  }
+
+  ngOnDestroy() {
+    this.subsc.unsubscribe();
   }
 
   empresaChange(empresa: EmpresaCore) {
@@ -250,7 +272,7 @@ export class VistaAdministrativoComponent implements OnInit {
   }
 
   newUnidadManejo() {
-    this.openDialogUnidadManejo(FormActionType.Add);
+    this.openDialogUnidadManejo(FormActionType.Add, null);
   }
 
   editComponente(componente){
@@ -266,23 +288,35 @@ export class VistaAdministrativoComponent implements OnInit {
         ]);
         break;      
     }
-  }
+  }  
 
   // dialogs
-  openDialogUnidadManejo(action: FormActionType) {
+  openDialogUnidadManejo(action: FormActionType, ua) {
+    let unidad = createEmptyUnidadManejoSegurosSecano();
+    if (action === FormActionType.Update){    
+      unidad = ua;
+    }
     const inData: EntityUnidadesFormDialogData = {
-      unidad: createEmptyUnidadManejoSegurosSecano(),
+      unidad: ua,
       action: action,
       aseguradoras: this.aseguradoras,
       cultivos: this.cultivos,
       ciclos: this.ciclos,
-      empresas: this.empresas
+      empresas: [this.empresa] //le paso la current empresa
     };
     this.dialog.open(EntityUnidadesFormDialogComponent, {
       width: DIALOG_WIDTH,
       maxHeight: DIALOG_MAX_HEIGHT,
       data: inData
-    });
+    });    
+  }
+
+  openDialogUnidadComponente(action: FormActionType, unidadManejo){        
+    this.dialog.open(VistaUnidadComponentesFormDialogComponent, {
+      width: DIALOG_WIDTH,
+      maxHeight: DIALOG_MAX_HEIGHT,
+      data: unidadManejo
+    }); 
   }
 
   openDialogComponente(action: FormActionType, componente) {
@@ -291,12 +325,17 @@ export class VistaAdministrativoComponent implements OnInit {
       componente: componente,
       ciclos: this.ciclos,
       cultivos: this.cultivos,
-      aseguradoras: this.aseguradoras
+      aseguradoras: this.aseguradoras,
+      contratoSeguroZP: this.contratoSeguroZP
     };
     this.dialog.open(EntityComponentesFormDialogComponent, {
       width: DIALOG_WIDTH,
       maxHeight: DIALOG_MAX_HEIGHT,
       data: inData
     }); 
+  }
+
+  onEditUM(ua){
+     this.openDialogUnidadManejo(FormActionType.Update, ua);
   }
 }

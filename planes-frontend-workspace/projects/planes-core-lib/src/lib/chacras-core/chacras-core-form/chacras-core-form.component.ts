@@ -23,11 +23,12 @@ export class ChacrasCoreFormComponent implements OnInit {
   _polylines: DibujoCore[];
 
   form = this.fb.group({
+    // 20210120 se comentan atributos que no se usan
     chacraNombre: [null, [Validators.required]],
     chacraGeometria: [null, [Validators.required]],
-    chacraFactorLSGeometriaAsignado: [null, []],
-    chacraSueloLimitanteId: [null, [Validators.required]],
-    chacraDicose: [null, [Validators.required]]
+    //chacraFactorLSGeometriaAsignado: [null, []],
+    //chacraSueloLimitanteId: [null, [Validators.required]],
+    //chacraDicose: [null, [Validators.required]]
   });
 
   constructor(private fb: FormBuilder) {}
@@ -37,8 +38,8 @@ export class ChacrasCoreFormComponent implements OnInit {
       this.form.patchValue({
         chacraNombre: this.formInput.chacra.chacraNombre,
         chacraGeometria: this.formInput.chacra.chacraGeometria,
-        chacraSueloLimitanteId: this.formInput.chacra.chacraSueloLimitanteId,
-        chacraDicose: this.formInput.chacra.chacraDicose
+        //chacraSueloLimitanteId: this.formInput.chacra.chacraSueloLimitanteId,
+        //chacraDicose: this.formInput.chacra.chacraDicose
       });
     }
     // split dibujos

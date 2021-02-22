@@ -85,17 +85,14 @@ export class EntityChacrasFormDialogComponent implements OnInit {
         );
       }*/
       
-      const unidad = this.data.unidades.find(unidad => unidad.unidadId === item.unidadId);
-      console.log(unidad);
+      const unidad = this.data.unidades.find(unidad => unidad.unidadId === item.unidadId);      
       let componente = {
         ...createEmptyComponenteProductivoSegurosSecano(),
         ...unidad,
         // hardcodeado la zafra y el año. obtenerla luego de una db
         zafra: "Verano",
         anio: 2020
-      };
-      console.log("compoennte");
-      console.log(componente);
+      };      
       /* crear un compoennte poniendole los campos de uniad de manejo */
       const dibujosId: number[] = dibujos.map(d => d.dibujoId);
       if (this.data.action === FormActionType.Add) {
@@ -108,7 +105,11 @@ export class EntityChacrasFormDialogComponent implements OnInit {
         );
       }
       this.data.chacra = item;
+      this.dialogRef.afterClosed().subscribe(
+        data => console.log("Dialog output:", data)
+      );
       this.dialogRef.close(this.data);
+            
     }
   }
 }

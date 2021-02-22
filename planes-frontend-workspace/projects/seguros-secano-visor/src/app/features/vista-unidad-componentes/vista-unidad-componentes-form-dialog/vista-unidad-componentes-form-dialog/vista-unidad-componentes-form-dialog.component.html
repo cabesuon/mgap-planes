@@ -1,0 +1,21 @@
+<h2 class="text-uppercase mb-2" mat-dialog-title>
+    Seleccione las chacras donde quiere impactar los cambios
+</h2>
+<div mat-dialog-content>    
+    <div>
+        <mat-selection-list [(ngModel)]="selectedOptions">
+            <mat-list-option *ngFor="let c of (chacras$ | async)" [value]="c" >
+                {{c.chacraNombre}}
+            </mat-list-option>
+        </mat-selection-list>            
+    </div>    
+</div>    
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="onCancel()">
+      Cancelar
+    </button>
+    <button mat-raised-button (click)="onSubmit()"
+      class="ml-2">
+      Enviar
+    </button>
+</div>

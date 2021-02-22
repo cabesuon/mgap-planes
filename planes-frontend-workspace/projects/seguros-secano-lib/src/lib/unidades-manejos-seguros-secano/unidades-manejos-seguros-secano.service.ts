@@ -24,7 +24,7 @@ export class UnidadesManejosSegurosSecanoService {
   }> {
     return this.http.post<{
       queryResults: UnidadesManejosSegurosSecanoQueryResults;
-    }>(`${this.url}/queryUnidades`, {
+    }>(`${this.url}/queryUnidadesManejo`, {
       token: this.token
     });
   }
@@ -36,7 +36,7 @@ export class UnidadesManejosSegurosSecanoService {
   }> {
     return this.http.post<{
       addResults: UnidadesManejosSegurosSecanoAddResult[];
-    }>(`${this.url}/addUnidades`, {
+    }>(`${this.url}/addUnidadesManejo`, {
       unidades: [{ ...u }]
     });
   }
@@ -48,7 +48,7 @@ export class UnidadesManejosSegurosSecanoService {
   }> {
     return this.http.post<{
       updateResults: UnidadesManejosSegurosSecanoUpdateResult[];
-    }>(`${this.url}/updateUnidadesManejosSegurosSecano`, {
+    }>(`${this.url}/updateUnidadesManejo`, {
       unidades: [{ ...u }]
     });
   }
@@ -60,7 +60,7 @@ export class UnidadesManejosSegurosSecanoService {
   }> {
     return this.http.post<{
       deleteResults: UnidadesManejosSegurosSecanoDeleteResult[];
-    }>(`${this.url}/deleteUnidadesManejosSegurosSecano`, {
+    }>(`${this.url}/deleteUnidadesManejo`, {
       unidadesIds: [u.unidadId]
     });
   }

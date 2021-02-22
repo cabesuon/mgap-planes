@@ -47,6 +47,14 @@ export class InMemoryDb {
     );
   }
 
+  getUnidadManejoById(unidadId): UnidadManejoSegurosSecano{
+    return this.d.unidades.find( u => u.unidadId === unidadId )      
+  }
+
+  getComponenteById(componenteId): ComponenteProductivoSegurosSecano{
+    return this.d.componentes.find( c => c.componenteId === componenteId )      
+  }
+
   getChacrasSegurosSecanoByPersonaId(personaId: string): ChacraSegurosSecano[] {
     const empresas = this.getEmpresasCoreByPersonaId(personaId);
     return this.d.chacras.filter(chacra =>

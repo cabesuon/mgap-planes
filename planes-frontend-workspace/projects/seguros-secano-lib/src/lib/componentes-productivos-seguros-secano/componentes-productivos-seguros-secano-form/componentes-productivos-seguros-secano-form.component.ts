@@ -6,10 +6,11 @@ import { CultivoSegurosSecano } from '../../cultivos-seguros-secano/cultivos-seg
 import { CicloSegurosSecano } from '../../ciclos-seguros-secano/ciclos-seguros-secano.model';
 import { AseguradoraSegurosSecano } from '../../aseguradoras-seguros-secano/aseguradoras-seguros-secano.model';
 import { ComponenteProductivoSegurosSecano, ComponenteContratoSeguroZP } from '../componentes-productivos-seguros-secano.model';
+import { UnidadesComponenteValidador } from '../../unidades-manejos-seguros-secano/unidades-manejos-seguros-secano-form/unidades-manejos-seguros-secano-form.component';
 
 export interface ComponentesProductivosSegurosSecanoFormInput {
   action: FormActionType;
-  componente: ComponenteProductivoSegurosSecano;
+  componente: ComponenteProductivoSegurosSecano; 
   cultivos: CultivoSegurosSecano[];
   ciclos: CicloSegurosSecano[];
   aseguradoras: AseguradoraSegurosSecano[];
@@ -40,7 +41,7 @@ export class ComponentesProductivosSegurosSecanoFormComponent
     contratoSeguroZPId: [null],
 
     superficieSembrada: [null],
-    superficieCosechada: [null],
+    superficieCosechada: [null, [UnidadesComponenteValidador]],
     fechaSiembra: [null],
     fechaCosecha: [null],
     porcentajeRiego: [null],
@@ -58,10 +59,16 @@ export class ComponentesProductivosSegurosSecanoFormComponent
 
   planesCoreFormInput: PlanesCoreFormInput = null;
   chacraAsegurada: boolean;
+  analisisSuelo: boolean;
+  ciclosCultivo;
+  hoy: String;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    let dHoy = new Date();
+    this.hoy = dHoy.getFullYear() + '-' + (dHoy.getMonth()+1).toString()  + '-' + dHoy.getDate();
+  }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {        
     if (this.formInput.action === FormActionType.Update) {
       this.form.patchValue({
         cultivoId: this.formInput.componente.cultivoId,
@@ -89,6 +96,24 @@ export class ComponentesProductivosSegurosSecanoFormComponent
         zafra: this.formInput.componente.zafra,
         anio: this.formInput.componente.anio
       });
+      
+      //chacra asegurada
+      if (this.formInput.componente.aseguradoraId || this.formInput.componente.polizaId){
+        this.onChangeAsegurada({value: "SI"});
+      } else {
+        this.onChangeAsegurada({value: "NO"});
+      }
+      //analisis suelo
+      if (this.formInput.componente.analisisSueloPBray || this.formInput.componente.analisisSueloK){
+        this.onChangeAnalisis({value: "SI"});
+      } else {
+        this.onChangeAnalisis({value: "NO"});
+      }
+
+      if (this.formInput.componente.cultivoId){
+        this.onCultivoChange({value:this.formInput.componente.cultivoId});
+      }
+
     }
     this.form.valueChanges.subscribe(_ =>
       this.formValueChanges.emit({
@@ -100,7 +125,7 @@ export class ComponentesProductivosSegurosSecanoFormComponent
   }
 
   onChangeAsegurada($event){    
-    // se agregan los validadores condicionales    
+    // se agregan los validadores condicionales       
     if($event.value === 'SI') {
       this.chacraAsegurada = true;
       /*this.form.get('numGestion').setValidators(Validators.required);      
@@ -116,7 +141,25 @@ export class ComponentesProductivosSegurosSecanoFormComponent
       this.form.get('anioGestion').setValue(null);
       this.form.get('anioGestion').updateValueAndValidity()*/
       //this.form.get('numLote').setValidators(Validators.required);
+    }     
+  }
+
+  onChangeAnalisis($event){    
+    // se agregan los validadores condicionales    
+    if($event.value === 'SI') {
+      this.analisisSuelo = true;      
+    } else {
+      this.analisisSuelo = false;      
     }
+  }
+
+  onCultivoChange($event){     
+    let c = this.formInput.cultivos.find( c => c.cultivoId === $event.value);    
+    this.ciclosCultivo = [];
+    c.cultivoCicloId.forEach(cicloId => {
+      let ciclo = this.formInput.ciclos.find( ci => ci.cicloId === cicloId );
+      this.ciclosCultivo.push(ciclo);
+    });        
   }
   
 }

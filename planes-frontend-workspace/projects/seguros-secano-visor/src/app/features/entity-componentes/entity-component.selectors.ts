@@ -26,3 +26,15 @@ export const selectAllEntityComponentes: (
 ) => ComponenteProductivoSegurosSecano[] = entityComponentesAdapter.getSelectors(
   selectEntityComponentesState
 ).selectAll;
+
+export const selectComponenteByChacraId = (id: string) =>
+  createSelector(
+    selectAllEntityComponentes,
+    (allComponentes: ComponenteProductivoSegurosSecano[]) => {
+      if (allComponentes) {
+        return allComponentes.find(c => c.chacraId === id);
+      } else {
+        return null;
+      }
+    }
+  );

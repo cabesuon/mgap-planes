@@ -4,7 +4,7 @@
   <div class="row">
     <mat-form-field class="col" appearance="fill">
       <mat-label>Cultivo</mat-label>
-      <mat-select formControlName="cultivoId" >
+      <mat-select formControlName="cultivoId" (selectionChange)="onCultivoChange($event)">
         <ng-container *ngFor="let c of formInput.cultivos">
           <mat-option *ngIf="c.cultivoEstacionId === 'VERANO'"
           [value]="c.cultivoId">{{c.cultivoNombre}}</mat-option>
@@ -31,7 +31,7 @@
     <mat-form-field class="col" appearance="fill">
       <mat-label>Ciclo</mat-label>
       <mat-select formControlName="cicloId">
-        <mat-option *ngFor="let c of formInput.ciclos"
+        <mat-option *ngFor="let c of ciclosCultivo"
         [value]="c.cicloId">{{c.cicloNombre}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -42,8 +42,8 @@
     <div class="col">
       <mat-label id="chacra_asegurada_label">Chacra asegurada</mat-label>  
       <mat-radio-group class="chacraasegurada-radio-group" appearance="fill" aria-label="chacra_asegurada_label" (change)="onChangeAsegurada($event)"> 
-        <mat-radio-button class="chacraasegurada-radio-button" value="SI">Sí</mat-radio-button>
-        <mat-radio-button class="chacraasegurada-radio-button" value="NO">No</mat-radio-button>
+        <mat-radio-button [checked]="chacraAsegurada === true" class="chacraasegurada-radio-button" value="SI">Sí</mat-radio-button>
+        <mat-radio-button [checked]="chacraAsegurada === false"class="chacraasegurada-radio-button" value="NO">No</mat-radio-button>
       </mat-radio-group>
     </div>
   </div>  
@@ -71,15 +71,16 @@
   </div>
 
   <!-- contrato seguro -->
-  <!-- <div class="row">
+  <div class="row">
     <mat-form-field class="col" appearance="fill">
       <mat-label>Contrató seguro de póliza el año pasado</mat-label>
       <mat-select formControlName="contratoSeguroZPId">
-        <mat-option *ngFor="let cs of Object.values(formInput.contratoSeguroZP);"
-        [value]="cs.value">{{cs.value}}</mat-option>
+        <mat-option value="TRADICIONAL">Tradicional</mat-option>
+        <mat-option value="INDICE">Índice</mat-option>
+        <mat-option value="NO">No</mat-option>        
       </mat-select>
     </mat-form-field>
-  </div>  -->
+  </div>
 
   <!-- fecha de siembra -->
   <div class="row">
@@ -91,13 +92,19 @@
       formControlName="fechaSiembra">
     </mat-form-field>
   </div>
+  <mat-hint> 
+    <mat-icon> 
+      <fa-icon icon="info"></fa-icon> 
+    </mat-icon>
+    Se solicita a quien complete el dato, que esta fecha corresponde tanto a la fecha de siembra o en caso de resiembra a la última fecha en la que se resembró el 50% o más de la superficie de la chacra.
+  </mat-hint>  
 
   <!-- superficieSembrada -->
   <div class="row">
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Superficie sembrada</mat-label>
+      <mat-label>Superficie sembrada (ha)</mat-label>
       <input matInput
-      placeholder="Superficie sembrada"
+      placeholder="Superficie sembrada (ha)"
       type="number"
       formControlName="superficieSembrada">
     </mat-form-field>
@@ -107,30 +114,33 @@
   <div class="row">
     <mat-form-field class="col" appearance="fill">
       <mat-label>Fecha cosecha</mat-label>
-      <input matInput
+      <input matInput 
+      [max]="hoy" 
+      [min]="form.get('fechaSiembra').value"  
       placeholder="Fecha de cosecha"
       type="date"
       formControlName="fechaCosecha">
     </mat-form-field>
-  </div>  
+  </div>
 
   <!-- superficieCosechada -->
-  <div class="row">
+  <div class="row" *ngIf="(form.get('fechaCosecha').value | date:'dd/MM/yyyy')">    
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Superficie cosechada</mat-label>
+      <mat-label>Superficie cosechada (ha)</mat-label>
       <input matInput
-      placeholder="Superficie cosechada"
+      placeholder="Superficie cosechada (ha)"
       type="number"
-      formControlName="superficieCosechada">
+      formControlName="superficieCosechada"
+      > 
     </mat-form-field>
   </div>  
 
   <!-- fertilizacionP2O5 -->
   <div class="row">    
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Fertilización P205</mat-label>
+      <mat-label>Fertilización P205 (kg/ha)</mat-label>
       <input matInput
-      placeholder="Fertilización P205"
+      placeholder="Fertilización P205 (kg/ha)"
       type="number"
       formControlName="fertilizacionP2O5">
     </mat-form-field>
@@ -139,9 +149,9 @@
   <!-- fertilizacionK2O -->
   <div class="row">
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Fertilización K20</mat-label>
+      <mat-label>Fertilización K20 (kg/ha)</mat-label>
       <input matInput
-      placeholder="Fertilización K20"
+      placeholder="Fertilización K20 (kg/ha)"
       type="number"
       formControlName="fertilizacionK2O">
     </mat-form-field>
@@ -150,9 +160,9 @@
   <!-- fertilizacionN -->
   <div class="row">    
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Fertilización N</mat-label>
+      <mat-label>Fertilización N (kg/ha)</mat-label>
       <input matInput
-      placeholder="Fertilización N"
+      placeholder="Fertilización N (kg/ha)"
       type="number"
       formControlName="fertilizacionN">
     </mat-form-field>
@@ -161,40 +171,51 @@
   <!-- fertilizacionS -->
   <div class="row">    
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Fertilización S</mat-label>
+      <mat-label>Fertilización S (kg/ha)</mat-label>
       <input matInput
-      placeholder="Fertilización S"
+      placeholder="Fertilización S (kg/ha)"
       type="number"
       formControlName="fertilizacionS">
     </mat-form-field>
   </div>  
 
+  <!-- analisi suelo? -->      
+  <div class="row">
+    <div class="col">
+      <mat-label id="suelo_label">Análisis de suelo</mat-label>  
+      <mat-radio-group class="chacraasegurada-radio-group" appearance="fill" aria-label="suelo_label" (change)="onChangeAnalisis($event)"> 
+        <mat-radio-button [checked]="analisisSuelo === true" class="chacraasegurada-radio-button" value="SI">Sí</mat-radio-button>
+        <mat-radio-button [checked]="analisisSuelo === false" class="chacraasegurada-radio-button" value="NO">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>     
+
   <!-- analisisSueloPBray -->
-  <div class="row">    
+  <div class="row" *ngIf="analisisSuelo === true">    
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Análisis suelo PBray</mat-label>
+      <mat-label>Análisis suelo PBray (ppm)</mat-label>
       <input matInput
-      placeholder="Análisis suelo PBray"
+      placeholder="Análisis suelo PBray (ppm)"
       type="number"
       formControlName="analisisSueloPBray">
     </mat-form-field>
   </div> 
 
   <!-- analisisSueloK -->
-  <div class="row">  
+  <div class="row" *ngIf="analisisSuelo === true">  
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Análisis suelo K</mat-label>
+      <mat-label>Análisis suelo K (meq/100 g)</mat-label>
       <input matInput
-      placeholder="Análisis suelo K"
+      placeholder="Análisis suelo K (meq/100 g)"
       type="number"
       formControlName="analisisSueloK">
     </mat-form-field>
   </div> 
 
   <!-- Rendimiento -->
-  <div class="row">    
+  <div class="row" *ngIf="(form.get('fechaCosecha').value | date:'dd/MM/yyyy')">    
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Rendimiento</mat-label>
+      <mat-label>Rendimiento (kg/ha con hasta 14% de humedad, base limpia)</mat-label>
       <input matInput
       placeholder="Rendimiento"
       type="number"
