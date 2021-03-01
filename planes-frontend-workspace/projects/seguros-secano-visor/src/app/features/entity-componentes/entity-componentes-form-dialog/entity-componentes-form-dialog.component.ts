@@ -60,8 +60,11 @@ export class EntityComponentesFormDialogComponent implements OnInit {
     this.dialogRef.close(this.data);
   }
 
+  // Para actualizar el componente 
   onSubmit() {
-    const item = { ...this.formValue };
+    let dHoy = new Date(); 
+    this.formValue.fechaModificado = dHoy;    
+    const item = { ...this.formValue };    
     if (this.data.action === FormActionType.Add) {
       this.store.dispatch(new EntityComponentesAddRequestAction({ item }));
     } else {

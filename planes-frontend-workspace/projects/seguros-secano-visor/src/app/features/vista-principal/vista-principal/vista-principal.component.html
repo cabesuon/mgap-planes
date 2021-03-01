@@ -34,7 +34,7 @@
                 <h3 class="m-2">Unidades</h3>
                 <ul class="no-bullets m-2">
                   <li *ngFor="let u of rdata[e.empresaId].unidadesArr">
-                    {{u.unidadNombre}}
+                    {{u.unidadNombre}} | Chacras enviadas {{rdata[e.empresaId].unidades[u.unidadId].componentesEnviados}} de {{rdata[e.empresaId].unidades[u.unidadId].chacrasArr.length}}
                   </li>
                 </ul>
               </div>

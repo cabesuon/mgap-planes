@@ -55,7 +55,8 @@ import { selectAllEntityPersonas } from '../../entity-personas/entity-personas.s
 import { selectAllEntityAseguradoras } from '../../entity-aseguradoras/entity-aseguradoras.selectors';
 
 import { EntityUnidadesManejosActionTypes } from '../../entity-unidades/entity-unidades.actions';
-import { VistaUnidadComponentesFormDialogComponent } from '../../vista-unidad-componentes/vista-unidad-componentes-form-dialog/vista-unidad-componentes-form-dialog/vista-unidad-componentes-form-dialog.component'
+import { UnidadComponentesChangeFormDialogComponent } from '../../unidad-componentes/unidad-componentes-change-form-dialog/unidad-componentes-change-form-dialog.component'
+import { UnidadComponentesSendFormDialogComponent } from '../../unidad-componentes/unidad-componentes-send-form-dialog/unidad-componentes-send-form-dialog.component'
 
 const DIALOG_WIDTH = '300px';
 const DIALOG_MAX_HEIGHT = '500px';
@@ -312,7 +313,7 @@ export class VistaAdministrativoComponent implements OnInit, OnDestroy {
   }
 
   openDialogUnidadComponente(action: FormActionType, unidadManejo){        
-    this.dialog.open(VistaUnidadComponentesFormDialogComponent, {
+    this.dialog.open(UnidadComponentesChangeFormDialogComponent, {
       width: DIALOG_WIDTH,
       maxHeight: DIALOG_MAX_HEIGHT,
       data: unidadManejo
@@ -336,6 +337,18 @@ export class VistaAdministrativoComponent implements OnInit, OnDestroy {
   }
 
   onEditUM(ua){
-     this.openDialogUnidadManejo(FormActionType.Update, ua);
+    this.openDialogUnidadManejo(FormActionType.Update, ua);
+  }
+
+  onPresentUM(um){
+    this.openDialogUnidadComponenteSend(FormActionType.Update, um);
+  }
+
+  openDialogUnidadComponenteSend(action: FormActionType, unidadManejo){        
+    this.dialog.open(UnidadComponentesSendFormDialogComponent, {
+      width: DIALOG_WIDTH,
+      maxHeight: DIALOG_MAX_HEIGHT,
+      data: unidadManejo
+    }); 
   }
 }

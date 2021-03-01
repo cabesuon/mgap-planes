@@ -21,13 +21,12 @@ export const UnidadesComponenteValidador: ValidatorFn = (fg: FormGroup): Validat
   if (fg.parent && fg.parent.get('superficieSembrada') && fg.value){
     const sS = fg.parent.get('superficieSembrada').value;
     const sC = fg.value;
-    return sS !== null && sC !== null && sS <= sC
+    return sS !== null && sC !== null && sS >= sC
     ? null
     : { superficieCosechada: true };
   } else {
     return null
-  }
-  
+  }  
 };
 
 @Component({
@@ -50,6 +49,7 @@ export class UnidadesManejosSegurosSecanoFormComponent implements OnInit {
 
     aseguradoraId: [null],
     polizaId: [null],
+    tipoSeguro: [null],
     contratoSeguroZPId: [null],
 
     superficieSembrada: [null],
@@ -76,7 +76,7 @@ export class UnidadesManejosSegurosSecanoFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     let dHoy = new Date();
-    this.hoy = dHoy.getFullYear() + '-' + dHoy.getMonth()+1  + '-' + dHoy.getDate();
+    this.hoy = dHoy.getFullYear() + '-' + (dHoy.getMonth()+1).toString().padStart(2,"0")  + '-' + dHoy.getDate().toString().padStart(2,"0");
   }
 
   ngOnInit(): void {
@@ -91,6 +91,7 @@ export class UnidadesManejosSegurosSecanoFormComponent implements OnInit {
 
         aseguradoraId: this.formInput.unidad.aseguradoraId,
         polizaId: this.formInput.unidad.polizaId,
+        tipoSeguro: this.formInput.unidad.tipoSeguro,
         contratoSeguroZPId: this.formInput.unidad.contratoSeguroZPId,
 
         superficieSembrada: this.formInput.unidad.superficieSembrada,

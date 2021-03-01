@@ -1,0 +1,20 @@
+<h2 class="text-uppercase mb-2" mat-dialog-title>
+    Presentar chacras de {{unidad.unidadNombre}}
+</h2>
+   
+<lib-table [params]="tableParams"></lib-table>
+
+<ng-container *ngIf="chacrasNoValidadas.length != 0">
+    <br>
+    <p>Debe completar las chacras no validadas antes de poder presentarlas.</p>
+</ng-container>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="onCancel()">
+      Cancelar
+    </button>
+    <button mat-raised-button (click)="onSubmit()"
+      class="ml-2" [disabled]="this.chacrasNoValidadas.length != 0">
+      Enviar
+    </button>
+</div>

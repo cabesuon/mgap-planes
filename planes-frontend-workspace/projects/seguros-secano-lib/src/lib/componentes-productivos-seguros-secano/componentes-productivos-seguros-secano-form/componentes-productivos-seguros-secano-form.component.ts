@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder, ValidatorFn, FormGroup, ValidationErrors } from '@angular/forms';
 
 import { FormActionType, PlanesCoreFormInput, dateToString } from 'planes-core-lib';
 import { CultivoSegurosSecano } from '../../cultivos-seguros-secano/cultivos-seguros-secano.model';
@@ -16,6 +16,14 @@ export interface ComponentesProductivosSegurosSecanoFormInput {
   aseguradoras: AseguradoraSegurosSecano[];
   contratoSeguroZP: ComponenteContratoSeguroZP;     
 }
+
+export const ComponenteSueloValidador: ValidatorFn = (fg: FormGroup): ValidationErrors | null => {  
+  let ret = null;
+  if (!(fg.parent && (fg.parent.get('analisisSueloPBray') || fg.parent.get('analisisSueloK')))){    
+    ret = { analisisSuelo: true };
+  } 
+  return ret    
+};
 
 @Component({
   selector: 'lib-componentes-productivos-seguros-secano-form',
@@ -38,20 +46,21 @@ export class ComponentesProductivosSegurosSecanoFormComponent
 
     aseguradoraId: [null],
     polizaId: [null],
-    contratoSeguroZPId: [null],
+    tipoSeguro: [null],
+    contratoSeguroZPId: [null, [Validators.required]],
 
-    superficieSembrada: [null],
-    superficieCosechada: [null, [UnidadesComponenteValidador]],
-    fechaSiembra: [null],
-    fechaCosecha: [null],
+    superficieSembrada: [null, [Validators.required]],
+    superficieCosechada: [null, [Validators.required, UnidadesComponenteValidador]],
+    fechaSiembra: [null, [Validators.required]],
+    fechaCosecha: [null, [Validators.required]],
     porcentajeRiego: [null],
-    fertilizacionP2O5: [null],
-    fertilizacionK2O: [null],
-    fertilizacionN: [null],
-    fertilizacionS: [null],
+    fertilizacionP2O5: [null, [Validators.required]],
+    fertilizacionK2O: [null, [Validators.required]],
+    fertilizacionN: [null, [Validators.required]],
+    fertilizacionS: [null, [Validators.required]],
     analisisSueloPBray: [null],
     analisisSueloK: [null],
-    rendimiento: [null],
+    rendimiento: [null, [Validators.required]],
 
     zafra: [null],
     anio: [null]
@@ -65,7 +74,7 @@ export class ComponentesProductivosSegurosSecanoFormComponent
 
   constructor(private fb: FormBuilder) {
     let dHoy = new Date();
-    this.hoy = dHoy.getFullYear() + '-' + (dHoy.getMonth()+1).toString()  + '-' + dHoy.getDate();
+    this.hoy = dHoy.getFullYear() + '-' + (dHoy.getMonth()+1).toString().padStart(2,"0")  + '-' + dHoy.getDate().toString().padStart(2,"0");    
   }
 
   ngOnInit(): void {        
@@ -78,6 +87,7 @@ export class ComponentesProductivosSegurosSecanoFormComponent
 
         aseguradoraId: this.formInput.componente.aseguradoraId,
         polizaId: this.formInput.componente.polizaId,
+        tipoSeguro: this.formInput.componente.tipoSeguro,
         contratoSeguroZPId: this.formInput.componente.contratoSeguroZPId,
 
         superficieSembrada: this.formInput.componente.superficieSembrada,
@@ -103,6 +113,7 @@ export class ComponentesProductivosSegurosSecanoFormComponent
       } else {
         this.onChangeAsegurada({value: "NO"});
       }
+
       //analisis suelo
       if (this.formInput.componente.analisisSueloPBray || this.formInput.componente.analisisSueloK){
         this.onChangeAnalisis({value: "SI"});
@@ -128,28 +139,37 @@ export class ComponentesProductivosSegurosSecanoFormComponent
     // se agregan los validadores condicionales       
     if($event.value === 'SI') {
       this.chacraAsegurada = true;
-      /*this.form.get('numGestion').setValidators(Validators.required);      
-      this.form.get('numLote').clearValidators();
-      this.form.get('numLote').setValue(null);
-      this.form.get('numLote').updateValueAndValidity()*/
+      this.form.get('aseguradoraId').setValidators(Validators.required);            
+      this.form.get('polizaId').setValidators(Validators.required);    
+      this.form.get('tipoSeguro').setValidators(Validators.required);   
     } else {
       this.chacraAsegurada = false;
-      /*this.form.get('numGestion').clearValidators();
-      this.form.get('numGestion').setValue(null);
-      this.form.get('numGestion').updateValueAndValidity()*/
-      /*this.form.get('anioGestion').clearValidators();
-      this.form.get('anioGestion').setValue(null);
-      this.form.get('anioGestion').updateValueAndValidity()*/
-      //this.form.get('numLote').setValidators(Validators.required);
+      this.form.get('aseguradoraId').clearValidators();
+      this.form.get('aseguradoraId').setValue(null);
+      this.form.get('aseguradoraId').updateValueAndValidity()
+      this.form.get('polizaId').clearValidators();
+      this.form.get('polizaId').setValue(null);
+      this.form.get('polizaId').updateValueAndValidity();      
+      this.form.get('tipoSeguro').clearValidators();
+      this.form.get('tipoSeguro').setValue(null);
+      this.form.get('tipoSeguro').updateValueAndValidity();      
     }     
   }
 
   onChangeAnalisis($event){    
     // se agregan los validadores condicionales    
     if($event.value === 'SI') {
-      this.analisisSuelo = true;      
+      this.analisisSuelo = true;
+      this.form.get('analisisSueloPBray').setValidators(ComponenteSueloValidador);
+      this.form.get('analisisSueloK').setValidators(ComponenteSueloValidador);
     } else {
-      this.analisisSuelo = false;      
+      this.analisisSuelo = false;     
+      this.form.get('analisisSueloPBray').clearValidators();
+      this.form.get('analisisSueloPBray').setValue(null);
+      this.form.get('analisisSueloPBray').updateValueAndValidity(); 
+      this.form.get('analisisSueloK').clearValidators();
+      this.form.get('analisisSueloK').setValue(null);
+      this.form.get('analisisSueloK').updateValueAndValidity();  
     }
   }
 

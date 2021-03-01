@@ -2,22 +2,22 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store, select, ActionsSubject } from '@ngrx/store';
-import { AppState } from '../../../../core/core.state';
-import { selectUnidadById } from '../../../entity-unidades/entity-unidades.selectors';
-import { selectChacrasByUnidadId } from '../../../entity-chacras/entity-chacras.selectors';
-import { selectComponenteByChacraId, selectAllEntityComponentes } from '../../../entity-componentes/entity-component.selectors';
-import { EntityComponentesChangeRequestAction } from '../../../entity-componentes/entity-componentes.actions';
+import { AppState } from '../../../core/core.state';
+import { selectUnidadById } from '../../entity-unidades/entity-unidades.selectors';
+import { selectChacrasByUnidadId } from '../../entity-chacras/entity-chacras.selectors';
+import { selectComponenteByChacraId, selectAllEntityComponentes } from '../../entity-componentes/entity-component.selectors';
+import { EntityComponentesChangeRequestAction } from '../../entity-componentes/entity-componentes.actions';
 import { UnidadManejoSegurosSecano, ChacraSegurosSecano, ComponenteProductivoSegurosSecano } from 'seguros-secano-lib';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { createEmptyComponenteProductivoSegurosSecano } from 'projects/seguros-secano-lib/src/public-api';
 
 @Component({
-  selector: 'app-vista-unidad-componentes-form-dialog',
-  templateUrl: './vista-unidad-componentes-form-dialog.component.html',
-  styleUrls: ['./vista-unidad-componentes-form-dialog.component.scss']
+  selector: 'app-unidad-componentes-change-form-dialog',
+  templateUrl: './unidad-componentes-change-form-dialog.component.html',
+  styleUrls: ['./unidad-componentes-change-form-dialog.component.scss']
 })
-export class VistaUnidadComponentesFormDialogComponent implements OnInit {  
+export class UnidadComponentesChangeFormDialogComponent implements OnInit {  
   unidad: UnidadManejoSegurosSecano;
   chacras$: Observable<ChacraSegurosSecano[]>;  
   componentes: ComponenteProductivoSegurosSecano[];
@@ -26,7 +26,7 @@ export class VistaUnidadComponentesFormDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private store: Store<AppState>,
-    public dialogRef: MatDialogRef<VistaUnidadComponentesFormDialogComponent>,
+    public dialogRef: MatDialogRef<UnidadComponentesChangeFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any      
   ) {    
   }

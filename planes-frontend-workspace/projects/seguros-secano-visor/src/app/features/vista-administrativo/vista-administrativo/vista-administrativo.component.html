@@ -81,7 +81,12 @@
               (click)="onEditUM(ua.unidad)"
               matTooltip="Editar unidad de manejo">
                 <mat-icon><fa-icon icon="edit"></fa-icon></mat-icon>
-              </button>
+            </button>
+            <button mat-icon-button
+              (click)="onPresentUM(ua.unidad)"
+              matTooltip="Presentar todas las chacras de la unidad de manejo">
+                <mat-icon><fa-icon icon="file-import"></fa-icon></mat-icon>
+            </button>
           </div>
           <div class="row table-container">
             <lib-componentes-productivos-seguros-secano-table

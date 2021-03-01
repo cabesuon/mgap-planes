@@ -70,10 +70,21 @@
     </mat-form-field>
   </div>
 
+  <!-- tipo seguro -->
+  <div class="row" *ngIf="chacraAsegurada === true">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Tipo de seguro</mat-label>
+      <mat-select formControlName="tipoSeguro">
+        <mat-option value="TRADICIONAL">Tradicional</mat-option>
+        <mat-option value="INDICE">Índice</mat-option>        
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   <!-- contrato seguro -->
   <div class="row">
     <mat-form-field class="col" appearance="fill">
-      <mat-label>Contrató seguro de póliza el año pasado</mat-label>
+      <mat-label>Chacra asegurada el año anterior</mat-label>
       <mat-select formControlName="contratoSeguroZPId">
         <mat-option value="TRADICIONAL">Tradicional</mat-option>
         <mat-option value="INDICE">Índice</mat-option>

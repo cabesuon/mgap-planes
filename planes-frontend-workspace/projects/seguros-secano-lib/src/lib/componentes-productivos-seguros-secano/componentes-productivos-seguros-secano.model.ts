@@ -9,6 +9,7 @@ export interface ComponenteProductivoSegurosSecano {
 
   aseguradoraId: string;
   polizaId: string;
+  tipoSeguro: string;
   contratoSeguroZPId: string;
 
   superficieSembrada: number;
@@ -65,6 +66,7 @@ export function createEmptyComponenteProductivoSegurosSecano(): ComponenteProduc
     cultivoAntecesorId: null,
     aseguradoraId: null,
     polizaId: null,
+    tipoSeguro: null,
     contratoSeguroZPId: null,
     superficieSembrada: null,
     superficieCosechada: null,
@@ -94,6 +96,7 @@ export function createBaseComponenteProductivoSegurosSecano(
   cultivoAntecesorId: string,
   aseguradoraId: string,
   polizaId: string,
+  tipoSeguro: string,
   contratoSeguroZPId: string,
   superficieSembrada: number,
   superficieCosechada: number,
@@ -122,6 +125,7 @@ export function createBaseComponenteProductivoSegurosSecano(
     cultivoAntecesorId,
     aseguradoraId,
     polizaId,
+    tipoSeguro,
     contratoSeguroZPId,
     superficieSembrada,
     superficieCosechada,
@@ -147,4 +151,9 @@ export enum ComponenteContratoSeguroZP {
   TRADICIONAL = 'Tradicional',
   INDICE = 'Índice',
   NO = 'No'
+}
+
+export enum ComponenteTipoSeguro {
+  TRADICIONAL = 'Tradicional',
+  INDICE = 'Índice'  
 }

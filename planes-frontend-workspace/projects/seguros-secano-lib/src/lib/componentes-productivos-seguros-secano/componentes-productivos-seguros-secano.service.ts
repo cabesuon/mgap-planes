@@ -64,4 +64,28 @@ export class ComponentesProductivosSegurosSecanoService {
       componentesIds: [c.componenteId]
     });
   }
+
+  isValidComponenteProductivo(c: ComponenteProductivoSegurosSecano): boolean {
+    // verificar que no sean null los atributos obligatorios
+    // las fechas ya estan verificadas
+    // verificar que la sup de cosecha no se mayor a la siembra
+    let ret = false;    
+    if (c.cultivoId && 
+        c.cicloId && 
+        c.contratoSeguroZPId && 
+        c.superficieSembrada && 
+        c.superficieCosechada && 
+        c.fechaSiembra && 
+        c.fechaCosecha &&
+        c.fertilizacionP2O5 &&
+        c.fertilizacionK2O &&
+        c.fertilizacionN &&
+        c.fertilizacionS &&
+        c.rendimiento){      
+      if (c.superficieSembrada >= c.superficieCosechada){
+          ret = true;          
+      }
+    }    
+    return ret;       
+  }
 }

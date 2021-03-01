@@ -105,8 +105,7 @@ export class EntityChacrasFormDialogComponent implements OnInit {
         );
       }
       this.data.chacra = item;
-      this.dialogRef.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
+      this.dialogRef.afterClosed().subscribe(        
       );
       this.dialogRef.close(this.data);
             
