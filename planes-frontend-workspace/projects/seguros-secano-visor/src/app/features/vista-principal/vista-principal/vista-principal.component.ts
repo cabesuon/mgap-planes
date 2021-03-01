@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { DOCUMENT } from '@angular/common';
 
 import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
@@ -47,7 +48,8 @@ export class VistaPrincipalComponent implements OnInit {
     private notificationService: NotificationService,
     private loggingService: LoggingService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   ngOnInit(): void {
@@ -147,6 +149,9 @@ export class VistaPrincipalComponent implements OnInit {
           '/features/administrativo',
           { EmpresaId: empresa.empresaId }
         ]);
+        break;
+      case 'GotoREUNE':
+        this.document.location.href = 'https://200.40.237.40/reunetest/inicio.aspx';
         break;
     }
   }

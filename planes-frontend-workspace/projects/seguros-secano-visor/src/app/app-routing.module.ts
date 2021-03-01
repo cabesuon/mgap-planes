@@ -11,11 +11,7 @@ const routes: Routes = [
     path: 'features',
     loadChildren: () =>
       import('./features/features.module').then(m => m.FeaturesModule)
-  },
-  {
-    path: 'reune',
-    redirectTo: 'https://200.40.237.40/reunetest/inicio.aspx'
-  },  
+  },    
   {
     path: '**',
     redirectTo: 'features'

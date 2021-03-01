@@ -7,11 +7,16 @@
           <div class="col border-primary">
             <h1>
               {{empresasName[i]}}
-            </h1>
+            </h1>            
             <div class="title-extra">
               {{empresasNumber[i]}}
             </div>
             <div>
+              <button mat-icon-button
+              (click)="actionClick('GotoREUNE', e)"
+              matTooltip="Ir a REUNE">
+                <mat-icon><fa-icon icon="edit"></fa-icon></mat-icon>
+              </button>
               <button mat-icon-button
               (click)="actionClick('GotoVistaMapa', e)"
               matTooltip="Ver en Mapa">
