@@ -20,6 +20,7 @@ import { createEmptyComponenteProductivoSegurosSecano } from 'projects/seguros-s
 export class UnidadComponentesChangeFormDialogComponent implements OnInit {  
   unidad: UnidadManejoSegurosSecano;
   chacras$: Observable<ChacraSegurosSecano[]>;  
+  chacras: ChacraSegurosSecano[] = [];  
   componentes: ComponenteProductivoSegurosSecano[];
   selectedOptions;
 
@@ -34,8 +35,18 @@ export class UnidadComponentesChangeFormDialogComponent implements OnInit {
   ngOnInit(): void {    
     let unidadId = this.data.id;
     this.store.pipe(select(selectUnidadById(unidadId))).subscribe(u => this.unidad = u);      
-    this.chacras$ = this.store.pipe(select(selectChacrasByUnidadId(unidadId)));   
     this.store.pipe(select(selectAllEntityComponentes)).subscribe(c => this.componentes = c );
+    this.store.pipe(select(selectChacrasByUnidadId(unidadId))).subscribe(
+      chacras => {
+        chacras.forEach(chacra => {
+          const componenteChacra = this.componentes.find(comp => comp.chacraId == chacra.chacraId);
+          if (componenteChacra.fechaEnviado == null){
+            this.chacras = [...this.chacras, chacra]
+          }
+        });
+      }
+    );    
+    
   }
 
   onCancel(){

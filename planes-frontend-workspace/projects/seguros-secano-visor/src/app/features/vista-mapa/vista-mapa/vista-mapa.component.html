@@ -1,18 +1,7 @@
 <div class="container-fluid">
   <div class="row pr-3 pl-3 mt-2">
-
-    <div class="col-2">
-      <div class="row mapa-toolbar-tool-row">
-
-        <button mat-stroked-button (click)="toolClicked('AddChacra', null)" color="primary"
-        [disabled]="!empresaId || !(polygons$ | async) || (polygons$ | async).length === 0">
-          <fa-icon icon="plus-circle"></fa-icon>
-          <span class="ml-2">Nueva Chacra</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="col-8">
+                
+    <div class="col-10">
       <div class="row mapa-toolbar-tool-row">
         <mat-form-field appearance="fill" color="accent" class="mr-1">
           <mat-label>Unidad de manejo</mat-label>
@@ -31,16 +20,22 @@
           </mat-select>
         </mat-form-field>
 
-        <button mat-stroked-button (click)="toolClicked('UpdateChacra', chacra.value)"
-        color="accent" class="mr-1" [disabled]="!chacra.value">
-          <fa-icon icon="edit"></fa-icon>
-          <span class="ml-2">Modificar Chacra</span>
+        <button mat-icon-button (click)="toolClicked('AddChacra', null)"
+        color="basic" class="mr-1" text="Nueva Chacra"
+        [disabled]="!empresaId || !(polygons$ | async) || (polygons$ | async).length === 0">
+          <fa-icon icon="plus-circle"></fa-icon>          
+        </button>      
+
+        <button mat-icon-button (click)="toolClicked('UpdateChacra', chacra.value)"
+        color="basic" class="mr-1" text="Modificar Chacra"
+        [disabled]="!chacra.value">
+          <fa-icon icon="edit"></fa-icon>          
         </button>
 
-        <button mat-stroked-button (click)="toolClicked('DeleteChacra', chacra.value)"
-        color="accent" [disabled]="!chacra.value">
-          <fa-icon icon="trash"></fa-icon>
-          <span class="ml-2">Eliminar Chacra</span>
+        <button mat-icon-button (click)="toolClicked('DeleteChacra', chacra.value)"
+        color="basic" text="Eliminar Chacra"
+        [disabled]="!chacra.value">
+          <fa-icon icon="trash"></fa-icon>          
         </button>
       </div>
     </div>
@@ -71,6 +66,9 @@
       <lib-map-core-control
         [chacrasCore]="(chacras$ | async)"
         [dibujosCore]="dibujos"
+        [includePendientes]="includePendientes"
+        [includeZonasExclusion]="includeZonasExclusion"
+        [sketchAvailableCreateTools]="dibujosTypes"
         (dibujoCreatedEvent)="dibujoCreatedEvent($event)"
         (dibujosDeletedEvent)="dibujosDeletedEvent($event)"
         (dibujosUpdatedEvent)="dibujosUpdatedEvent($event)"

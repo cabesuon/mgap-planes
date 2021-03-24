@@ -26,30 +26,35 @@ export interface UnidadManejoSegurosSecano {
   analisisSueloK: number;
   rendimiento: number;
 
-  zafra: string;
+  zafra: number;
   anio: number;
 
   fechaCreado: Date;
   fechaModificado: Date;
   fechaEnviado: Date;
+
+  estado: number;
+  tieneAnalisisSuelo: boolean;
+  esAsegurado: boolean;
+  fechaBorrado: Date;
 }
 
 export interface UnidadesManejosSegurosSecanoQueryResults {
   success: boolean;
   error: { code: number; description: string };
-  unidades: UnidadManejoSegurosSecano[];
+  unidadesManejo: UnidadManejoSegurosSecano[];
 }
 
 export interface UnidadesManejosSegurosSecanoAddResult {
   success: boolean;
   error: { code: number; description: string };
-  unidades: UnidadManejoSegurosSecano;
+  unidadesManejo: UnidadManejoSegurosSecano;
 }
 
 export interface UnidadesManejosSegurosSecanoUpdateResult {
   success: boolean;
   error: { code: number; description: string };
-  unidades: UnidadManejoSegurosSecano;
+  unidadesManejo: UnidadManejoSegurosSecano;
 }
 
 export interface UnidadesManejosSegurosSecanoDeleteResult {
@@ -85,24 +90,58 @@ export function createEmptyUnidadManejoSegurosSecano(): UnidadManejoSegurosSecan
     anio: null,
     fechaCreado: null,
     fechaModificado: null,
-    fechaEnviado: null
+    fechaEnviado: null,
+    estado: null,
+    tieneAnalisisSuelo: null,
+    esAsegurado: null,
+    fechaBorrado: null
   };
 }
 
 export function createBaseUnidadManejoSegurosSecano(
   unidadId: string,
+  unidadNombre: string,
+
   empresaId: string,
+
   cultivoId: string,
   cicloId: string,
+
   cultivoAntecesorId: string,
+
   aseguradoraId: string,
   polizaId: string,
   tipoSeguro: string,
-  contratoSeguroZPId: string
+  contratoSeguroZPId: string,
+
+  superficieSembrada: number,
+  superficieCosechada: number,
+  fechaSiembra: Date,
+  fechaCosecha: Date,
+  fertilizacionP2O5: number,
+  fertilizacionK2O: number,
+  fertilizacionN: number,
+  fertilizacionS: number,
+  analisisSueloPBray: number,
+  analisisSueloK: number,
+  rendimiento: number,
+
+  zafra: number,
+  anio: number,
+
+  fechaCreado: Date,
+  fechaModificado: Date,
+  fechaEnviado: Date,
+
+  estado: number,
+  tieneAnalisisSuelo: boolean,
+  esAsegurado: boolean,
+  fechaBorrado: Date,
 ) {
   return {
     ...createEmptyUnidadManejoSegurosSecano(),
     unidadId,
+    unidadNombre,
     empresaId,
     cultivoId,
     cicloId,
@@ -110,6 +149,26 @@ export function createBaseUnidadManejoSegurosSecano(
     aseguradoraId,
     polizaId,
     tipoSeguro,
-    contratoSeguroZPId
+    contratoSeguroZPId,
+    superficieSembrada,
+    superficieCosechada,
+    fechaSiembra,
+    fechaCosecha,
+    fertilizacionP2O5,
+    fertilizacionK2O,
+    fertilizacionN,
+    fertilizacionS,
+    analisisSueloPBray,
+    analisisSueloK,
+    rendimiento,
+    zafra,
+    anio,
+    fechaCreado,
+    fechaModificado,
+    fechaEnviado,
+    estado,
+    tieneAnalisisSuelo,
+    esAsegurado,
+    fechaBorrado
   };
 }

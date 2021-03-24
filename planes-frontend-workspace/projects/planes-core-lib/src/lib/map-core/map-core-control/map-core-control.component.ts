@@ -24,6 +24,7 @@ import {
 import { EsriModulesService } from '../esri-modules.service';
 import {
   FeatureLayerProperties,
+  ImageryLayerProperties,
   MapImageLayerProperties,
   MapProperties,
   MapViewProperties,
@@ -39,7 +40,6 @@ import {
   SKETCH_AVAILABLE_CREATE_TOOLS
 } from '../map-core.model';
 import { MapCoreService } from '../map-core.service';
-// import * as mapCoreModel from '../map-core.model';
 
 const METER = 9001;
 const KILOMETER = 9036;
@@ -47,6 +47,10 @@ const KILOMETER = 9036;
 export interface InputFeatureLayer {
   source: Observable<any[]>;
   featureLayerProperties: FeatureLayerProperties;
+}
+
+export interface InputImageryLayer {
+  imageryLayerProperties: ImageryLayerProperties;
 }
 
 export interface InputMapImageLayer {
@@ -61,15 +65,15 @@ export interface InputMapImageLayer {
 export class MapCoreControlComponent implements OnInit, OnDestroy {
   // node reference
   @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
+  @ViewChild('measurementNode', { static: true })
+  private measurementEl: ElementRef;
+  @ViewChild('searchPadronNode', { static: true })
+  private searchPadronEl: ElementRef;
   // variables
-  private loaded = false;
+  loaded = false;
   private map: esri.Map = null;
   private view: esri.MapView = null;
-  private layers = {
-    mapImageLayers: [],
-    featureLayers: [],
-    graphicsLayers: []
-  };
+
   private chacrasFeatureLayer: esri.FeatureLayer = null;
   private lastChacrasAddFeatureEditResults: esri.FeatureEditResult[] = [];
   private zonasFeatureLayer: esri.FeatureLayer = null;
@@ -77,12 +81,17 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   private pendientesFeatureLayer: esri.FeatureLayer = null;
   private lastPendientesAddFeatureEditResults: esri.FeatureEditResult[] = [];
 
+  private padronesGraphicsLayer: esri.GraphicsLayer = null;
+
   private dibujosGraphicsLayer: esri.GraphicsLayer = null;
   private dicDibujosLabels: { [id: number]: esri.Graphic } = {};
   private circleGraphicsLayer: esri.GraphicsLayer = null;
 
   private circleRadioLine: esri.Graphic = null;
   private circleRadioText: esri.Graphic = null;
+
+  searchPadronCountResult: number = 0;
+  searchPadronTextResult: string = null;
 
   // esri modules
   private esri = {
@@ -98,6 +107,8 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     layers: {
       FeatureLayer: null,
       GraphicsLayer: null,
+      ImageryLayer: null,
+      MapImageLayer: null,
       support: {
         LabelClass: null
       }
@@ -107,10 +118,19 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
       SimpleFillSymbol: null,
       SimpleLineSymbol: null
     },
+    tasks: {
+      QueryTask: null,
+      support: {
+        Query: null
+      }
+    },
     views: { MapView: null },
     widgets: {
+      CoordinateConversion: null,
       Expand: null,
+      LayerList: null,
       Legend: null,
+      Measurement: null,
       ScaleBar: null,
       Sketch: null,
       SketchViewModel: null
@@ -118,7 +138,7 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   };
 
   // output
-  @Output() mapLoadedEvent = new EventEmitter<boolean>();
+  @Output() loadingEvent = new EventEmitter<boolean>();
   @Output() dibujoCreatedEvent = new EventEmitter<DibujoCore>();
   @Output() dibujosUpdatedEvent = new EventEmitter<DibujoCore[]>();
   @Output() dibujosDeletedEvent = new EventEmitter<number[]>();
@@ -126,11 +146,21 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   // input properties
   private _mapViewProperties: MapViewProperties = {
     zoom: 7,
-    center: [-56, -34]
+    center: [-56, -34],
+    popup: {
+      dockEnabled: true,
+      dockOptions: {
+        buttonEnabled: false,
+        breakpoint: false
+      }
+    }
   };
+
   private _mapProperties: MapProperties = {
     basemap: 'hybrid'
   };
+
+  private _imageryLayers: InputImageryLayer[] = [];
 
   private _mapImageLayers: InputMapImageLayer[] = [];
 
@@ -162,6 +192,16 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   get mapProperties(): MapProperties {
     return this._mapProperties;
   }
+
+  // imagery layers
+  @Input()
+  set imageryLayers(layers: InputImageryLayer[]) {
+    this._imageryLayers = layers;
+  }
+  get imageryLayers(): InputImageryLayer[] {
+    return this._imageryLayers;
+  }
+
   // map image layers
   @Input()
   set mapImageLayers(layers: InputMapImageLayer[]) {
@@ -189,7 +229,10 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   get chacrasCore() {
     return this._chacras;
   }
+  @Input() chacrasFeatureLayerProperties: any = null;
+  @Input() includePendientes: boolean = true;
   // zonas exclusion
+  @Input() includeZonasExclusion: boolean = true;
   @Input()
   set zonasExclusionCore(zonasExclusionCore: ZonaExclusionCore[]) {
     this._zonas = zonasExclusionCore || [];
@@ -220,6 +263,8 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     return this._sketchAvailableCreateTools;
   }
 
+  measurement: esri.Measurement = null;
+
   constructor(
     private esriModulesService: EsriModulesService,
     private mapCoreService: MapCoreService
@@ -230,41 +275,64 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
 
     const mapViewProperties: esri.MapViewProperties = {
       container: this.mapViewEl.nativeElement,
-      center: this.mapViewProperties.center,
-      zoom: this.mapViewProperties.zoom,
-      map: this.map
+      map: this.map,
+      ...this.mapViewProperties
     };
 
     this.view = new this.esri.views.MapView(mapViewProperties);
+  }
+
+  initImageryLayers() {
+    for (const l of this.imageryLayers) {
+      this.map.add(new this.esri.layers.ImageryLayer(l));
+    }
+  }
+
+  initMapImageLayers() {
+    for (const l of this.mapImageLayers) {
+      this.map.add(new this.esri.layers.MapImageLayer(l));
+    }
   }
 
   initFeatureLayers() {
     // init Chacras
     this.chacrasFeatureLayer = new this.esri.layers.FeatureLayer({
       ...CHACRAS_FEATURELAYERPROPERTIES,
+      ...this.chacrasFeatureLayerProperties,
       source: []
     });
     // init Pendientes
-    this.pendientesFeatureLayer = new this.esri.layers.FeatureLayer({
-      ...PENDIENTES_FEATURELAYERPROPERTIES,
-      source: []
-    });
+    if (this.includePendientes) {
+      this.pendientesFeatureLayer = new this.esri.layers.FeatureLayer({
+        ...PENDIENTES_FEATURELAYERPROPERTIES,
+        source: []
+      });
+    }
+
     this.updateChacras();
 
     this.map.add(this.chacrasFeatureLayer);
-    this.map.add(this.pendientesFeatureLayer);
 
     // init Zonas
-    this.zonasFeatureLayer = new this.esri.layers.FeatureLayer({
-      ...ZONAS_FEATURELAYERPROPERTIES,
-      source: []
-    });
-    this.updateZonas();
+    if (this.includeZonasExclusion) {
+      this.zonasFeatureLayer = new this.esri.layers.FeatureLayer({
+        ...ZONAS_FEATURELAYERPROPERTIES,
+        source: []
+      });
+      this.updateZonas();
+      this.map.add(this.zonasFeatureLayer);
+    }
 
-    this.map.add(this.zonasFeatureLayer);
+    if (this.includePendientes) {
+      this.map.add(this.pendientesFeatureLayer);
+    }
   }
 
   initGraphicsLayer() {
+    this.padronesGraphicsLayer = new this.esri.layers.GraphicsLayer({
+      listMode: 'hide'
+    });
+    this.map.add(this.padronesGraphicsLayer);
     this.circleRadioLine = new this.esri.Graphic({
       symbol: CIRCLE_SYMBOLS.line
     });
@@ -272,14 +340,18 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
       symbol: CIRCLE_SYMBOLS.text
     });
 
-    this.circleGraphicsLayer = new this.esri.layers.GraphicsLayer();
+    this.circleGraphicsLayer = new this.esri.layers.GraphicsLayer({
+      listMode: 'hide'
+    });
     this.circleGraphicsLayer.addMany([
       this.circleRadioLine,
       this.circleRadioText
     ]);
     this.map.add(this.circleGraphicsLayer);
 
-    this.dibujosGraphicsLayer = new this.esri.layers.GraphicsLayer();
+    this.dibujosGraphicsLayer = new this.esri.layers.GraphicsLayer({
+      title: 'Dibujos'
+    });
     this.map.add(this.dibujosGraphicsLayer);
 
     this.updateDibujos();
@@ -290,19 +362,128 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     // legend
     const legend = new this.esri.widgets.Legend({
       view: this.view,
-      // 2021019 se agrega para que solo muestre info de chacras
-      layerInfos: [{
-        layer: this.chacrasFeatureLayer
-      }]
+      layerInfos: [
+        {
+          layer: this.chacrasFeatureLayer,
+          title: 'Chacras'
+        },
+        {
+          layer: this.zonasFeatureLayer,
+          title: 'Zonas de Exclusión'
+        },
+        {
+          layer: this.pendientesFeatureLayer,
+          title: 'Pendientes'
+        }
+      ]
     });
     const legendExpand = new this.esri.widgets.Expand({
-      expandIconClass: 'esri-icon-layer-list',
+      expandIconClass: 'esri-icon-legend',
       view: this.view,
       expandTooltip: 'Ver Leyenda',
       collapseTooltip: 'Ocultar Leyenda',
       content: legend
     });
     this.view.ui.add(legendExpand, 'top-left');
+    // layerlist
+    const layerList = new this.esri.widgets.LayerList({
+      view: this.view,
+      listItemCreatedFunction: function(event) {
+        if (!event.item.parent) {
+          event.item.actionsSections = [
+            [
+              {
+                title: 'Aumentar opacidad',
+                className: 'esri-icon-up',
+                id: 'increase-opacity'
+              },
+              {
+                title: 'Disminuir opacidad',
+                className: 'esri-icon-down',
+                id: 'decrease-opacity'
+              }
+            ]
+          ];
+        }
+      }
+    });
+    const layerListExpand = new this.esri.widgets.Expand({
+      expandIconClass: 'esri-icon-layer-list',
+      view: this.view,
+      expandTooltip: 'Ver Contenidos',
+      collapseTooltip: 'Ocultar Contenidos',
+      content: layerList
+    });
+    this.view.ui.add(layerListExpand, 'top-left');
+    layerList.on('trigger-action', function(event) {
+      switch (event.action.id) {
+        case 'increase-opacity':
+          if (event.item.layer.opacity < 1) {
+            event.item.layer.opacity += 0.1;
+          }
+          break;
+        case 'decrease-opacity':
+          if (event.item.layer.opacity > 0) {
+            event.item.layer.opacity -= 0.1;
+          }
+          break;
+      }
+    });
+    // search padron
+    this.view.ui.add(
+      new this.esri.widgets.Expand({
+        view: this.view,
+        expandIconClass: 'esri-icon-search',
+        expandTooltip: 'Ver Búsqueda de Padrones',
+        collapseTooltip: 'Ocultar Búsqueda de Padrones',
+        content: this.searchPadronEl.nativeElement
+      }),
+      'top-left'
+    );
+    // coordinate conversion
+    const coordinate = new this.esri.widgets.CoordinateConversion({
+      view: this.view
+    });
+    this.view.ui.add(coordinate, 'bottom-left');
+    setTimeout(function() {
+      coordinate.formats = coordinate.formats.filter(
+        f => f.name === 'utm' || f.name === 'xy'
+      );
+    }, 500);
+    // measurement
+    const measurement = new this.esri.widgets.Measurement({
+      view: this.view
+    });
+    this.measurement = measurement;
+    this.view.ui.add(this.measurement, 'bottom-left');
+    const measurementExpand = new this.esri.widgets.Expand({
+      expandIconClass: 'esri-icon-measure',
+      view: this.view,
+      expandTooltip: 'Ver Herramientas de Medición',
+      collapseTooltip: 'Ocultar Herramientas de Edición',
+      content: this.measurementEl.nativeElement
+    });
+    this.view.ui.add(measurementExpand, 'top-left');
+    this.measurement.viewModel.watch('activeViewModel', function(
+      activeViewModel:
+        | __esri.DistanceMeasurement2DViewModel
+        | __esri.AreaMeasurement2DViewModel
+    ) {
+      if (!activeViewModel) {
+        return;
+      }
+      if (measurement.activeTool === 'distance') {
+        measurement.viewModel.linearUnit = 'kilometers';
+        activeViewModel.unitOptions = (activeViewModel.unitOptions as __esri.SystemOrLengthUnit[]).filter(
+          u => u === 'meters' || u === 'kilometers'
+        );
+      } else if (measurement.activeTool === 'area') {
+        measurement.viewModel.areaUnit = 'square-kilometers';
+        activeViewModel.unitOptions = (activeViewModel.unitOptions as __esri.SystemOrAreaUnit[]).filter(
+          u => u === 'square-meters' || u === 'square-kilometers'
+        );
+      }
+    });
     // sketch
     const sketch = new this.esri.widgets.Sketch({
       layer: this.dibujosGraphicsLayer,
@@ -312,8 +493,8 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     const sketchExpand = new this.esri.widgets.Expand({
       expandIconClass: 'esri-icon-edit',
       view: this.view,
-      expandTooltip: 'Ver Edición',
-      collapseTooltip: 'Ocultar Edición',
+      expandTooltip: 'Ver Herramientas de Edición',
+      collapseTooltip: 'Ocultar Herramientas de Edición',
       content: sketch
     });
     this.view.ui.add(sketchExpand, 'top-left');
@@ -338,6 +519,7 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loadingEvent.emit(true);
     this.esriModulesService
       .load([
         'esri/Map',
@@ -354,13 +536,21 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
 
         'esri/layers/FeatureLayer',
         'esri/layers/GraphicsLayer',
+        'esri/layers/ImageryLayer',
+        'esri/layers/MapImageLayer',
         'esri/layers/support/LabelClass',
 
         'esri/symbols/SimpleFillSymbol',
         'esri/symbols/SimpleLineSymbol',
 
+        'esri/tasks/QueryTask',
+        'esri/tasks/support/Query',
+
+        'esri/widgets/CoordinateConversion',
         'esri/widgets/Expand',
+        'esri/widgets/LayerList',
         'esri/widgets/Legend',
+        'esri/widgets/Measurement',
         'esri/widgets/Sketch',
         'esri/widgets/ScaleBar'
       ])
@@ -380,25 +570,35 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
 
           this.esri.layers.FeatureLayer,
           this.esri.layers.GraphicsLayer,
+          this.esri.layers.ImageryLayer,
+          this.esri.layers.MapImageLayer,
           this.esri.layers.support.LabelClass,
 
           this.esri.symbols.SimpleFillSymbol,
           this.esri.symbols.SimpleLineSymbol,
 
+          this.esri.tasks.QueryTask,
+          this.esri.tasks.support.Query,
+
+          this.esri.widgets.CoordinateConversion,
           this.esri.widgets.Expand,
+          this.esri.widgets.LayerList,
           this.esri.widgets.Legend,
+          this.esri.widgets.Measurement,
           this.esri.widgets.Sketch,
           this.esri.widgets.ScaleBar
         ] = modules;
 
         this.initMap();
+        this.initImageryLayers();
+        this.initMapImageLayers();
         this.initFeatureLayers();
         this.initGraphicsLayer();
         this.initWidgets();
 
         this.view.when(_ => {
-          this.loaded = this.view.ready;
-          this.mapLoadedEvent.emit(this.loaded);
+          this.loadingEvent.emit(false);
+          this.loaded = true;
         });
       });
   }
@@ -500,13 +700,21 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
         this.featureEditResultsToBoolean(results.deleteFeatureResults)
       ) {
         const ext = this.mapCoreService.unionExtents(
-          chacrasAddFeatures.map(f => f.geometry.extent)
+          chacrasAddFeatures.map(f => {
+            return f.geometry.extent;
+          })
         );
-        this.view.extent = this.esri.geometry.support.webMercatorUtils.geographicToWebMercator(
-          ext.expand(2)
-        );
+        if (ext) {
+          this.view.extent = this.esri.geometry.support.webMercatorUtils.geographicToWebMercator(
+            ext.expand(2)
+          );
+        }
       }
     });
+
+    if (!this.pendientesFeatureLayer) {
+      return;
+    }
 
     const pendientesAddFeatures = this._chacras
       .filter(c => c.chacraFactorLSGeometriaAsignado)
@@ -644,7 +852,7 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   }
 
   private updateCircleLabel(vertices: number[][]) {
-    this.circleRadioLine.geometry = this.esri.geometry.Polyline({
+    this.circleRadioLine.geometry = new this.esri.geometry.Polyline({
       paths: [vertices],
       spatialReference: this.view.spatialReference
     });
@@ -654,7 +862,7 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
       KILOMETER
     );
     // Update label graphic to show the length of the polyline
-    this.circleRadioText.geometry = this.esri.geometry.Point({
+    this.circleRadioText.geometry = new this.esri.geometry.Point({
       x: vertices[0][0] + (vertices[1][0] - vertices[0][0]) / 2,
       y: vertices[0][1] + (vertices[1][1] - vertices[0][1]) / 2,
       spatialReference: this.view.spatialReference
@@ -695,7 +903,6 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
   }
 
   onDibujoDelete(event) {
-    console.log('Delete > ', event);
     const deleted = event.graphics.map(
       (g: esri.Graphic) => g.attributes.DibujoId
     );
@@ -714,7 +921,6 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
         event.tool === 'reshape' ||
         event.tool === 'move'
       ) {
-        console.log('Update > ', event);
         this.dibujosUpdatedEvent.emit(
           event.graphics.map((g: esri.Graphic) => ({
             DibujoId: g.attributes.DibujoId,
@@ -778,10 +984,13 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
     toGeographic: boolean
   ): esri.Geometry {
     const obj = this.mapCoreService.jsonParse(json);
+    if (!obj) {
+      return null;
+    }
     let geometry: esri.Geometry = null;
-    if ('rings' in obj) {
+    if (obj.hasOwnProperty('rings')) {
       geometry = this.esri.geometry.Polygon.fromJSON(obj);
-    } else if ('paths' in obj) {
+    } else if (obj.hasOwnProperty('paths')) {
       geometry = this.esri.geometry.Polyline.fromJSON(obj);
     } else {
       geometry = this.esri.geometry.Point.fromJSON(obj);
@@ -792,5 +1001,91 @@ export class MapCoreControlComponent implements OnInit, OnDestroy {
       );
     }
     return geometry;
+  }
+
+  // measurement operations
+
+  onMeasureDistanceClick() {
+    this.measurement.activeTool = 'distance';
+  }
+
+  onMeasureAreaClick() {
+    this.measurement.activeTool = 'area';
+  }
+
+  onClearMeasureClick() {
+    this.measurement.clear();
+  }
+
+  // search padron
+
+  searchPadronBuscarClick() {
+    const d = this.searchPadronEl.nativeElement.querySelector('select');
+    const p = this.searchPadronEl.nativeElement.querySelector('input');
+    if (d && d.value && p && p.value) {
+      this.searchPadronClearClick();
+      const qt = new this.esri.tasks.QueryTask({
+        url:
+          'http://dgrn.mgap.gub.uy/arcgis/rest/services/BASE_GCOM/Administrativo/MapServer/0'
+      });
+      const q = new this.esri.tasks.support.Query({
+        returnGeometry: true,
+        outFields: ['*'],
+        where: `DEPTO='${d.value}' AND PADRON=${p.value}`,
+        outSpatialReference: this.view.spatialReference.clone()
+      });
+      this.loadingEvent.emit(true);
+      qt.execute(q)
+        .then(r => {
+          if (r.features) {
+            r.features.forEach(f => {
+              f.symbol = new this.esri.symbols.SimpleFillSymbol({
+                color: [0, 0, 255, 0.1],
+                outline: {
+                  type: 'simple-line',
+                  color: '#00ffff',
+                  width: '1px'
+                }
+              });
+            });
+            this.padronesGraphicsLayer.addMany(r.features);
+            this.searchPadronCountResult = r.features.length;
+            this.zoomTo(r.features);
+          }
+          this.searchPadronTextResult =
+            r.features.length === 0
+              ? `No se encontró el padrón ${p.value} de ${d.text}`
+              : null;
+          this.loadingEvent.emit(false);
+        })
+        .catch(_ => {
+          this.searchPadronTextResult =
+            'El servicio de búsqueda no esta respondiendo, intente nuevamente.';
+          this.loadingEvent.emit(false);
+        });
+    }
+  }
+
+  searchPadronClearClick() {
+    this.padronesGraphicsLayer.removeAll();
+    this.searchPadronCountResult = 0;
+    this.searchPadronTextResult = '';
+  }
+
+  // zoom to
+
+  private zoomTo(graphics: __esri.Graphic[]) {
+    let e: __esri.Extent;
+    try {
+      e = this.mapCoreService.unionExtents(
+        graphics.map(g => g.geometry.extent)
+      );
+    } catch {
+      e = null;
+      // intencional
+    }
+    if (e) {
+      this.view.goTo(e);
+    }
   }
 }

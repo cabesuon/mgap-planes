@@ -12,7 +12,7 @@ import {
 import { InMemoryDb } from './in-memory-db';
 import { createInMemoryDataDefault } from './in-memory-db-data';
 
-import { MockQueryChacras, MockAddChacras } from './chacras-get-data';
+import { MockQueryChacras, MockAddChacras, MockDeleteChacras, MockUpdateChacras } from './chacras-get-data';
 import { MockQueryPersonas } from './personas-get-data';
 import { MockQueryTokens } from './tokens-get-data';
 import { MockQueryEmpresas } from './empresas-get-data';
@@ -39,6 +39,8 @@ const postMethodGetDataRepo = {
 
   queryChacras: new MockQueryChacras(),
   addChacras: new MockAddChacras(),
+  updateChacras: new MockUpdateChacras(),
+  deleteChacras: new MockDeleteChacras(),
   
   queryComponentesProductivos: new MockQueryComponentes(),
   addComponentesProductivos: new MockAddComponentes(),

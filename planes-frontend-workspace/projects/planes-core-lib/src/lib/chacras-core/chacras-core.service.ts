@@ -7,7 +7,10 @@ import {
   ChacrasCoreQueryResults,
   ChacraCoreAddResult,
   ChacraCoreUpdateResult,
-  ChacraCoreDeleteResult
+  ChacraCoreDeleteResult,
+  ChacrasCorePadronesQueryResults,
+  ChacrasCoreSuelosQueryResults,
+  ChacrasCoreLSQueryResults
 } from './chacras-core.model';
 
 @Injectable({
@@ -54,6 +57,39 @@ export class ChacrasCoreService {
       `${this.url}/deleteChacras`,
       {
         chacrasIds: [c.chacraId]
+      }
+    );
+  }
+
+  getPadronesChacraCore(
+    c: ChacraCore
+  ): Observable<{ getResults: ChacrasCorePadronesQueryResults }> {
+    return this.http.post<{ getResults: ChacrasCorePadronesQueryResults }>(
+      `${this.url}/getPadrones`,
+      {
+        chacraId: c.chacraId
+      }
+    );
+  }
+
+  getSuelosChacraCore(
+    c: ChacraCore
+  ): Observable<{ getResults: ChacrasCoreSuelosQueryResults }> {
+    return this.http.post<{ getResults: ChacrasCoreSuelosQueryResults }>(
+      `${this.url}/getSuelos`,
+      {
+        chacraId: c.chacraId
+      }
+    );
+  }
+
+  getLSChacraCore(
+    c: ChacraCore
+  ): Observable<{ getResults: ChacrasCoreLSQueryResults }> {
+    return this.http.post<{ getResults: ChacrasCoreLSQueryResults }>(
+      `${this.url}/getFactorLS`,
+      {
+        chacraId: c.chacraId
       }
     );
   }

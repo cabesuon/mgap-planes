@@ -96,9 +96,10 @@ export function createInMemoryDataDefault(): InMemoryDbData {
   for (let i = 1; i <= 9; i++) {
     padrones.push({
       padronId: `${i}`,
-      padronCodigoDepartamento: '1',
-      padrondDepartamento: 'Artigas',
-      padronAreaHa: i * 100
+      departamentoId: '1',
+      departamentoNombre: 'Artigas',
+      padronArea: i * 100,
+      padronFueSeleccionado: i % 2 === 0
     });
   }
 

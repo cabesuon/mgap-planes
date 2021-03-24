@@ -1,5 +1,60 @@
-@import url("https://js.arcgis.com/4.12/esri/css/main.css");
+@import url("https://js.arcgis.com/4.18/esri/css/main.css");
 
 .esri-view {
-  height: 500px;
+  height: calc(100vh - 170px);
+}
+
+.hidden {
+  display: none;
+}
+
+.search-padron {
+  width: 200px;
+  padding: 10px;
+}
+
+.search-padron select,
+.search-padron input,
+.search-padron button {
+  width: 100%;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+.search-padron button {
+  position: relative;
+  display: inline-block;
+  height: 30px;
+  /* border: 1px solid #6c6c6c; */
+  border: none;
+  border-radius: 0;
+  /* color: #ffffff;
+  background-color: #6c6c6c; */
+  background-color: transparent;
+  box-sizing: border-box;
+  transition: all 0.05s linear;
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.search-padron button:hover {
+  text-decoration: none;
+  /* color: #6c6c6c;
+  background-color: #ffffff;
+  border-color: #6c6c6c; */
+  color: #ffffff;
+  background-color: #6c6c6c;
+}
+
+.search-padron button:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.search-padron p {
+  font-size: 12px;
+  font-style: italic;
+  text-align: center;
+  align-items: center;
 }

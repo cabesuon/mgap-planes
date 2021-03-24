@@ -11,7 +11,8 @@ import { LoggingService } from '../../../core/logging/logging.service';
 import {
   ChacraSegurosSecano,
   ChacrasSegurosSecanoFormInput,  
-  createEmptyComponenteProductivoSegurosSecano
+  createEmptyComponenteProductivoSegurosSecano,
+  ComponenteProductivoSegurosSecano
 } from 'seguros-secano-lib';
 
 import {
@@ -21,7 +22,9 @@ import {
 import { DibujoCore } from 'projects/planes-core-lib/src/public-api';
 
 export interface EntityChacrasFormDialogData
-  extends ChacrasSegurosSecanoFormInput {}
+  extends ChacrasSegurosSecanoFormInput {
+    componentes: ComponenteProductivoSegurosSecano[];
+  }
 
 @Component({
   selector: 'lib-entity-chacras-form-dialog',
@@ -36,6 +39,8 @@ export class EntityChacrasFormDialogComponent implements OnInit {
   formValid: boolean;
   formValue: ChacraSegurosSecano;
 
+  componente: ComponenteProductivoSegurosSecano;
+
   constructor(
     private store: Store<AppState>,
     private logginService: LoggingService,
@@ -46,15 +51,17 @@ export class EntityChacrasFormDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.data.action === FormActionType.Update) {
       this.title = 'Actualizar Plan';
-      this.submitText = 'Actualizar';
+      this.submitText = 'Actualizar';      
+      this.componente = this.data.componentes.find(c => c.chacraId == this.data.chacra.chacraId);      
     }
+    
   }
 
-  formStatusChanges(status: string) {
+  formStatusChanges(status: string) {        
     this.formValid = status === 'VALID';
   }
 
-  formValueChanges(chacra: ChacraSegurosSecano) {
+  formValueChanges(chacra: ChacraSegurosSecano) {    
     this.formValue = chacra;
   }
 
@@ -74,34 +81,34 @@ export class EntityChacrasFormDialogComponent implements OnInit {
             d => d.dibujoGeometria === this.formValue.chacraGeometria
           )
         );
-      }
-      /*if (this.formValue.chacraFactorLSGeometriaAsignado) {
-        dibujos.push(
-          this.data.dibujos.find(
-            d =>
-              d.dibujoGeometria ===
-              this.formValue.chacraFactorLSGeometriaAsignado
-          )
-        );
-      }*/
-      
-      const unidad = this.data.unidades.find(unidad => unidad.unidadId === item.unidadId);      
-      let componente = {
-        ...createEmptyComponenteProductivoSegurosSecano(),
-        ...unidad,
-        // hardcodeado la zafra y el año. obtenerla luego de una db
-        zafra: "Verano",
-        anio: 2020
-      };      
+      }       
       /* crear un compoennte poniendole los campos de uniad de manejo */
-      const dibujosId: number[] = dibujos.map(d => d.dibujoId);
-      if (this.data.action === FormActionType.Add) {
+      let dibujosId: number[];
+      if (dibujos.length == 0 || dibujos[0] == undefined){
+        dibujosId = null;
+      } else {
+        dibujosId = dibujos.map(d => d.dibujoId);      
+      }
+
+      const unidad = this.data.unidades.find(unidad => unidad.unidadId === item.unidadId);
+      if (this.data.action === FormActionType.Add) {              
+        let componente = {
+          ...createEmptyComponenteProductivoSegurosSecano(),
+          ...unidad,
+          // hardcodeado la zafra y el año. obtenerla luego de una db
+          zafra: 1,
+          anio: 2020
+        };     
         this.store.dispatch(
           new EntityChacrasAddRequestAction({ item, dibujosId, componente })
         );
       } else {
+        const componenteChacra: ComponenteProductivoSegurosSecano = {           
+          ...this.componente,
+          ...unidad
+        };        
         this.store.dispatch(
-          new EntityChacrasChangeRequestAction({ item, dibujosId, componente })
+          new EntityChacrasChangeRequestAction({ item, dibujosId, componente: componenteChacra })
         );
       }
       this.data.chacra = item;

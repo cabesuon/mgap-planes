@@ -79,12 +79,14 @@ export class UnidadComponentesSendFormDialogComponent implements OnInit {
         this.componentes = comp;
         this.chacras.forEach(chacra => {
           let componente = this.componentes.find( comp => comp.chacraId === chacra.chacraId );
-          // tengo que verificar que el componente es valido o no y agregarlo a la tabla          
-          const v = this.verificarComponente(componente);
-          this.dataSource.push({chacra: chacra.chacraNombre, validado: v, componente: componente});
-          if (v == 'No'){
-            this.chacrasNoValidadas.push(chacra);
-          }          
+          if (componente.fechaEnviado == null){
+            // tengo que verificar que el componente es valido o no y agregarlo a la tabla          
+            const v = this.verificarComponente(componente);
+            this.dataSource.push({chacra: chacra.chacraNombre, validado: v, componente: componente});
+            if (v == 'No'){
+              this.chacrasNoValidadas.push(chacra);
+            }          
+          }
         });        
         this.update();  
       });

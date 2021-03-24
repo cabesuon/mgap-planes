@@ -25,12 +25,17 @@ export interface ComponenteProductivoSegurosSecano {
   analisisSueloK: number;
   rendimiento: number;
 
-  zafra: string;
+  zafra: number;
   anio: number;
 
   fechaCreado: Date;
   fechaModificado: Date;
   fechaEnviado: Date;
+
+  estado: number;
+  tieneAnalisisSuelo: boolean;
+  esAsegurado: boolean;
+  fechaBorrado: Date;
 }
 
 export interface ComponentesProductivosSegurosSecanoQueryResults {
@@ -84,7 +89,11 @@ export function createEmptyComponenteProductivoSegurosSecano(): ComponenteProduc
     anio: null,
     fechaCreado: null,
     fechaModificado: null,
-    fechaEnviado: null
+    fechaEnviado: null,
+    estado: null,
+    tieneAnalisisSuelo: null,
+    esAsegurado: null,
+    fechaBorrado: null
   };
 }
 
@@ -110,11 +119,15 @@ export function createBaseComponenteProductivoSegurosSecano(
   analisisSueloPBray: number,
   analisisSueloK: number,
   rendimiento: number,
-  zafra: string,
+  zafra: number,
   anio: number,
   fechaCreado: Date,
   fechaModificado: Date,
-  fechaEnviado: Date
+  fechaEnviado: Date,
+  estado: number,
+  tieneAnalisisSuelo: boolean,
+  esAsegurado: boolean,
+  fechaBorrado: Date
 ) {
   return {
     ...createEmptyComponenteProductivoSegurosSecano(),
@@ -143,7 +156,11 @@ export function createBaseComponenteProductivoSegurosSecano(
     anio,
     fechaCreado,
     fechaModificado,
-    fechaEnviado
+    fechaEnviado,
+    estado,
+    tieneAnalisisSuelo,
+    esAsegurado,
+    fechaBorrado
   };
 }
 
@@ -157,3 +174,14 @@ export enum ComponenteTipoSeguro {
   TRADICIONAL = 'Tradicional',
   INDICE = 'Índice'  
 }
+
+export const Zafras = [
+  {
+    zafraId: 1,
+    zafraNombre: 'Verano'
+  },
+  {
+    zafraId: 2,
+    zafraNombre: 'Invierno'
+  }
+]

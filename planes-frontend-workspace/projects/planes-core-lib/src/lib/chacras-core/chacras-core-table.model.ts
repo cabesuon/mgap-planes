@@ -39,7 +39,7 @@ export function resolveChacrasCoreTableCellValue(
     let os: any[] = [];
     switch (names[0]) {
       case 'padrones':
-        os = chacra.padrones;
+        os = chacra.padrones.filter(p => p.padronFueSeleccionado);
         break;
       case 'suelos':
         os = chacra.suelos;
@@ -89,6 +89,18 @@ export function createChacrasCoreTableRow(
 
 export const CHACRASCORETABLE_COLUMNS_DEFAULT: ChacrasCoreTableColumn[] = [
   {
+    type: TableValueType.ACTION,
+    name: 'GotoVistaMapa',
+    label: '',
+    sort: false,
+    filter: false,
+    actionFormat: _ => ({
+      value: 'GotoVistaMapa',
+      text: 'Ver en Mapa',
+      icon: 'map'
+    })
+  },
+  {
     type: TableValueType.LITERAL,
     name: 'chacraNro',
     label: 'Nro',
@@ -103,15 +115,15 @@ export const CHACRASCORETABLE_COLUMNS_DEFAULT: ChacrasCoreTableColumn[] = [
     filter: true
   },
   {
-    type: TableValueType.LIST,
-    name: 'suelos.sueloDesc+sueloFactorK+sueloTolerancia',
-    label: 'Suelos(Desc, K, T)',
+    type: TableValueType.LITERAL,
+    name: 'chacraSueloAsignadoDsc',
+    label: 'Suelo',
     sort: true,
     filter: true
   },
   {
     type: TableValueType.LIST,
-    name: 'padrones.padrondDepartamento+padronId+padronAreaHa',
+    name: 'padrones.departamentoNombre+padronId+padronArea',
     label: 'Padrones(Depto, Nro, ha)',
     sort: false,
     filter: true
@@ -122,17 +134,5 @@ export const CHACRASCORETABLE_COLUMNS_DEFAULT: ChacrasCoreTableColumn[] = [
     label: 'Pendiente (%)',
     sort: true,
     filter: true
-  },
-  {
-    type: TableValueType.ACTION,
-    name: 'GotoVistaMapa',
-    label: '',
-    sort: false,
-    filter: false,
-    actionFormat: _ => ({
-      value: 'GotoVistaMapa',
-      text: 'Ver en Mapa',
-      icon: 'map'
-    })
   }
 ];

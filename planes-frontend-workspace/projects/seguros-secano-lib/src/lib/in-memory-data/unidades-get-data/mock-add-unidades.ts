@@ -14,7 +14,7 @@ export class MockAddUnidades implements GetData {
       response.push({
         success: true,
         error: null,
-        unidades: u
+        unidadesManejo: u
       });
     }
 

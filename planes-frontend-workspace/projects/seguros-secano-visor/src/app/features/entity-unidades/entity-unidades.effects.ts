@@ -38,7 +38,7 @@ export class EntityUnidadesManejosEffects {
           return queryResults.success
             ? new entityUnidadesManejosActions.EntityUnidadesManejosLoadSuccessAction(
                 {
-                  items: queryResults.unidades
+                  items: queryResults.unidadesManejo
                 }
               )
             : new entityUnidadesManejosActions.EntityUnidadesManejosLoadFailureAction(
@@ -76,7 +76,7 @@ export class EntityUnidadesManejosEffects {
         map(addResults =>
           addResults.length === 1 && addResults[0].success
             ? new entityUnidadesManejosActions.EntityUnidadesManejosAddSuccessAction({
-                item: addResults[0].unidades
+                item: addResults[0].unidadesManejo
               })
             : new entityUnidadesManejosActions.EntityUnidadesManejosAddFailureAction({
                 error: 'Error al crear la unidad de manejo.'
@@ -109,9 +109,9 @@ export class EntityUnidadesManejosEffects {
         map(updateResults => {          
           if (updateResults.length === 1 && updateResults[0].success) {
             const uc: Update<UnidadManejoSegurosSecano> = {
-              id: updateResults[0].unidades.unidadId,
+              id: updateResults[0].unidadesManejo.unidadId,
               changes: {
-                ...updateResults[0].unidades
+                ...updateResults[0].unidadesManejo
               }
             };
             return new entityUnidadesManejosActions.EntityUnidadesManejosChangeSuccessAction({

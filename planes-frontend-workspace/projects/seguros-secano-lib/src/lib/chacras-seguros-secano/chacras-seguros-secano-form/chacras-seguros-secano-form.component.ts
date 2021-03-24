@@ -1,3 +1,4 @@
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 
@@ -37,28 +38,34 @@ export class ChacrasSegurosSecanoFormComponent implements OnInit {
   coreFormValue: ChacraCore = null;
   coreFormStatus: string = 'INVALID';
 
+  includePendientes: boolean = false;
+  includePadrones: boolean = false;
+  includeSuelos: boolean = false;
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.coreData = {
       action: this.formInput.action,
       chacra: { ...this.formInput.chacra },
-      dibujos: this.formInput.dibujos
+      dibujos: this.formInput.dibujos,
+      suelos: null
     };
     this.unidades = this.formInput.unidades || [];
-    if (this.formInput.action === FormActionType.Update) {
+    if (this.formInput.action === FormActionType.Update) {  
+      this.coreFormStatus = 'VALID';
       this.form.patchValue({
         unidadId: this.formInput.chacra.unidadId
       });
     }
     // emit
     this.form.valueChanges.subscribe(_ => this.emitFormValueChanges());
-    this.form.statusChanges.subscribe(v => {
+    this.form.statusChanges.subscribe(v => {      
       this.emitFormStatusChanges();
     });
   }
 
-  coreFormStatusChanges(status: string) {
+  coreFormStatusChanges(status: string) {    
     this.coreFormStatus = status;
     this.emitFormStatusChanges();
   }
@@ -68,7 +75,7 @@ export class ChacrasSegurosSecanoFormComponent implements OnInit {
     this.emitFormValueChanges();
   }
 
-  emitFormStatusChanges() {
+  emitFormStatusChanges() {    
     const cs = compareFormStatus(this.coreFormStatus, this.form.status);
     this.formStatusChanges.emit(
       cs === -1 ? this.coreFormStatus : this.form.status
@@ -80,7 +87,7 @@ export class ChacrasSegurosSecanoFormComponent implements OnInit {
       ...this.formInput.chacra,
       ...this.coreFormValue,
       ...this.form.value
-    };
+    };    
     this.formValueChanges.emit(value);
   }
 }

@@ -46,7 +46,7 @@
     "@ngrx/router-store": "^9.1.0",
     "@ngrx/store": "^9.1.0",
     "@ngrx/store-devtools": "^9.1.0",
-    "@types/arcgis-js-api": "^4.16.0",
+    "@types/arcgis-js-api": "^4.18.0",
     "angular-in-memory-web-api": "^0.11.0",
     "bootstrap": "^4.4.1",
     "esri-loader": "^2.14.0",

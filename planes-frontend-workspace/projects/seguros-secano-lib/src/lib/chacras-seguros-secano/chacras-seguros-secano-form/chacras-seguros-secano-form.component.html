@@ -11,6 +11,9 @@
   </div>
 </form>
 <lib-chacras-core-form [formInput]="coreData"
+  [includePendientes]="includePendientes"
+  [includePadrones]="includePadrones"
+  [includeSuelos]="includeSuelos"
   (formValueChanges)="coreFormValueChanges($event)"
   (formStatusChanges)="coreFormStatusChanges($event)"
 ></lib-chacras-core-form>

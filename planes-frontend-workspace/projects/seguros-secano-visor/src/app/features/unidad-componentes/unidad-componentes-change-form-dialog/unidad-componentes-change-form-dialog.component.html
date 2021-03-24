@@ -4,18 +4,21 @@
 <div mat-dialog-content>    
     <div>
         <mat-selection-list [(ngModel)]="selectedOptions">
-            <mat-list-option *ngFor="let c of (chacras$ | async)" [value]="c" >
+            <mat-list-option *ngFor="let c of chacras" [value]="c" >
                 {{c.chacraNombre}}
             </mat-list-option>
         </mat-selection-list>            
-    </div>    
+    </div>
+    <div *ngIf="chacras.length == 0">
+        <p>No existen chacras para impactar los cambios</p>
+    </div>
 </div>    
 <div mat-dialog-actions>
     <button mat-raised-button (click)="onCancel()">
       Cancelar
     </button>
     <button mat-raised-button (click)="onSubmit()"
-      class="ml-2">
+      class="ml-2" disabled="chacras.length == 0">
       Enviar
     </button>
 </div>

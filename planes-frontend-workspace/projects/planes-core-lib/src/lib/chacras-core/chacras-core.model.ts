@@ -1,4 +1,3 @@
-import { DetailField } from '../extras/components/detail.model';
 import { PadronCore } from '../padrones-core/padrones-core.model';
 import { SueloCore } from '../suelos-core/suelos-core.model';
 
@@ -7,7 +6,6 @@ export interface ChacraCore {
   chacraNro: string;
   chacraNombre: string;
   chacraLocalidad: string;
-  chacraPadreNro: string;
   chacraArea: number;
   chacraDicose: number;
   chacraGeometria: string;
@@ -23,20 +21,27 @@ export interface ChacraCore {
   chacraFactorLSGeometriaLimitante: string;
   chacraFactorLSAsignado: number;
   chacraFactorLSLimitante: number;
+  chacraFactorLAsignado: number;
+  chacraFactorLLimitante: number;
+  chacraFactorSAsignado: number;
+  chacraFactorSLimitante: number;
 
   // suelo seleccionado
   chacraSueloLimitanteFactorK: number;
-  chacraSueloAsignadoId: number;
+  chacraSueloAsignadoFactorK: number;
+  chacraSueloAsignadoId: string;
   chacraSueloLimitanteId: number;
   chacraSueloAsignadoDsc: string;
-  chacraSueloAsignadoFactorK: number;
-  chacraSueloAsignadoTolerancia: number;
   chacraSueloLimitanteDsc: string;
+  chacraSueloAsignadoTolerancia: number;
   chacraSueloLimitanteTolerancia: number;
   chacraSueloAsignadoSlopeMax: number;
   chacraSueloAsignadoSlopeMin: number;
   chacraSueloLimitanteSlopeMax: number;
   chacraSueloLimitanteSlopeMin: number;
+
+  chacraFactorRAsignado: number;
+  chacraFactorRAutomatico: number;
 
   chacraLargoAsignado: number;
   chacraLargoLimitante: number;
@@ -54,7 +59,6 @@ export function createEmptyChacraCore(): ChacraCore {
     chacraNro: null,
     chacraNombre: null,
     chacraLocalidad: null,
-    chacraPadreNro: null,
     chacraArea: null,
     chacraDicose: null,
     chacraGeometria: null,
@@ -83,6 +87,13 @@ export function createEmptyChacraCore(): ChacraCore {
     chacraSueloLimitanteSlopeMax: null,
     chacraSueloLimitanteSlopeMin: null,
 
+    chacraFactorLAsignado: null,
+    chacraFactorLLimitante: null,
+    chacraFactorRAsignado: null,
+    chacraFactorRAutomatico: null,
+    chacraFactorSAsignado: null,
+    chacraFactorSLimitante: null,
+
     chacraLargoAsignado: null,
     chacraLargoLimitante: null,
     chacraPendienteAsignado: null,
@@ -110,7 +121,7 @@ export function createBaseChacraCore(
     chacraFactorLSGeometriaAsignado,
     chacraFactorLSGeometriaLimitante,
     chacraFactorLSEsManual:
-      chacraFactorLSGeometriaLimitante === chacraFactorLSGeometriaAsignado,
+      chacraFactorLSGeometriaLimitante !== chacraFactorLSGeometriaAsignado,
     padrones,
     suelos
   };
@@ -162,4 +173,26 @@ export interface ChacraCoreDeleteResult {
   success: boolean;
   error: { code: number; description: string };
   chacraId: string;
+}
+
+export interface ChacrasCorePadronesQueryResults {
+  success: boolean;
+  error: { code: number; description: string };
+  padrones: PadronCore[];
+}
+
+export interface ChacrasCoreSuelosQueryResults {
+  success: boolean;
+  error: { code: number; description: string };
+  suelos: SueloCore[];
+}
+
+export interface ChacrasCoreLSQueryResults {
+  success: boolean;
+  error: { code: number; description: string };
+  FactorLS: string;
+  FactorL: string;
+  Slope: number;
+  SlopeLength: number;
+  Geometry: string;
 }

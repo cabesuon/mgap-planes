@@ -61,4 +61,12 @@ export class InMemoryDb {
       empresas.some(e => e.empresaId === chacra.empresaId)
     );
   }
+
+  removeChacra(chacraId: string) {
+    const index = this.d.chacras.findIndex(c => c.chacraId === chacraId);
+    if (index > -1) {
+      this.d.chacras.splice(index, 1);
+      console.log(`[removeChacra] ${index}`);
+    }
+  }
 }

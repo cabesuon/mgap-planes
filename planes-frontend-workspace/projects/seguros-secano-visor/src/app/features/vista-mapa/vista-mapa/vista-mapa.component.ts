@@ -15,7 +15,10 @@ import {
   FormActionType,
   createEmptyChacraCore,
   DibujoCoreType,
-  EmpresaCore
+  EmpresaCore,
+  ConfirmDialogData,
+  ConfirmDialogResultType,
+  ConfirmDialogComponent
 } from 'planes-core-lib';
 
 import {
@@ -77,6 +80,9 @@ import { selectAllEntityCultivos } from '../../entity-cultivos/entity-cultivos.s
 import { selectAllEntityCiclos } from '../../entity-ciclos/entity-ciclos.selectors';
 import { selectAllEntityAseguradoras } from '../../entity-aseguradoras/entity-aseguradoras.selectors';
 
+import { EntityChacrasDeleteRequestAction } from '../../entity-chacras/entity-chacras.actions';
+import { selectAllEntityComponentes } from '../../entity-componentes/entity-component.selectors';
+
 const DIALOG_WIDTH = '300px';
 const DIALOG_MAX_HEIGHT = '500px';
 
@@ -97,9 +103,14 @@ export class VistaMapaComponent implements OnInit, OnDestroy {
 
   unidadesCombobox$ = []; 
   chacras$: Observable<ChacraSegurosSecano[]>;
+  chacras: ChacraSegurosSecano[];
+  componentes: ComponenteProductivoSegurosSecano[];
 
   polygons$: Observable<DibujoCore[]>;
   dibujos: DibujoCore[];
+  dibujosTypes: String[];
+  includePendientes: boolean = false;
+  includeZonasExclusion: boolean = false;
 
   subsc: Subscription;
 
@@ -122,18 +133,26 @@ export class VistaMapaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {    
+    this.dibujosTypes = ['polygon', 'circle']
     this.empresaId = this.route.snapshot.paramMap.get('EmpresaId');
     
     this.empresas$ = /*this.empresaId
       ? this.store.pipe(
           select(selectEmpresaById(this.empresaId)),
           map(p => [p])
-        )
+        ) 
       : */ this.store.pipe(select(selectAllEntityEmpresas));
 
     this.chacras$ = this.empresaId
       ? this.store.pipe(select(selectChacrasByEmpresaId(this.empresaId)))
       : this.store.pipe(select(selectAllEntityChacras));
+    this.chacras$.subscribe( chacras => 
+      this.chacras = chacras      
+    );
+    this.store.pipe(select(selectAllEntityComponentes)).subscribe(
+      componentes => this.componentes = componentes
+    )
+    
 
     this.polygons$ = this.store.pipe(
       select(selectAllEntityDibujosByTipo(DibujoCoreType.POLYGON))
@@ -180,21 +199,26 @@ export class VistaMapaComponent implements OnInit, OnDestroy {
     this.subsc.unsubscribe();
   }
 
-  toolClicked(tool: string, chacraId: number) {
+  toolClicked(tool: string, chacraId: string) {
+    const item = this.chacras.find(c => c.chacraId == chacraId);
     switch (tool) {
       case 'AddChacra':
-        this.openDialogChacra(FormActionType.Add);
+        this.openDialogChacra(FormActionType.Add, null);
         break;
-      case 'UpdateChacra':
-        this.notificationService.default(
-          `[No implementado] Update Chacra ${chacraId}`
-        );
-        break;
-      case 'DeleteChacra':
-        this.notificationService.default(
-          `[No implementado] Delete Chacra ${chacraId}`
-        );
-        break;
+        case 'UpdateChacra':
+          this.openDialogChacra(FormActionType.Update, { ...item });
+          break;
+        case 'DeleteChacra':
+          this.openConfirmDialog(
+            'Eliminar Chacra',
+            `Confirma la eliminación de la chacra ${
+              (item as ChacraSegurosSecano).chacraNombre
+            }.`,
+            new EntityChacrasDeleteRequestAction({
+              item: { ...item }
+            })
+          );
+          break;
     }
   }
 
@@ -235,14 +259,17 @@ export class VistaMapaComponent implements OnInit, OnDestroy {
 
   // dialogs
 
-  openDialogChacra(action: FormActionType) {
-    const chacra = createEmptyChacraSegurosSecano();
-    chacra.empresaId = this.empresaId;
+  openDialogChacra(action: FormActionType, chacra: ChacraSegurosSecano) {
+    if (!chacra){
+      chacra = createEmptyChacraSegurosSecano();
+      chacra.empresaId = this.empresaId;
+    }     
     const inData: EntityChacrasFormDialogData = {
       chacra,
       action: action,
       dibujos: this.dibujos,
-      unidades: this.unidades
+      unidades: this.unidades,
+      componentes: this.componentes
     };
     this.dialog.open(EntityChacrasFormDialogComponent, {
       width: DIALOG_WIDTH,
@@ -250,6 +277,26 @@ export class VistaMapaComponent implements OnInit, OnDestroy {
       data: inData
     });    
   }  
+
+  openConfirmDialog(title: string, question: string, action: any) {
+    const inData: ConfirmDialogData = {
+      title,
+      question,
+      result: ConfirmDialogResultType.Cancel
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: DIALOG_WIDTH,
+      maxHeight: DIALOG_MAX_HEIGHT,
+      data: inData
+    });
+    dialogRef.afterClosed().subscribe(outData => {
+      if (outData && outData.result === ConfirmDialogResultType.Ok) {
+        if (action) {
+          this.store.dispatch(action);
+        }
+      }
+    });
+  }
 
   openDialogComponente(action: FormActionType, componente) {
     const inData: EntityComponentesFormDialogData = {

@@ -51,7 +51,7 @@ export class ChacrasSegurosSecanoService {
 
   deleteChacrasSegurosSecano(
     c: ChacraSegurosSecano
-  ): Observable<{ deleteResults: ChacraSegurosSecanoDeleteResult[] }> {
+  ): Observable<{ deleteResults: ChacraSegurosSecanoDeleteResult[] }> {    
     return this.http.post<{ deleteResults: ChacraSegurosSecanoDeleteResult[] }>(
       `${this.url}/deleteChacras`,
       {

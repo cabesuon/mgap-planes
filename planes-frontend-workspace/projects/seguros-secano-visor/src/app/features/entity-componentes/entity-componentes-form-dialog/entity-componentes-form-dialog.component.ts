@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 
-import { FormActionType } from 'planes-core-lib'; 
+import { FormActionType, ConfirmDialogData, ConfirmDialogResultType, ConfirmDialogComponent } from 'planes-core-lib'; 
 
 import { ComponenteProductivoSegurosSecano, ComponentesProductivosSegurosSecanoFormInput } from 'seguros-secano-lib';
 
@@ -15,7 +15,8 @@ import {
   EntityComponentesChangeRequestAction
 } from '../entity-componentes.actions';
 
-import { DibujoCore } from 'projects/planes-core-lib/src/public-api';
+const DIALOG_WIDTH = '300px';
+const DIALOG_MAX_HEIGHT = '500px';
 
 export interface EntityComponentesFormDialogData extends ComponentesProductivosSegurosSecanoFormInput {  
 }
@@ -37,6 +38,7 @@ export class EntityComponentesFormDialogComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private logginService: LoggingService,
+    private dialog: MatDialog,
     public dialogRef: MatDialogRef<EntityComponentesFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: EntityComponentesFormDialogData
   ) {}
@@ -77,15 +79,35 @@ export class EntityComponentesFormDialogComponent implements OnInit {
   onSend() {
     if (this.formValid) {
       let dHoy = new Date();      
-      this.formValue.fechaEnviado = dHoy;
+      this.formValue.fechaEnviado = dHoy;      
       const item = { ...this.formValue };
-      if (this.data.action === FormActionType.Add) {
-        this.store.dispatch(new EntityComponentesAddRequestAction({ item }));
-      } else { 
-        this.store.dispatch(new EntityComponentesChangeRequestAction({ item: [item] }));
-      }
+      this.openConfirmDialog(
+        'Confirmar presentación',
+        `Una vez que presente los datos completados estos no podrán ser modificados.`,
+        new EntityComponentesChangeRequestAction({ item: [item] })
+      );      
       this.data.componente = item;
       this.dialogRef.close(this.data);
     }
+  }
+
+  openConfirmDialog(title: string, question: string, action: any) {
+    const inData: ConfirmDialogData = {
+      title,
+      question,
+      result: ConfirmDialogResultType.Cancel
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: DIALOG_WIDTH,
+      maxHeight: DIALOG_MAX_HEIGHT,
+      data: inData
+    });
+    dialogRef.afterClosed().subscribe(outData => {
+      if (outData && outData.result === ConfirmDialogResultType.Ok) {
+        if (action) {
+          this.store.dispatch(action);
+        }
+      }
+    });
   }
 }

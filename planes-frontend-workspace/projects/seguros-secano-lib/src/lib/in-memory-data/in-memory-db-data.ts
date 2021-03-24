@@ -127,7 +127,11 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       anio: null,
       fechaCreado: null,
       fechaModificado: null,
-      fechaEnviado: null
+      fechaEnviado: null,
+      estado: null,
+      tieneAnalisisSuelo: null,
+      esAsegurado: null,
+      fechaBorrado: null
     },
     {
       unidadId: '2',
@@ -155,7 +159,11 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       anio: null,
       fechaCreado: null,
       fechaModificado: null,
-      fechaEnviado: null
+      fechaEnviado: null,
+      estado: null,
+      tieneAnalisisSuelo: null,
+      esAsegurado: null,
+      fechaBorrado: null
     },
     {
       unidadId: '3',
@@ -183,7 +191,11 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       anio: null,
       fechaCreado: null,
       fechaModificado: null,
-      fechaEnviado: null
+      fechaEnviado: null,
+      estado: null,
+      tieneAnalisisSuelo: null,
+      esAsegurado: null,
+      fechaBorrado: null
     }
   ];
 
@@ -325,11 +337,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       randomNumber(1000),
       randomNumber(1000),
       randomNumber(1000),
-      'Verano',
+      1,
       2020,
       new Date(2020, 7, 1),
       new Date(2020, 12, 22),
-      new Date(2020, 12, 22)
+      new Date(2020, 12, 22),
+      1,
+      true,
+      true,
+      null      
     ),
     createBaseComponenteProductivoSegurosSecano(
       '2',
@@ -353,11 +369,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       randomNumber(1000),
       randomNumber(1000),
       randomNumber(1000),
-      'Verano',
+      1,
       2020,
       new Date(2020, 7, 1),
       new Date(2020, 12, 22),
-      new Date(2020, 12, 22)
+      new Date(2020, 12, 22),
+      1,
+      true,
+      true,
+      null
     ),
     createBaseComponenteProductivoSegurosSecano(
       '3',
@@ -381,11 +401,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       randomNumber(1000),
       randomNumber(1000),
       randomNumber(1000),
-      'Verano',
+      1,
       2020,
       new Date(2020, 7, 1),
       new Date(2020, 12, 22),
-      new Date(2020, 12, 22)
+      new Date(2020, 12, 22),
+      1,
+      true,
+      true,
+      null
     ),
     createBaseComponenteProductivoSegurosSecano(
       '4',
@@ -409,11 +433,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       randomNumber(1000),
       randomNumber(1000),
       randomNumber(1000),
-      'Verano',
+      1,
       2020,
       new Date(2020, 7, 1),
       new Date(2020, 12, 22),
-      new Date(2020, 12, 22)
+      new Date(2020, 12, 22),
+      1,
+      true,
+      true,
+      null
     ),
     createBaseComponenteProductivoSegurosSecano(
       '5',
@@ -437,11 +465,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       randomNumber(1000),
       randomNumber(1000),
       randomNumber(1000),
-      'Verano',
+      1,
       2020,
       new Date(2020, 7, 1),
       new Date(2020, 12, 22),
-      new Date(2020, 12, 22)
+      new Date(2020, 12, 22),
+      1,
+      true,
+      true,
+      null
     ),
     createBaseComponenteProductivoSegurosSecano(
       '6',
@@ -465,11 +497,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       randomNumber(1000),
       randomNumber(1000),
       randomNumber(1000),
-      'Verano',
+      1,
       2020,
       new Date(2020, 7, 1),
       new Date(2020, 12, 22),
-      new Date(2020, 12, 22)
+      new Date(2020, 12, 22),
+      1,
+      true,
+      true,
+      null
     ),
 
     createBaseComponenteProductivoSegurosSecano(
@@ -494,11 +530,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       randomNumber(1000),
       randomNumber(1000),
       randomNumber(1000),
-      'Verano',
+      1,
       2020,
       new Date(2020, 7, 1),
       new Date(2020, 12, 22),
-      new Date(2020, 12, 22)
+      new Date(2020, 12, 22),
+      1,
+      true,
+      true,
+      null
     ),
     createBaseComponenteProductivoSegurosSecano(
       '8',
@@ -522,11 +562,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       randomNumber(1000),
       randomNumber(1000),
       randomNumber(1000),
-      'Verano',
+      1,
       2020,
       new Date(2020, 7, 1),
       new Date(2020, 12, 22),
-      new Date(2020, 12, 22)
+      new Date(2020, 12, 22),
+      1,
+      true,
+      true,
+      null
     ),
     createBaseComponenteProductivoSegurosSecano(
       '9',
@@ -550,11 +594,15 @@ export function createInMemoryDataDefault(): InMemoryDbData {
       randomNumber(1000),
       randomNumber(1000),
       randomNumber(1000),
-      'Verano',
+      1,
       2020,
       new Date(2020, 7, 1),
       new Date(2020, 12, 22),
-      new Date(2020, 12, 22)
+      new Date(2020, 12, 22),
+      1,
+      true,
+      true,
+      null
     )
   ];
 

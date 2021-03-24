@@ -1,9 +1,12 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientJsonpModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import {
@@ -38,16 +41,21 @@ import { ChacrasCoreTableComponent } from './chacras-core/chacras-core-table/cha
 import { ChacrasCoreFormComponent } from './chacras-core/chacras-core-form/chacras-core-form.component';
 import { ChacrasCoreDetailComponent } from './chacras-core/chacras-core-detail/chacras-core-detail.component';
 
+import { ZonasExclusionCoreFormComponent } from './zonas-exclusion-core/zonas-exclusion-core-form/zonas-exclusion-core-form.component';
+
 import { PersonasCoreDetailComponent } from './personas-core/personas-core-detail/personas-core-detail.component';
 import { IngenierosAgronomosCoreDetailComponent } from './ingenieros-agronomos-core/ingenieros-agronomos-core-detail/ingenieros-agronomos-core-detail.component';
 import { ContactoCoreDetailComponent } from './contacto-core/contacto-core-detail/contacto-core-detail.component';
 
 import { PadronesCoreDetailComponent } from './padrones-core/padrones-core-detail/padrones-core-detail.component';
+import { PadronesCoreFormComponent } from './padrones-core/padrones-core-form/padrones-core-form.component';
 import { SuelosCoreDetailComponent } from './suelos-core/suelos-core-detail/suelos-core-detail.component';
+import { SuelosCoreFormComponent } from './suelos-core/suelos-core-form/suelos-core-form.component';
 import { EmpresasCoreDetailComponent } from './empresas-core/empresas-core-detail/empresas-core-detail.component';
 
 import { DetailComponent } from './extras/components/detail/detail.component';
 import { TableComponent } from './extras/components/table/table.component';
+import { ConfirmDialogComponent } from './extras/components/confirm-dialog/confirm-dialog.component';
 
 // planes-core-lib services
 import { MatPaginatorIntlCoreService } from './extras/components/mat-paginator-intl-core.service';
@@ -64,8 +72,12 @@ import { MatPaginatorIntlCoreService } from './extras/components/mat-paginator-i
     ChacrasCoreFormComponent,
     ChacrasCoreDetailComponent,
 
+    ZonasExclusionCoreFormComponent,
+
     PadronesCoreDetailComponent,
+    PadronesCoreFormComponent,
     SuelosCoreDetailComponent,
+    SuelosCoreFormComponent,
 
     PersonasCoreDetailComponent,
     IngenierosAgronomosCoreDetailComponent,
@@ -73,15 +85,19 @@ import { MatPaginatorIntlCoreService } from './extras/components/mat-paginator-i
     EmpresasCoreDetailComponent,
 
     DetailComponent,
-    TableComponent
+    TableComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
+    HttpClientJsonpModule,
     FormsModule,
     ReactiveFormsModule,
 
     MatButtonModule,
     MatCheckboxModule,
+    MatDividerModule,
+    MatExpansionModule,
     MatIconModule,
     MatInputModule,
     MatPaginatorModule,
@@ -104,8 +120,12 @@ import { MatPaginatorIntlCoreService } from './extras/components/mat-paginator-i
     ChacrasCoreFormComponent,
     ChacrasCoreDetailComponent,
 
+    ZonasExclusionCoreFormComponent,
+
     PadronesCoreDetailComponent,
+    PadronesCoreFormComponent,
     SuelosCoreDetailComponent,
+    SuelosCoreFormComponent,
 
     PersonasCoreDetailComponent,
     IngenierosAgronomosCoreDetailComponent,
@@ -113,7 +133,8 @@ import { MatPaginatorIntlCoreService } from './extras/components/mat-paginator-i
     EmpresasCoreDetailComponent,
 
     DetailComponent,
-    TableComponent
+    TableComponent,
+    ConfirmDialogComponent
   ],
   providers: [
     {

@@ -74,7 +74,7 @@ export class EntityChacrasChangeFailureAction implements Action {
 export class EntityChacrasChangeSuccessAction implements Action {
   readonly type = EntityChacrasActionTypes.ENTITYCHACRAS_CHANGE_SUCCESS;
   constructor(
-    public payload: { item: Update<ChacraSegurosSecano>; dibujosId: number[] }
+    public payload: { item: Update<ChacraSegurosSecano>; dibujosId: number[], componente: ComponenteProductivoSegurosSecano }
   ) {}
 }
 

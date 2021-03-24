@@ -13,10 +13,11 @@ import {
   } from 'seguros-secano-lib';
 import * as entityChacrasActions from './entity-chacras.actions';
 import { createEmptyComponenteProductivoSegurosSecano } from 'seguros-secano-lib';
-import { EntityComponentesAddRequestAction } from '../entity-componentes/entity-componentes.actions';
+import { EntityComponentesAddRequestAction, EntityComponentesChangeRequestAction } from '../entity-componentes/entity-componentes.actions';
 
 import { deleteDibujos } from '../entity-dibujos/entity-dibujos.actions';
 import { create } from 'domain';
+import { ComponenteProductivoSegurosSecano } from 'projects/seguros-secano-lib/src/public-api';
 
 @Injectable()
 export class EntityChacrasEffects {
@@ -136,10 +137,14 @@ export class EntityChacrasEffects {
                 changes: {
                   ...updateResults[0].chacra
                 }
-              };
+              };              
+              const comp: ComponenteProductivoSegurosSecano = {                
+                ...payload.componente                
+              }                            
               return new entityChacrasActions.EntityChacrasChangeSuccessAction({
                 item: uc,
-                dibujosId: payload.dibujosId
+                dibujosId: payload.dibujosId,
+                componente: comp
               });
             }
             return new entityChacrasActions.EntityChacrasChangeFailureAction({
@@ -162,9 +167,17 @@ export class EntityChacrasEffects {
   EntityChacraChangeSuccessEffect$: Observable<any> = this.actions$.pipe(
     ofType<entityChacrasActions.EntityChacrasChangeSuccessAction>(
       entityChacrasActions.EntityChacrasActionTypes.ENTITYCHACRAS_CHANGE_SUCCESS
-    ),
-    map((action: entityChacrasActions.EntityChacrasChangeSuccessAction) => {
-      return deleteDibujos({ ids: action.payload.dibujosId });
+    ),    
+    switchMap((action: entityChacrasActions.EntityChacrasChangeSuccessAction) => {
+      return [
+        deleteDibujos({ ids: action.payload.dibujosId }),
+        new EntityComponentesChangeRequestAction({
+          item: [{
+            ...action.payload.componente            
+            // todo: obtener y agregar los campos por default de unidad
+          }]
+        })
+      ];
     })
   );
 
@@ -180,17 +193,17 @@ export class EntityChacrasEffects {
     ),
     switchMap(item =>
       this.chacrasSegurosSecanoService.deleteChacrasSegurosSecano(item).pipe(
-        map(results => results.deleteResults),
-        map(deleteResults =>
+        map(results => results.deleteResults),        
+        map(deleteResults =>           
           deleteResults.length === 1 && deleteResults[0].success
             ? new entityChacrasActions.EntityChacrasDeleteSuccessAction({
                 item
               })
             : new entityChacrasActions.EntityChacrasDeleteFailureAction({
                 error: 'Error al eliminar la chacra.'
-              })
+              })          
         ),
-        catchError(error =>
+        catchError(error =>          
           observableOf(
             new entityChacrasActions.EntityChacrasDeleteFailureAction({
               error:

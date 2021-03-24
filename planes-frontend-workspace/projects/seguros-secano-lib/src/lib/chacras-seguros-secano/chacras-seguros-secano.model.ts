@@ -1,5 +1,6 @@
 import { createEmptyChacraCore, PadronCore, SueloCore } from 'planes-core-lib';
 import { ChacraSecano, createBaseChacraSecano } from 'planes-secano-lib';
+import { ComponenteProductivoSegurosSecano } from '../componentes-productivos-seguros-secano/componentes-productivos-seguros-secano.model';
 
 export interface ChacraSegurosSecano extends ChacraSecano {
   unidadId: string;
@@ -21,7 +22,7 @@ export interface ChacraSegurosSecanoAddResult {
 export interface ChacraSegurosSecanoUpdateResult {
   success: boolean;
   error: { code: number; description: string };
-  chacra: ChacraSegurosSecano;
+  chacra: ChacraSegurosSecano;  
 }
 
 export interface ChacraSegurosSecanoDeleteResult {

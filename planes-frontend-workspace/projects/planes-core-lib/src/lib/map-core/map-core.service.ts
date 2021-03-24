@@ -128,6 +128,9 @@ export class MapCoreService {
   }
 
   unionExtents(extents: esri.Extent[]): esri.Extent {
+    if (!extents || !extents[0]) {
+      return null;
+    }
     return extents.reduce((e, c) => e.union(c.extent), extents[0].clone());
   }
 

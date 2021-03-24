@@ -61,7 +61,7 @@ export class EntityUnidadesFormDialogComponent implements OnInit {
 
   onSubmit() {
     if (this.formValid) {
-      const item = { ...this.formValue, zafra:"Verano", anio:2020 };
+      const item = { ...this.formValue, zafra:1, anio:2020 };
       if (this.data.action === FormActionType.Add) {
         this.store.dispatch(
           new EntityUnidadesManejosAddRequestAction({ item })

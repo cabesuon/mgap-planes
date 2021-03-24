@@ -1,1 +1,67 @@
-<div #mapViewNode></div>
+<div #mapViewNode>
+
+  <div #measurementNode class="esri-sketch esri-widget"
+  [ngClass]="{hidden: !loaded}">
+    <div class="esri-sketch__panel">
+      <div class="esri-sketch__section esri-sketch__tool-section">
+        <button
+          class="esri-sketch__button esri-icon-measure-line"
+          [ngClass]="{'esri-sketch__button--selected': measurement && measurement.activeTool === 'distance'}"
+          title="Medir Distancia"
+          (click)="onMeasureDistanceClick()"
+        ></button>
+        <button
+          class="esri-sketch__button esri-icon-measure-area"
+          [ngClass]="{'esri-sketch__button--selected': measurement && measurement.activeTool === 'area'}"
+          title="Medir Área"
+          (click)="onMeasureAreaClick()"
+        ></button>
+        <button
+          class="esri-sketch__button esri-icon-trash"
+          title="Borrar Medida"
+          (click)="onClearMeasureClick()"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <div #searchPadronNode class="esri-widget"
+  [ngClass]="{hidden: !loaded}">
+    <div class="search-padron">
+      <div>
+        <select>
+          <option value="ARTIGAS">Artigas</option>
+          <option value="CANELONES">Canelones</option>
+          <option value="CERRO LARGO">Cerro Largo</option>
+          <option value="COLONIA">Colonia</option>
+          <option value="DURAZNO">Durazno</option>
+          <option value="FLORES">Flores</option>
+          <option value="FLORIDA">Florida</option>
+          <option value="LAVALLEJA">Lavalleja</option>
+          <option value="MALDONADO">Maldonado</option>
+          <option value="MONTEVIDEO">Montevideo</option>
+          <option value="PAYSANDU">Paysandú</option>
+          <option value="RIO NEGRO">Río Negro</option>
+          <option value="RIVERA">Rivera</option>
+          <option value="ROCHA">Rocha</option>
+          <option value="SALTO">Salto</option>
+          <option value="SAN JOSE">San José</option>
+          <option value="SORIANO">Soriano</option>
+          <option value="TACUAREMBO">Tacuarembó</option>
+          <option value="TREINTA Y TRES">Treinta y Tres</option>
+        </select>
+      </div>
+      <div>
+        <input type="number" placeholder="Padrón">
+      </div>
+      <button (click)="searchPadronBuscarClick()">
+        Buscar Padrón
+      </button>
+      <p *ngIf="searchPadronTextResult">
+        {{searchPadronTextResult}}
+      </p>
+      <button (click)="searchPadronClearClick()" *ngIf="searchPadronCountResult > 0">
+        Remover Resultado
+      </button>
+    </div>
+  </div>
+</div>

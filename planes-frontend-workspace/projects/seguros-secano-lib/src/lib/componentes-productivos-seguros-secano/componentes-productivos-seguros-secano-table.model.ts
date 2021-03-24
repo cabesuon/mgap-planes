@@ -12,7 +12,7 @@ import { ChacraSegurosSecano } from '../chacras-seguros-secano/chacras-seguros-s
 import { CicloSegurosSecano } from '../ciclos-seguros-secano/ciclos-seguros-secano.model';
 import { CultivoSegurosSecano } from '../cultivos-seguros-secano/cultivos-seguros-secano.model';
 
-import { ComponenteProductivoSegurosSecano } from './componentes-productivos-seguros-secano.model';
+import { ComponenteProductivoSegurosSecano, Zafras } from './componentes-productivos-seguros-secano.model';
 
 export interface ComponentesProductivosSegurosSecanoTableColumn
   extends TableColumn {
@@ -20,6 +20,7 @@ export interface ComponentesProductivosSegurosSecanoTableColumn
   actionFormat?: (
     componente: ComponenteProductivoSegurosSecano
   ) => TableValueAction;
+  disabled?: boolean;
 }
 
 export interface ComponentesProductivosSegurosSecanoTableParams {
@@ -45,6 +46,12 @@ export interface ComponentesProductivosSegurosSecanoTableSources {
   ciclos: CicloSegurosSecano[];
   cultivos: CultivoSegurosSecano[];
   aseguradoras: AseguradoraSegurosSecano[];
+}
+
+export function resolveComponentesProductivosSegurosSecanoTableActionDisabled(
+  componente: ComponenteProductivoSegurosSecano
+): boolean{
+  return !(componente.fechaEnviado == null)
 }
 
 export function resolveComponentesProductivosSegurosSecanoTableCellValue(
@@ -91,6 +98,13 @@ export function resolveComponentesProductivosSegurosSecanoTableCellValue(
           os.push(o);
         }
         break;
+      case 'zafraId':        
+        o = Zafras.find( z => z.zafraId == componente.zafra);
+        if (o) {
+          os.push(o);
+        }
+        console.log(o);
+        break;
     }
 
     const vs: string[] = [];
@@ -126,7 +140,11 @@ export function createComponentesProductivosSegurosSecanoTableRow(
         row[column.name] = column.actionFormat
           ? column.actionFormat(componente)
           : { value: column.name, text: column.name, icon: 'bomb' };
+        row[column.name].disabled = resolveComponentesProductivosSegurosSecanoTableActionDisabled(
+          componente
+        )
         break;
+        
       case TableValueType.LIST:
       case TableValueType.LITERAL:
         row[
@@ -177,7 +195,7 @@ export const COMPONENTESPRODUCTIVOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT: Component
   {
     type: TableValueType.ACTION,
     name: ComponentesProductivosSegurosSecanoTableAction.EDITAR,
-    label: '',
+    label: 'Editar',
     sort: false,
     filter: false,
     actionFormat: _ => ({
@@ -189,7 +207,7 @@ export const COMPONENTESPRODUCTIVOSSEGUROSSECANOTABLE_COLUMNS_DEFAULT: Component
   // literales
   {
     type: TableValueType.LITERAL,
-    name: 'zafra',
+    name: 'zafraId.zafraNombre',
     label: 'Zafra',
     sort: true,
     filter: true,

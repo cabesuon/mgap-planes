@@ -63,7 +63,12 @@ export class ComponentesProductivosSegurosSecanoFormComponent
     rendimiento: [null, [Validators.required]],
 
     zafra: [null],
-    anio: [null]
+    anio: [null],
+
+    estado: [null],
+    tieneAnalisisSuelo: [false, [Validators.required]],
+    esAsegurado: [false, [Validators.required]],
+    fechaBorrado: [null]
   });
 
   planesCoreFormInput: PlanesCoreFormInput = null;
@@ -104,18 +109,23 @@ export class ComponentesProductivosSegurosSecanoFormComponent
         rendimiento: this.formInput.componente.rendimiento,
 
         zafra: this.formInput.componente.zafra,
-        anio: this.formInput.componente.anio
+        anio: this.formInput.componente.anio,
+
+        estado: this.formInput.componente.estado,
+        tieneAnalisisSuelo: this.formInput.componente.tieneAnalisisSuelo,
+        esAsegurado: this.formInput.componente.esAsegurado,
+        fechaBorrado: this.formInput.componente.fechaBorrado
       });
       
       //chacra asegurada
-      if (this.formInput.componente.aseguradoraId || this.formInput.componente.polizaId){
+      if (this.formInput.componente.esAsegurado){
         this.onChangeAsegurada({value: "SI"});
       } else {
         this.onChangeAsegurada({value: "NO"});
       }
 
       //analisis suelo
-      if (this.formInput.componente.analisisSueloPBray || this.formInput.componente.analisisSueloK){
+      if (this.formInput.componente.tieneAnalisisSuelo){
         this.onChangeAnalisis({value: "SI"});
       } else {
         this.onChangeAnalisis({value: "NO"});
@@ -137,7 +147,7 @@ export class ComponentesProductivosSegurosSecanoFormComponent
 
   onChangeAsegurada($event){    
     // se agregan los validadores condicionales       
-    if($event.value === 'SI') {
+    if($event.value === 'SI') {      
       this.chacraAsegurada = true;
       this.form.get('aseguradoraId').setValidators(Validators.required);            
       this.form.get('polizaId').setValidators(Validators.required);    
@@ -154,6 +164,9 @@ export class ComponentesProductivosSegurosSecanoFormComponent
       this.form.get('tipoSeguro').setValue(null);
       this.form.get('tipoSeguro').updateValueAndValidity();      
     }     
+    this.form.patchValue({
+      esAsegurado: this.chacraAsegurada 
+    })
   }
 
   onChangeAnalisis($event){    
@@ -171,6 +184,9 @@ export class ComponentesProductivosSegurosSecanoFormComponent
       this.form.get('analisisSueloK').setValue(null);
       this.form.get('analisisSueloK').updateValueAndValidity();  
     }
+    this.form.patchValue({
+      tieneAnalisisSuelo: this.analisisSuelo 
+    })
   }
 
   onCultivoChange($event){     

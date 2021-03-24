@@ -48,7 +48,9 @@ export class PlanesCoreTableComponent implements OnInit {
     this.updateRows();
     this.tableParams = {
       columns: this.columns.map(c => ({ ...c })),
-      values: this.rows.map(r => ({ ...r }))
+      values: this.rows.map(r => ({ ...r })),
+      filter: this.params.filter,
+      pagination: this.params.pagination
     };
   }
 

@@ -1,4 +1,4 @@
-import { dateFromString, dateToString } from './extras-date';
+import { dateFromStringServerFormat, dateToString } from './extras-date';
 
 export function formatValue(value: any, format: (v: any) => string): string {
   if (format) {
@@ -14,5 +14,5 @@ export function formatDate(d: Date | string): string {
   if (d instanceof Date) {
     return dateToString(d);
   }
-  return d;
+  return dateToString(dateFromStringServerFormat(d));
 }
